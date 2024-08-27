@@ -1,5 +1,5 @@
-import Image from "next/image";
-import NanofyLogo from "@/assets/images/nanofy_logo.png";
+import Image from 'next/image'
+import NanofyLogo from '@/assets/images/nanofy_logo.png'
 
 export default function Home() {
   return (
@@ -11,5 +11,5 @@ export default function Home() {
         alt="nanofy tecnologia"
       />
     </main>
-  );
+  )
 }
