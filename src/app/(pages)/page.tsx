@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { Fragment } from 'react'
 import { Image as ImageIcon, Play, Star } from 'lucide-react'
+import { SiFacebook, SiX, SiLinkedin, SiInstagram } from 'react-icons/si'
 
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
@@ -37,6 +38,18 @@ const mostPopulars = [
   {
     id: '3',
     rating: 4.7,
+    name: 'Empresa EFGH',
+    category: 'Buffet',
+  },
+  {
+    id: '31',
+    rating: 4.2,
+    name: 'Empresa EFGH',
+    category: 'Buffet',
+  },
+  {
+    id: '32',
+    rating: 4.9,
     name: 'Empresa EFGH',
     category: 'Buffet',
   },
@@ -284,7 +297,7 @@ export default function Home() {
       <section className="mx-auto max-w-7xl space-y-16 py-12">
         <div className="flex w-full flex-col gap-4">
           <div className="flex items-center">
-            <h3 className="text-lg font-semibold">Videos dos fornecedores</h3>
+            <h3 className="text-lg font-semibold">Avaliações</h3>
 
             <span className="ms-auto block text-sm">
               Mostrar tudo ({mostPopulars.length})
@@ -292,22 +305,22 @@ export default function Home() {
           </div>
 
           <Carousel.Root
-            opts={{ align: 'start' }}
+            opts={{ align: 'start', loop: true }}
             className="w-full max-w-full"
           >
             <Carousel.Content>
-              {reviews.map((review) => (
+              {reviews.map((review, index) => (
                 <Carousel.Item
+                  index={index}
                   key={review.id}
                   className="md:basis-1/2 lg:basis-1/3"
                 >
-                  <div className="relative flex min-w-72 flex-col rounded-md border">
-                    <div className="flex min-h-56 items-center justify-center rounded-lg border-b">
-                      <Play className="size-12 text-zinc-400" />
-                    </div>
+                  <div className="col-span-1 grid grid-cols-6 items-start justify-center gap-6 rounded-md bg-secondary p-4">
+                    <div className="size-16 rounded-full bg-zinc-200"></div>
 
-                    <div className="py-4 text-center">
-                      <h3 className="font-semibold">{review.name}</h3>
+                    <div className="col-span-5 space-y-0.5">
+                      <h2 className="font-semibold">{review.name}</h2>
+                      <p className="text-justify text-sm">{review.review}</p>
                     </div>
                   </div>
                 </Carousel.Item>
@@ -318,6 +331,66 @@ export default function Home() {
           </Carousel.Root>
         </div>
       </section>
+
+      <footer className="bg-secondary p-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-5">
+          <div className="space-y-4">
+            <h1 className="text-2xl font-semibold">Company Name</h1>
+
+            <div className="space-y-1">
+              <h2 className="text-sm font-bold">Redes Sociais</h2>
+              <div className="flex items-center gap-2">
+                <SiFacebook className="size-5" />
+                <SiX className="size-5" />
+                <SiLinkedin className="size-5" />
+                <SiInstagram className="size-5" />
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold">Fornecedores</h2>
+
+            <div className="space-y-1">
+              <p>Empresa ABCD</p>
+              <p>Empresa EFGH</p>
+              <p>Empresa IJKL</p>
+              <p>Empresa MNPO</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold">Links Rápidos</h2>
+
+            <div className="space-y-1">
+              <p>Fornecedores</p>
+              <p>Sobre</p>
+              <p>Contato</p>
+              <p>Autenticação</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold">Categorias</h2>
+
+            <div className="space-y-1">
+              <p>Buffet</p>
+              <p>Decoração</p>
+              <p>Música e Entretenimento</p>
+              <p>Fotografia e Filmagem</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold">Contato</h2>
+
+            <div className="space-y-1">
+              <p>E-mail: example@email.com</p>
+              <p>Telefone: (99) 99999-9999</p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </>
   )
 }
