@@ -15,8 +15,12 @@ export default function Header() {
     <>
       <header className="mx-auto flex max-w-7xl flex-col p-4 sm:p-0">
         <div className="hidden justify-end space-x-2 pt-2 sm:flex">
-          <Button.Root className="px-0" size="sm" variant="link" asChild>
+          {/* <Button.Root className="px-0" size="sm" variant="link" asChild>
             <Link href="/login">Entrar / Cadastrar</Link>
+          </Button.Root> */}
+
+          <Button.Root className="px-0" size="sm" variant="link" asChild>
+            <Link href="/area-fornecedor">Área do fornecedor</Link>
           </Button.Root>
         </div>
 
