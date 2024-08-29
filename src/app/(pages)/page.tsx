@@ -99,13 +99,13 @@ export default function Home() {
 
   return (
     <>
-      <main className="bg-secondary">
+      <main className="bg-secondary px-4">
         <section className="mx-auto flex min-h-96 max-w-7xl flex-col items-center justify-end gap-8 pb-6">
           <h2 className="text-3xl font-semibold">
             Organize sua festa de forma fácil
           </h2>
 
-          <div className="grid w-full grid-cols-3 gap-4">
+          <div className="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-3">
             <Select.Root>
               <Select.Trigger>
                 <Select.Value placeholder="Selecione a categoria" />
