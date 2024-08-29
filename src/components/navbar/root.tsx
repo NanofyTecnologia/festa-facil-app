@@ -1,5 +1,11 @@
-import { type PropsWithChildren } from 'react'
+import { cn } from '@/lib/shadcn'
+import { type HTMLAttributes } from 'react'
 
-export function Root({ ...props }: PropsWithChildren) {
-  return <nav className="ms-auto flex items-center gap-10" {...props} />
+export function Root({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <nav
+      className={cn('ms-auto flex items-center gap-10', className)}
+      {...props}
+    />
+  )
 }
