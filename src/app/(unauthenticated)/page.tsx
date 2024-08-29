@@ -99,8 +99,8 @@ export default function Home() {
 
   return (
     <>
-      <main className="bg-secondary px-4">
-        <section className="mx-auto flex min-h-96 max-w-7xl flex-col items-center justify-end gap-8 pb-6">
+      <main className="bg-secondary">
+        <section className="mx-auto flex min-h-96 max-w-sm flex-col items-center justify-end gap-8 pb-6 md:max-w-7xl">
           <h2 className="text-3xl font-semibold">
             Organize sua festa de forma fácil
           </h2>
@@ -128,7 +128,7 @@ export default function Home() {
 
             <Select.Root>
               <Select.Trigger>
-                <Select.Value placeholder="Selecione a categoria" />
+                <Select.Value placeholder="Selecione o estado" />
               </Select.Trigger>
               <Select.Content>
                 {states && states.length > 0 ? (
@@ -152,8 +152,8 @@ export default function Home() {
         </section>
       </main>
 
-      <section className="mx-auto max-w-7xl space-y-16 py-12">
-        <div className="flex w-full flex-col gap-4">
+      <section className="mx-auto max-w-sm space-y-16 py-12 md:max-w-7xl">
+        <div className="flex flex-col gap-4">
           <div className="flex items-center">
             <h3 className="text-lg font-semibold">Pesquisar por categoria</h3>
 
@@ -172,7 +172,7 @@ export default function Home() {
                   key={category}
                   className="md:basis-1/2 lg:basis-1/4"
                 >
-                  <div className="flex min-w-72 flex-col gap-2">
+                  <div className="flex flex-col gap-2">
                     <div className="flex min-h-56 items-center justify-center rounded-md border">
                       <ImageIcon className="size-12 text-zinc-400" />
                     </div>
@@ -181,8 +181,8 @@ export default function Home() {
                 </Carousel.Item>
               ))}
             </Carousel.Content>
-            <Carousel.Previous />
-            <Carousel.Next />
+            <Carousel.Previous className="left-2" />
+            <Carousel.Next className="right-2" />
           </Carousel.Root>
         </div>
 
@@ -219,15 +219,15 @@ export default function Home() {
                 </Carousel.Item>
               ))}
             </Carousel.Content>
-            <Carousel.Previous />
-            <Carousel.Next />
+            <Carousel.Previous className="left-2" />
+            <Carousel.Next className="right-2" />
           </Carousel.Root>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl">
-        <div className="flex rounded-md bg-secondary p-6">
-          <Image src={ImgIcon} alt="" />
+      <section className="mx-auto max-w-sm md:max-w-7xl">
+        <div className="flex flex-wrap rounded-md bg-secondary p-6 sm:flex-nowrap">
+          <Image src={ImgIcon} className="w-full" alt="" />
 
           <div className="m-4 space-y-4">
             <h2 className="text-2xl font-bold">Lorem ipsum dolor sit amet</h2>
@@ -256,7 +256,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl space-y-16 py-12">
+      <section className="mx-auto max-w-sm space-y-16 py-12 md:max-w-7xl">
         <div className="flex w-full flex-col gap-4">
           <div className="flex items-center">
             <h3 className="text-lg font-semibold">Videos dos fornecedores</h3>
@@ -288,13 +288,13 @@ export default function Home() {
                 </Carousel.Item>
               ))}
             </Carousel.Content>
-            <Carousel.Previous />
-            <Carousel.Next />
+            <Carousel.Previous className="left-2" />
+            <Carousel.Next className="right-2" />
           </Carousel.Root>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl space-y-16 py-12">
+      <section className="mx-auto max-w-sm space-y-16 py-12 md:max-w-7xl">
         <div className="flex w-full flex-col gap-4">
           <div className="flex items-center">
             <h3 className="text-lg font-semibold">Avaliações</h3>
@@ -326,20 +326,20 @@ export default function Home() {
                 </Carousel.Item>
               ))}
             </Carousel.Content>
-            <Carousel.Previous />
-            <Carousel.Next />
+            <Carousel.Previous className="left-2" />
+            <Carousel.Next className="right-2" />
           </Carousel.Root>
         </div>
       </section>
 
       <footer className="bg-secondary p-4">
-        <div className="mx-auto grid max-w-7xl grid-cols-5">
+        <div className="mx-auto grid max-w-sm grid-cols-1 text-center sm:text-start md:max-w-7xl md:grid-cols-5">
           <div className="space-y-4">
             <h1 className="text-2xl font-semibold">Company Name</h1>
 
             <div className="space-y-1">
               <h2 className="text-sm font-bold">Redes Sociais</h2>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center gap-2 sm:justify-start">
                 <SiFacebook className="size-5" />
                 <SiX className="size-5" />
                 <SiLinkedin className="size-5" />
