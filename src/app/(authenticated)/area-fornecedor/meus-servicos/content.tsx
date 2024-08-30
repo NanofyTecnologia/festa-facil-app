@@ -24,7 +24,15 @@ export function Content() {
           <div className="flex flex-col gap-6">
             {services?.map((service) => (
               <Fragment key={service.id}>
-                <div className="rounded-md border"></div>
+                <div className="flex items-start gap-2 rounded-md bg-secondary p-4">
+                  <div className="size-52 rounded-md bg-zinc-200"></div>
+
+                  <div className="space-y-2">
+                    <h3 className="font-semibold">{service.name}</h3>
+
+                    <p className="">{service.description}</p>
+                  </div>
+                </div>
               </Fragment>
             ))}
           </div>
