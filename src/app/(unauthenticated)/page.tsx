@@ -181,8 +181,8 @@ export default function Home() {
                 </Carousel.Item>
               ))}
             </Carousel.Content>
-            <Carousel.Previous className="left-2" />
-            <Carousel.Next className="right-2" />
+            <Carousel.Previous />
+            <Carousel.Next />
           </Carousel.Root>
         </div>
 
@@ -219,8 +219,8 @@ export default function Home() {
                 </Carousel.Item>
               ))}
             </Carousel.Content>
-            <Carousel.Previous className="left-2" />
-            <Carousel.Next className="right-2" />
+            <Carousel.Previous />
+            <Carousel.Next />
           </Carousel.Root>
         </div>
       </section>
@@ -288,8 +288,8 @@ export default function Home() {
                 </Carousel.Item>
               ))}
             </Carousel.Content>
-            <Carousel.Previous className="left-2" />
-            <Carousel.Next className="right-2" />
+            <Carousel.Previous />
+            <Carousel.Next />
           </Carousel.Root>
         </div>
       </section>
@@ -326,8 +326,8 @@ export default function Home() {
                 </Carousel.Item>
               ))}
             </Carousel.Content>
-            <Carousel.Previous className="left-2" />
-            <Carousel.Next className="right-2" />
+            <Carousel.Previous />
+            <Carousel.Next />
           </Carousel.Root>
         </div>
       </section>
