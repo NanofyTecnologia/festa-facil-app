@@ -1,40 +1,84 @@
 'use client'
 
+import Image from 'next/image'
 import { Fragment } from 'react'
+
+import { env } from '@/lib/env/index.mjs'
+
 import { useGetServiceByUserId } from './hooks/use-get-service-by-user-id'
+import Link from 'next/link'
 
 export function Content() {
   const { data: services } = useGetServiceByUserId({
     id: 'cm0fcccu60000ly9rcif76xeg',
   })
 
+  const url = window.location.origin
+
   return (
     <>
-      <main className="px-4 py-6">
-        <div className="rounded-md border p-4">
-          <div className="mb-4 space-y-1 border-b pb-4">
-            <h2 className="text-xl font-semibold">Meus serviços</h2>
+      <main className="mx-auto max-w-sm px-4 py-6 md:max-w-screen-xl">
+        <div className="grid w-full grid-cols-6 gap-4">
+          <div className="col-span-2">
+            <div className="w-full space-y-4">
+              <div className="col-span-full">
+                <h2 className="text-lg font-semibold">
+                  Visualizado recentemente
+                </h2>
+              </div>
 
-            <p className="text-sm text-muted-foreground">
-              Visualize todos os serviços que você criou ou para os quais foi
-              designado como responsável.
-            </p>
+              <p className="text-center font-semibold">Em desenvolvimento...</p>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-6">
-            {services?.map((service) => (
-              <Fragment key={service.id}>
-                <div className="flex items-start gap-2 rounded-md bg-secondary p-4">
-                  <div className="size-52 rounded-md bg-zinc-200"></div>
+          <div className="col-span-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="col-span-full">
+                <h2 className="text-lg font-semibold">Serviços</h2>
+              </div>
 
-                  <div className="space-y-2">
-                    <h3 className="font-semibold">{service.name}</h3>
+              {services?.map((service) => (
+                <Fragment key={service.id}>
+                  <Link
+                    href={`/area-fornecedor/servico/${service.id}`}
+                    className="rounded-md border bg-secondary p-4 transition-colors hover:border-zinc-400"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Image
+                        width={32}
+                        height={32}
+                        src={
+                          env.NEXT_PUBLIC_API_URL + `/uploads/${service.image}`
+                        }
+                        className="rounded-full"
+                        alt={service.name}
+                      />
 
-                    <p className="">{service.description}</p>
-                  </div>
-                </div>
-              </Fragment>
-            ))}
+                      <div className="space-y-px">
+                        <h2 className="text-sm font-semibold">
+                          {service.name}
+                        </h2>
+                        <p className="text-xs text-zinc-500">
+                          {`${url}/${service.name.replaceAll(' ', '-')}`}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-start">
+                      <div className="my-2.5 rounded-full bg-zinc-400 px-2">
+                        <span className="text-sm font-semibold text-white">
+                          {service.category.name}
+                        </span>
+                      </div>
+
+                      <p className="text-sm text-zinc-500">
+                        {service.description.slice(0, 42).concat('...')}
+                      </p>
+                    </div>
+                  </Link>
+                </Fragment>
+              ))}
+            </div>
           </div>
         </div>
       </main>
