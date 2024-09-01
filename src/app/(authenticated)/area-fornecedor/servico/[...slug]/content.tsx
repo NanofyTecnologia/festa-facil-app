@@ -17,6 +17,8 @@ import { useGetCategories } from '@/hooks/use-get-categories'
 
 import { IParams } from './page'
 import { useGetServiceById } from './hook/use-get-service-by-id'
+import { Tooltip } from '@/components/ui/tooltip'
+import { CircleAlert } from 'lucide-react'
 
 const serviceSchema = z.object({
   name: z
@@ -26,7 +28,7 @@ const serviceSchema = z.object({
   description: z
     .string()
     .min(1, { message: 'Insira uma descrição para o serviço' }),
-  categoryId: z.string().cuid(),
+  categoryId: z.string().min(1, { message: 'Insira a categoria' }),
   phone: z.string().min(1, { message: 'Insira o telefone de contato' }),
   email: z.string().email({ message: 'Insira o e-mail de contato' }),
 })
@@ -80,6 +82,8 @@ export default function Content() {
 
   useEffect(handleDefaultValues, [reset, service])
 
+  console.log(errors)
+
   return (
     <>
       <main className="mx-auto max-w-sm px-4 py-6 md:max-w-screen-xl">
@@ -95,46 +99,102 @@ export default function Content() {
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-end">
-          <Input.Root
-            {...register('name')}
-            data-error={errors.name ? 'true' : 'false'}
-          />
+          <div className="relative flex items-center">
+            <Input.Root
+              {...register('name')}
+              data-error={errors.name ? 'true' : 'false'}
+            />
+
+            {errors.name && (
+              <Tooltip.Provider>
+                <Tooltip.Root>
+                  <Tooltip.Trigger className="absolute right-2">
+                    <CircleAlert className="size-5 text-destructive" />
+                  </Tooltip.Trigger>
+                  <Tooltip.Content>{errors.name.message}</Tooltip.Content>
+                </Tooltip.Root>
+              </Tooltip.Provider>
+            )}
+          </div>
 
           <div className="grid grid-cols-3 gap-4">
-            <Select.Root
-              value={watch('categoryId')}
-              onValueChange={(value) => setValue('categoryId', value)}
-            >
-              <Select.Trigger>
-                <Select.Value placeholder="Selecione a categoria" />
-              </Select.Trigger>
-              <Select.Content>
-                {categories?.map((category) => (
-                  <Fragment key={category.id}>
-                    <Select.Item value={category.id}>
-                      {category.name}
-                    </Select.Item>
-                  </Fragment>
-                ))}
-              </Select.Content>
-            </Select.Root>
+            <div className="relative flex items-center">
+              <Select.Root
+                value={watch('categoryId')}
+                onValueChange={(value) => setValue('categoryId', value)}
+              >
+                <Select.Trigger
+                  data-error={errors.categoryId ? 'true' : 'false'}
+                >
+                  <Select.Value placeholder="Selecione a categoria" />
+                </Select.Trigger>
+                <Select.Content>
+                  {categories?.map((category) => (
+                    <Fragment key={category.id}>
+                      <Select.Item value={category.id}>
+                        {category.name}
+                      </Select.Item>
+                    </Fragment>
+                  ))}
+                </Select.Content>
+              </Select.Root>
 
-            <Input.Root
-              {...registerWithMask(
-                'phone',
-                ['(99) 9999-9999', '(99) 99999-9999'],
-                {
-                  showMaskOnFocus: false,
-                  showMaskOnHover: false,
-                },
+              {errors.categoryId && (
+                <Tooltip.Provider>
+                  <Tooltip.Root>
+                    <Tooltip.Trigger className="absolute right-8">
+                      <CircleAlert className="size-5 text-destructive" />
+                    </Tooltip.Trigger>
+                    <Tooltip.Content>
+                      {errors.categoryId.message}
+                    </Tooltip.Content>
+                  </Tooltip.Root>
+                </Tooltip.Provider>
               )}
-              data-error={errors.phone ? 'true' : 'false'}
-            />
+            </div>
 
-            <Input.Root
-              {...register('email')}
-              data-error={errors.email ? 'true' : 'false'}
-            />
+            <div className="relative flex items-center">
+              <Input.Root
+                {...registerWithMask(
+                  'phone',
+                  ['(99) 9999-9999', '(99) 99999-9999'],
+                  {
+                    showMaskOnFocus: false,
+                    showMaskOnHover: false,
+                  },
+                )}
+                data-error={errors.phone ? 'true' : 'false'}
+              />
+
+              {errors.phone && (
+                <Tooltip.Provider>
+                  <Tooltip.Root>
+                    <Tooltip.Trigger className="absolute right-2">
+                      <CircleAlert className="size-5 text-destructive" />
+                    </Tooltip.Trigger>
+                    <Tooltip.Content>{errors.phone.message}</Tooltip.Content>
+                  </Tooltip.Root>
+                </Tooltip.Provider>
+              )}
+            </div>
+
+            <div className="relative flex items-center">
+              <Input.Root
+                {...register('email')}
+                data-error={errors.email ? 'true' : 'false'}
+              />
+
+              {errors.email && (
+                <Tooltip.Provider>
+                  <Tooltip.Root>
+                    <Tooltip.Trigger className="absolute right-2">
+                      <CircleAlert className="size-5 text-destructive" />
+                    </Tooltip.Trigger>
+                    <Tooltip.Content>{errors.email.message}</Tooltip.Content>
+                  </Tooltip.Root>
+                </Tooltip.Provider>
+              )}
+            </div>
           </div>
 
           <Textarea.Root
