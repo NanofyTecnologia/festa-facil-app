@@ -1,19 +1,27 @@
 'use client'
 
+import Link from 'next/link'
 import Image from 'next/image'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import { env } from '@/lib/env/index.mjs'
 
 import { useGetServiceByUserId } from './hooks/use-get-service-by-user-id'
-import Link from 'next/link'
 
 export function Content() {
+  const [location, setLocation] = useState('')
+
   const { data: services } = useGetServiceByUserId({
     id: 'cm0fcccu60000ly9rcif76xeg',
   })
 
-  const url = window.location.origin
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    setLocation(window.location.origin)
+  }, [])
 
   return (
     <>
@@ -40,7 +48,7 @@ export function Content() {
               {services?.map((service) => (
                 <Fragment key={service.id}>
                   <Link
-                    href={`/area-fornecedor/servico/${service.id}`}
+                    href={`/area-fornecedor/servico/${service.id}/editar`}
                     className="rounded-md border bg-secondary p-4 transition-colors hover:border-zinc-400"
                   >
                     <div className="flex items-center gap-2">
@@ -59,7 +67,7 @@ export function Content() {
                           {service.name}
                         </h2>
                         <p className="text-xs text-zinc-500">
-                          {`${url}/${service.name.replaceAll(' ', '-')}`}
+                          {`${location}/${service.name.replaceAll(' ', '-')}`}
                         </p>
                       </div>
                     </div>

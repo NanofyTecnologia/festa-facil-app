@@ -6,6 +6,8 @@ export type ServicesPreview = {
   state: string | null
   city: string | null
   image: string
+  phone: string
+  email: string
   createdAt: Date
   updatedAt: Date
   images: {
@@ -13,7 +15,10 @@ export type ServicesPreview = {
     alt: string
   }[]
   category: {
+    id: string
     name: string
     slug: string
   }
 }
+
+export type GetServicesResponse = ServicesPreview[]

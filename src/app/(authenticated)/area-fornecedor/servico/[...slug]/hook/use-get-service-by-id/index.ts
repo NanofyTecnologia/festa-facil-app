@@ -5,12 +5,12 @@ import { services } from '@/services/services'
 
 import { IProps } from './types'
 
-export function useGetServiceByUserId(props: IProps) {
+export function useGetServiceById(props: IProps) {
   const { id } = props
 
   const query = createQuery({
-    queryKey: ['get-services'],
-    fetcher: services.getByUserId,
+    queryKey: ['get-service-by-id'],
+    fetcher: services.getById,
     placeholderData: keepPreviousData,
   })
 
