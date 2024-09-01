@@ -80,8 +80,6 @@ export default function Content() {
 
   useEffect(handleDefaultValues, [reset, service])
 
-  console.log(categories)
-
   return (
     <>
       <main className="mx-auto max-w-sm px-4 py-6 md:max-w-screen-xl">
@@ -95,61 +93,7 @@ export default function Content() {
             <Fragment>Criando novo serviço</Fragment>
           )}
         </h2>
-        {/* <div className="relative mb-4 flex items-start gap-2 rounded-md bg-secondary p-4">
-          <Image
-            width={64}
-            height={64}
-            className="rounded-md"
-            src={`${env.NEXT_PUBLIC_API_URL}/uploads/${service?.image}`}
-            alt=""
-          />
 
-          <div className="space-y-2">
-            <input
-              type="text"
-              disabled={isDisabled}
-              className="rounded-sm border border-transparent bg-transparent ps-1 font-semibold outline-none enabled:border-zinc-300 enabled:bg-white"
-              {...register('name')}
-            />
-            <h2 className="hidden font-semibold">{service?.name}</h2>
-
-            <div className="items-STAR flex gap-4">
-              <div className="flex items-center gap-1">
-                <Phone className="size-4" />{' '}
-                <input
-                  type="text"
-                  disabled={isDisabled}
-                  className="w-32 rounded-sm border border-transparent bg-transparent ps-1 text-sm outline-none enabled:border-zinc-300 enabled:bg-white"
-                  {...register('phone')}
-                />
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Mail className="size-4" />{' '}
-                <input
-                  type="text"
-                  disabled={isDisabled}
-                  className="w-52 rounded-sm border border-transparent bg-transparent ps-1 text-sm outline-none enabled:border-zinc-300 enabled:bg-white"
-                  {...register('email')}
-                />
-              </div>
-            </div>
-          </div>
-
-          <Button.Root
-            size="icon"
-            type="button"
-            className="ms-auto size-8"
-            onClick={() => setIsDisabled(!isDisabled)}
-          >
-            {isDisabled ? (
-              <Pencil className="size-4" />
-            ) : (
-              <PencilOff className="size-4" />
-            )}
-          </Button.Root>
-        </div>
- */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-end">
           <Input.Root
             {...register('name')}
