@@ -2,9 +2,9 @@ export type ServicesPreview = {
   id: string
   name: string
   description: string
-  address: string | null
-  state: string | null
-  city: string | null
+  address: string
+  state: string
+  city: string
   image: string
   phone: string
   email: string
@@ -22,3 +22,7 @@ export type ServicesPreview = {
 }
 
 export type GetServicesResponse = ServicesPreview[]
+export type UpdateServiceParams = {
+  id: string
+  data: Partial<ServicesPreview>
+}

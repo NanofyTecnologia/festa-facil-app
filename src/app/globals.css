@@ -63,7 +63,58 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.tiptap {
+  h1 {
+    @apply text-2xl
+  }
+
+  h2 {
+    @apply text-xl
+  }
+
+  h3 {
+    @apply text-lg
+  }
+
+  h4 {
+    @apply text-base
+  }
+
+  h5 {
+    @apply text-sm
+  }
+
+  h6 {
+    @apply text-xs
+  }
+
+  ul, ol {
+    @apply px-4 my-5 me-4 ms-2
+  }
+
+  ul,ol > li p {
+    @apply my-1
+  }
+
+  ul {
+    @apply list-disc
+  }
+
+  ol {
+    @apply list-decimal
+  }
+}
+
+.ProseMirror {
+  min-height: 240px;
+
+  &:focus {
+    outline: none;
   }
 }
