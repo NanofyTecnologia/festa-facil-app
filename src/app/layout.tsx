@@ -10,7 +10,10 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: 'Nanofy - Projeto_05',
+  title: {
+    template: '%s | Festa Fácil',
+    default: 'Festa Fácil',
+  },
   description: 'Aplicação em Desenvolvimento',
 }
 
