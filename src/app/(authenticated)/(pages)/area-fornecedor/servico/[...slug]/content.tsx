@@ -45,7 +45,7 @@ export default function Content() {
 
   const { data: categories } = useGetCategories()
   const { data: service } = useGetServiceById({ id })
-  const { mutate: handleUpdateService } = useUpdateService()
+  const { mutate: handleUpdateService, isPending } = useUpdateService()
 
   const {
     watch,
@@ -136,6 +136,7 @@ export default function Content() {
             <div className="relative flex items-center">
               <Select.Root
                 value={watch('categoryId')}
+                defaultValue={service?.category.id}
                 onValueChange={(value) => setValue('categoryId', value)}
               >
                 <Select.Trigger
@@ -276,7 +277,9 @@ export default function Content() {
             onValueChange={(value) => setValue('description', value)}
           />
 
-          <Button.Root type="submit">Enviar</Button.Root>
+          <Button.Root type="submit">
+            {isPending ? 'Atualizando...' : 'Enviar'}
+          </Button.Root>
         </form>
       </main>
     </>

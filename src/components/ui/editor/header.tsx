@@ -175,6 +175,7 @@ export const Header = () => {
 
       <div className="flex">
         <button
+          type="button"
           onClick={() => changeColor()}
           className="me-0.5 size-6 rounded-sm"
           style={{ backgroundColor: letterColor }}
@@ -189,6 +190,7 @@ export const Header = () => {
               {colors.map((color, index) => (
                 <Fragment key={index + color}>
                   <button
+                    type="button"
                     onClick={() => changeColor(color)}
                     className="size-6 rounded-sm transition-all hover:scale-110"
                     style={{ backgroundColor: color }}

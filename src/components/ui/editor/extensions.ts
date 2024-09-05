@@ -10,6 +10,7 @@ import ListItem from '@tiptap/extension-list-item'
 import OrderedList from '@tiptap/extension-ordered-list'
 import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
+import HardBreak from '@tiptap/extension-hard-break'
 
 export const extensions = [
   Color,
@@ -17,6 +18,7 @@ export const extensions = [
   Strike,
   ListItem,
   TextStyle,
+  HardBreak,
   Underline,
   BulletList,
   OrderedList,
@@ -32,7 +34,7 @@ export const extensions = [
   StarterKit.configure({
     paragraph: {
       HTMLAttributes: {
-        class: 'text-sm',
+        class: 'text-base',
       },
     },
   }),

@@ -94,6 +94,10 @@
     @apply text-xs
   }
 
+  p {
+    @apply mb-4
+  }
+
   ul, ol {
     @apply px-4 my-5 me-4 ms-2
   }

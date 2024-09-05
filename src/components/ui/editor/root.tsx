@@ -27,7 +27,7 @@ export const Root = (props: EditorRootProps) => {
         <Header />
 
         <EditorContent
-          className="min-h-60 p-2 text-start text-sm"
+          className="min-h-60 p-2 text-start text-base"
           editor={editor}
         />
       </EditorContext.Provider>

@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { Carousel } from '@/components/ui/carousel'
 
-import { useGetStates } from './hooks/use-get-states'
+import { useGetStates } from '../hooks/use-get-states'
 
 import ImgIcon from '@/assets/images/image.svg'
 
