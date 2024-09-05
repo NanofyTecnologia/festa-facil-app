@@ -3,12 +3,12 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import {
+  List,
+  Menu,
+  LogOut,
+  Settings,
   ChartArea,
   ChevronDown,
-  List,
-  LogOut,
-  Menu,
-  Settings,
 } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 
@@ -16,15 +16,17 @@ import { Navbar } from '@/components/navbar'
 import { Sheet } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
+import { Dropdown } from '@/components/ui/dropdown'
 
 import Form from './form'
-import { Dropdown } from '@/components/ui/dropdown'
 
 export default function Header() {
   const { data } = useSession()
 
   const [open, setOpen] = useState(false)
   const [showModal, setShowModal] = useState(false)
+
+  const roleIsSupplier = data?.user.role === 'SUPPLIER'
 
   return (
     <>
@@ -60,13 +62,21 @@ export default function Header() {
 
                 <Dropdown.Separator />
 
-                <Dropdown.Item className="cursor-pointer" asChild>
-                  <Link href="/area-fornecedor">
+                <Dropdown.Item
+                  disabled={!roleIsSupplier}
+                  className="cursor-pointer"
+                  asChild
+                >
+                  <Link href="/area-fornecedor/meus-servicos">
                     <List className="me-1 size-4" /> Meus serviços
                   </Link>
                 </Dropdown.Item>
 
-                <Dropdown.Item className="cursor-pointer" asChild>
+                <Dropdown.Item
+                  disabled={!roleIsSupplier}
+                  className="cursor-pointer"
+                  asChild
+                >
                   <Link href="/area-fornecedor">
                     <ChartArea className="me-1 size-4" /> Área de Fornecedor
                   </Link>

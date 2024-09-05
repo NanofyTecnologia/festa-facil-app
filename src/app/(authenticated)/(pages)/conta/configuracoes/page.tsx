@@ -1,9 +1,13 @@
 'use client'
 
 import { z } from 'zod'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useHookFormMask } from 'use-mask-input'
+import { MoveLeft, User } from 'lucide-react'
 
 import { Input } from '@/components/ui/input'
 import { Dialog } from '@/components/ui/dialog'
@@ -11,7 +15,9 @@ import { Button } from '@/components/ui/button'
 
 import { validateCPF } from '@/utils/validate-cpf'
 
+import { useGetUser } from '../hooks/use-get-user'
 import { useUpdateUser } from '../hooks/use-update-user'
+import { toast } from 'react-toastify'
 
 const userSchema = z.object({
   name: z.string().min(1, { message: 'Insira seu nome' }),
@@ -28,16 +34,35 @@ const userSchema = z.object({
 type UpdateUserData = z.infer<typeof userSchema>
 
 export default function Page() {
+  const { back } = useRouter()
   const { data, update } = useSession()
 
+  const [showModal, setShowModal] = useState(false)
+
+  const { data: user, isPending } = useGetUser({ id: data?.user.id ?? '' })
   const { mutate: handleUpdateUser } = useUpdateUser()
-  const { register, handleSubmit } = useForm<UpdateUserData>()
+
+  const { reset, register, handleSubmit } = useForm<UpdateUserData>()
   const registerWithMask = useHookFormMask(register)
 
   const onSubmit: SubmitHandler<UpdateUserData> = (updateUserData) => {
     handleUpdateUser({
       userId: data?.user.id ?? '',
       data: { ...updateUserData },
+    })
+  }
+
+  const handleDefaultValues = () => {
+    if (!user) {
+      return
+    }
+
+    const { name, email, cpf } = user
+
+    reset({
+      name,
+      email,
+      cpf,
     })
   }
 
@@ -54,15 +79,26 @@ export default function Page() {
           update({
             role: 'SUPPLIER',
           })
+
+          toast.success('Sua conta agora é fornecedora!')
+
+          setShowModal(false)
         },
       },
     )
   }
 
-  console.log(data)
+  useEffect(handleDefaultValues, [reset, user])
 
   return (
     <main className="mx-auto mt-6 max-w-5xl">
+      <div className="">
+        <Button.Root onClick={back} variant="link" className="px-0">
+          <MoveLeft className="me-1 size-5" />
+          Voltar
+        </Button.Root>
+      </div>
+
       <div className="mb-6 pb-6">
         <h2 className="text-xl font-semibold">Configurações da conta</h2>
         <p className="text-sm text-zinc-400">
@@ -81,18 +117,36 @@ export default function Page() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <Input.Root {...register('name')} placeholder="Nome" />
+      <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4 text-end">
+        {data?.user.image ? (
+          <Image width={64} height={64} src={data.user.image} alt="" />
+        ) : (
+          <>
+            <label className="flex h-48 w-48 cursor-pointer items-center justify-center overflow-hidden rounded-md bg-secondary transition-all">
+              <User className="size-16 text-zinc-500" />
+            </label>
 
-        <Input.Root {...register('email')} placeholder="E-mail" />
+            <input type="file" hidden />
+          </>
+        )}
 
-        <Input.Root
-          {...registerWithMask('cpf', ['999.999.999-99'], {
-            showMaskOnFocus: false,
-            showMaskOnHover: false,
-          })}
-          placeholder="CPF"
-        />
+        <div className="w-full max-w-md space-y-4">
+          <Input.Root {...register('name')} placeholder="Nome" />
+
+          <Input.Root {...register('email')} placeholder="E-mail" />
+
+          <Input.Root
+            {...registerWithMask('cpf', ['999.999.999-99'], {
+              showMaskOnFocus: false,
+              showMaskOnHover: false,
+            })}
+            placeholder="CPF"
+          />
+
+          <Button.Root type="submit" size="sm" className="px-8">
+            {isPending ? 'Atualizando...' : 'Atualizar'}
+          </Button.Root>
+        </div>
       </form>
 
       <div className="my-6 border-b pb-4">
@@ -103,13 +157,17 @@ export default function Page() {
         </p>
       </div>
 
-      <Dialog.Root>
-        <Dialog.Trigger asChild>
-          <Button.Root variant="outline">
-            Trocar conta para fornecedor
-          </Button.Root>
-        </Dialog.Trigger>
+      {data?.user.role === 'CUSTOMER' ? (
+        <Button.Root onClick={() => setShowModal(true)} variant="outline">
+          Trocar conta para fornecedor
+        </Button.Root>
+      ) : (
+        <Button.Root variant="secondary" disabled>
+          Você já é um fornecedor
+        </Button.Root>
+      )}
 
+      <Dialog.Root open={showModal} onOpenChange={setShowModal}>
         <Dialog.Content>
           <Dialog.Title>Deseja mesmo ser um fornecedor?</Dialog.Title>
           <Dialog.Description>

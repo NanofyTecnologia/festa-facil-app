@@ -7,7 +7,6 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 import { prisma } from '@/config/prisma'
 
 import { env } from '../env/index.mjs'
-import console from 'console'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -51,17 +50,12 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     jwt: async ({ user, token, trigger, session }) => {
-      console.log('USER', user)
-      console.log('TOKEN', token)
-
       if (user) {
         token.id = user.id
         token.role = user.role
       }
 
       if (trigger === 'update') {
-        console.log('Update')
-        console.log(token)
         token = { ...token, ...session }
 
         return token

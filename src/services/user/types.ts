@@ -5,4 +5,5 @@ export type User = {
   role: 'ADMIN' | 'CUSTOMER' | 'SUPPLIER'
 }
 
+export type GetUserResponse = User
 export type UpdateUserData = Partial<User>

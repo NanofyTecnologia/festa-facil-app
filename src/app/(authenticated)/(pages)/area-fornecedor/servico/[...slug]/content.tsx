@@ -1,11 +1,13 @@
 'use client'
 
+import Link from 'next/link'
+import { toast } from 'react-toastify'
 import { Fragment, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useHookFormMask } from 'use-mask-input'
 import { z } from 'zod'
-import { CircleAlert } from 'lucide-react'
+import { CircleAlert, ExternalLink } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Input } from '@/components/ui/input'
@@ -61,7 +63,14 @@ export default function Content() {
 
   const onSubmit: SubmitHandler<CreateServiceData> = (data) => {
     if (id) {
-      handleUpdateService({ id, data })
+      handleUpdateService(
+        { id, data },
+        {
+          onSuccess: () => {
+            toast.success('Serviço atualizado com sucesso!')
+          },
+        },
+      )
     }
   }
 
@@ -102,16 +111,24 @@ export default function Content() {
   return (
     <>
       <main className="mx-auto max-w-sm px-4 py-6 md:max-w-screen-xl">
-        <h2 className="mb-6 text-lg">
-          {isEditing ? (
-            <Fragment>
-              Editando serviço:{' '}
-              <span className="font-bold">{service?.name}</span>
-            </Fragment>
-          ) : (
-            <Fragment>Criando novo serviço</Fragment>
-          )}
-        </h2>
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-lg">
+            {isEditing ? (
+              <Fragment>
+                Editando serviço:{' '}
+                <span className="font-bold">{service?.name}</span>
+              </Fragment>
+            ) : (
+              <Fragment>Criando novo serviço</Fragment>
+            )}
+          </h2>
+
+          <Button.Root variant="link" asChild>
+            <Link href={`/${id}`} target="_blank">
+              Visualizar na página <ExternalLink className="ms-1 size-4" />
+            </Link>
+          </Button.Root>
+        </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-end">
           <div className="relative flex items-center">
