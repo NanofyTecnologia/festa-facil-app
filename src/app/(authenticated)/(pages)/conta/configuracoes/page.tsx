@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useHookFormMask } from 'use-mask-input'
 import { MoveLeft, User } from 'lucide-react'
+import { toast } from 'react-toastify'
 
 import { Input } from '@/components/ui/input'
 import { Dialog } from '@/components/ui/dialog'
@@ -17,7 +18,6 @@ import { validateCPF } from '@/utils/validate-cpf'
 
 import { useGetUser } from '../hooks/use-get-user'
 import { useUpdateUser } from '../hooks/use-update-user'
-import { toast } from 'react-toastify'
 
 const userSchema = z.object({
   name: z.string().min(1, { message: 'Insira seu nome' }),

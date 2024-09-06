@@ -15,6 +15,10 @@ export function Content() {
     id: 'cm0fcccu60000ly9rcif76xeg',
   })
 
+  const sanitizeHTML = (str: string) => {
+    return str.replace(/<\/?[^>]+(>|$)/g, '')
+  }
+
   useEffect(() => {
     if (typeof window === 'undefined') {
       return
@@ -79,9 +83,14 @@ export function Content() {
                         </span>
                       </div>
 
-                      <p className="text-sm text-zinc-500">
-                        {service.description.slice(0, 42).concat('...')}
-                      </p>
+                      <div
+                        className="text-sm text-zinc-500"
+                        dangerouslySetInnerHTML={{
+                          __html: sanitizeHTML(service.description)
+                            .slice(0, 42)
+                            .concat('...'),
+                        }}
+                      ></div>
                     </div>
                   </Link>
                 </Fragment>

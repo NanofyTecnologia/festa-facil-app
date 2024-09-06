@@ -384,7 +384,7 @@ export const Header = () => {
               Confira os atalhos disponíveis para facilitar sua edição
             </Dialog.Description>
           </Dialog.Header>
-          <div className="scrollbar-thumb-red-300 scrollbar-thin max-h-[624px] overflow-y-auto">
+          <div className="max-h-[624px] overflow-y-auto scrollbar-thin scrollbar-thumb-red-300">
             <table className="table-auto">
               <thead className="border-b-2 border-black">
                 <tr className="font-normal">
