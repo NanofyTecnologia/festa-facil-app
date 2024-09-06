@@ -31,4 +31,17 @@ export const services = {
 
     return data
   },
+
+  async getByCategory({ q }: { q: string }) {
+    const { data } = await axios.get<GetServicesResponse>(
+      '/services/category',
+      {
+        params: {
+          q,
+        },
+      },
+    )
+
+    return data
+  },
 }

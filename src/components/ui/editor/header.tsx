@@ -1,34 +1,36 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { Fragment, PropsWithChildren, useState } from 'react'
 import { useCurrentEditor } from '@tiptap/react'
 import {
-  AlignCenter,
-  AlignJustify,
+  Bold,
+  List,
+  Redo,
+  Undo,
+  Code,
+  Check,
+  Link2,
+  Italic,
+  Link2Off,
+  Underline,
   AlignLeft,
   AlignRight,
-  Bold,
-  Check,
-  ChevronDown,
-  Code,
-  Image as ImageIcon,
-  Italic,
-  Link2,
-  Link2Off,
-  List,
   ListOrdered,
-  Redo,
+  ChevronDown,
+  AlignCenter,
+  AlignJustify,
   Strikethrough,
-  Underline,
-  Undo,
+  Image as ImageIcon,
+  CircleHelp,
 } from 'lucide-react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { Input } from '../input'
 import { colors } from './colors'
 import { Select } from '../select'
 import { Button } from '../button'
 import { Popover } from '../popover'
-import { Input } from '../input'
+import { Dialog } from '../dialog'
 
 type SetURLData = {
   url: string
@@ -41,6 +43,7 @@ type SetImageData = {
 export const Header = () => {
   const { editor } = useCurrentEditor()
 
+  const [showModal, setShowModal] = useState(false)
   const [letterColor, setLetterColor] = useState('#000000')
 
   const { register: registerFormLink, handleSubmit: handleSubmitFormLink } =
@@ -147,180 +150,212 @@ export const Header = () => {
   }
 
   return (
-    <header className="flex items-center justify-start gap-4 border-b p-2">
-      <div className="flex h-9 items-center gap-2 rounded-md border">
-        <Button.Root size="icon" variant="ghost" onClick={commands.undo}>
-          <Undo className="size-4" />
-        </Button.Root>
+    <>
+      <header className="flex items-center justify-start gap-4 border-b p-2">
+        <div className="flex h-9 items-center gap-2 rounded-md border">
+          <Button.Root size="icon" variant="ghost" onClick={commands.undo}>
+            <Undo className="size-4" />
+          </Button.Root>
 
-        <Button.Root size="icon" variant="ghost" onClick={commands.redo}>
-          <Redo className="size-4" />
-        </Button.Root>
-      </div>
+          <Button.Root size="icon" variant="ghost" onClick={commands.redo}>
+            <Redo className="size-4" />
+          </Button.Root>
+        </div>
 
-      <Select.Root value={defaultFormat()} onValueChange={changeFormat}>
-        <Select.Trigger className="max-w-60">
-          <Select.Value />
-        </Select.Trigger>
-        <Select.Content>
-          <Select.Item value="paragraph">Parágrafo</Select.Item>
-          <Select.Item value="h1">Heading 1</Select.Item>
-          <Select.Item value="h2">Heading 2</Select.Item>
-          <Select.Item value="h3">Heading 3</Select.Item>
-          <Select.Item value="h4">Heading 4</Select.Item>
-          <Select.Item value="h5">Heading 5</Select.Item>
-          <Select.Item value="h6">Heading 6</Select.Item>
-        </Select.Content>
-      </Select.Root>
+        <Select.Root value={defaultFormat()} onValueChange={changeFormat}>
+          <Select.Trigger className="max-w-60">
+            <Select.Value />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="paragraph">Parágrafo</Select.Item>
+            <Select.Item value="h1">Heading 1</Select.Item>
+            <Select.Item value="h2">Heading 2</Select.Item>
+            <Select.Item value="h3">Heading 3</Select.Item>
+            <Select.Item value="h4">Heading 4</Select.Item>
+            <Select.Item value="h5">Heading 5</Select.Item>
+            <Select.Item value="h6">Heading 6</Select.Item>
+          </Select.Content>
+        </Select.Root>
 
-      <div className="flex">
-        <button
-          type="button"
-          onClick={() => changeColor()}
-          className="me-0.5 size-6 rounded-sm"
-          style={{ backgroundColor: letterColor }}
-        />
+        <div className="flex">
+          <button
+            type="button"
+            onClick={() => changeColor()}
+            className="me-0.5 size-6 rounded-sm"
+            style={{ backgroundColor: letterColor }}
+          />
 
-        <Popover.Root>
-          <Popover.Trigger className="rounded-sm align-middle hover:bg-blue-100">
-            <ChevronDown className="size-4" />
-          </Popover.Trigger>
-          <Popover.Content className="max-w-48">
-            <div className="grid grid-cols-5 justify-center gap-x-2 gap-y-3">
-              {colors.map((color, index) => (
-                <Fragment key={index + color}>
-                  <button
-                    type="button"
-                    onClick={() => changeColor(color)}
-                    className="size-6 rounded-sm transition-all hover:scale-110"
-                    style={{ backgroundColor: color }}
-                  />
-                </Fragment>
-              ))}
-            </div>
-          </Popover.Content>
-        </Popover.Root>
-      </div>
+          <Popover.Root>
+            <Popover.Trigger className="rounded-sm align-middle hover:bg-blue-100">
+              <ChevronDown className="size-4" />
+            </Popover.Trigger>
+            <Popover.Content className="max-w-48">
+              <div className="grid grid-cols-5 justify-center gap-x-2 gap-y-3">
+                {colors.map((color, index) => (
+                  <Fragment key={index + color}>
+                    <button
+                      type="button"
+                      onClick={() => changeColor(color)}
+                      className="size-6 rounded-sm transition-all hover:scale-110"
+                      style={{ backgroundColor: color }}
+                    />
+                  </Fragment>
+                ))}
+              </div>
+            </Popover.Content>
+          </Popover.Root>
+        </div>
 
-      <div className="flex h-9 items-center gap-2 rounded-md border">
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={commands.bold}
-          data-active={editor?.isActive('bold')}
-        >
-          <Bold className="size-4" />
-        </Button.Root>
+        <div className="flex h-9 items-center gap-2 rounded-md border">
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={commands.bold}
+            data-active={editor?.isActive('bold')}
+          >
+            <Bold className="size-4" />
+          </Button.Root>
 
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={commands.underline}
-          data-active={editor?.isActive('underline')}
-        >
-          <Underline className="size-4" />
-        </Button.Root>
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={commands.underline}
+            data-active={editor?.isActive('underline')}
+          >
+            <Underline className="size-4" />
+          </Button.Root>
 
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={commands.italic}
-          data-active={editor?.isActive('italic')}
-        >
-          <Italic className="size-4" />
-        </Button.Root>
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={commands.italic}
+            data-active={editor?.isActive('italic')}
+          >
+            <Italic className="size-4" />
+          </Button.Root>
 
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={commands.strike}
-          data-active={editor?.isActive('strike')}
-        >
-          <Strikethrough className="size-4" />
-        </Button.Root>
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={commands.strike}
+            data-active={editor?.isActive('strike')}
+          >
+            <Strikethrough className="size-4" />
+          </Button.Root>
 
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={commands.code}
-          data-active={editor?.isActive('code')}
-        >
-          <Code className="size-4" />
-        </Button.Root>
-      </div>
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={commands.code}
+            data-active={editor?.isActive('code')}
+          >
+            <Code className="size-4" />
+          </Button.Root>
+        </div>
 
-      <div className="flex h-9 items-center gap-2 rounded-md border">
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={() => commands.align('left')}
-          data-active={editor?.isActive({ textAlign: 'left' })}
-        >
-          <AlignLeft className="size-4" />
-        </Button.Root>
+        <div className="flex h-9 items-center gap-2 rounded-md border">
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={() => commands.align('left')}
+            data-active={editor?.isActive({ textAlign: 'left' })}
+          >
+            <AlignLeft className="size-4" />
+          </Button.Root>
 
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={() => commands.align('center')}
-          data-active={editor?.isActive({ textAlign: 'center' })}
-        >
-          <AlignCenter className="size-4" />
-        </Button.Root>
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={() => commands.align('center')}
+            data-active={editor?.isActive({ textAlign: 'center' })}
+          >
+            <AlignCenter className="size-4" />
+          </Button.Root>
 
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={() => commands.align('right')}
-          data-active={editor?.isActive({ textAlign: 'right' })}
-        >
-          <AlignRight className="size-4" />
-        </Button.Root>
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={() => commands.align('right')}
+            data-active={editor?.isActive({ textAlign: 'right' })}
+          >
+            <AlignRight className="size-4" />
+          </Button.Root>
 
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={() => commands.align('justify')}
-          data-active={editor?.isActive({ textAlign: 'justify' })}
-        >
-          <AlignJustify className="size-4" />
-        </Button.Root>
-      </div>
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={() => commands.align('justify')}
+            data-active={editor?.isActive({ textAlign: 'justify' })}
+          >
+            <AlignJustify className="size-4" />
+          </Button.Root>
+        </div>
 
-      <div className="flex h-9 items-center gap-2 rounded-md border">
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={() => commands.bulletList()}
-          data-active={editor?.isActive('bulletList')}
-        >
-          <List className="size-4" />
-        </Button.Root>
+        <div className="flex h-9 items-center gap-2 rounded-md border">
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={() => commands.bulletList()}
+            data-active={editor?.isActive('bulletList')}
+          >
+            <List className="size-4" />
+          </Button.Root>
 
-        <Button.Root
-          size="icon"
-          variant="ghost"
-          onClick={() => commands.orderedList()}
-          data-active={editor?.isActive('orderedList')}
-        >
-          <ListOrdered className="size-4" />
-        </Button.Root>
-      </div>
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={() => commands.orderedList()}
+            data-active={editor?.isActive('orderedList')}
+          >
+            <ListOrdered className="size-4" />
+          </Button.Root>
+        </div>
 
-      <div className="flex h-9 items-center gap-2 rounded-md border">
-        {!editor?.isActive('link') && (
+        <div className="flex h-9 items-center gap-2 rounded-md border">
+          {!editor?.isActive('link') && (
+            <Popover.Root>
+              <Popover.Trigger asChild>
+                <Button.Root size="icon" variant="ghost">
+                  <Link2 className="size-4" />
+                </Button.Root>
+              </Popover.Trigger>
+              <Popover.Content className="p-2">
+                <form
+                  onSubmit={handleSubmit(onSubmitURL)}
+                  className="flex items-center gap-1 text-end"
+                >
+                  <Input.Root {...register('url')} placeholder="URL" />
+
+                  <Button.Root type="submit" size="sm">
+                    <Check className="size-4" />
+                  </Button.Root>
+                </form>
+              </Popover.Content>
+            </Popover.Root>
+          )}
+
+          {editor?.isActive('link') && (
+            <Button.Root
+              size="icon"
+              variant="ghost"
+              onClick={commands.unsetLink}
+            >
+              <Link2Off className="size-4" />
+            </Button.Root>
+          )}
+
           <Popover.Root>
             <Popover.Trigger asChild>
               <Button.Root size="icon" variant="ghost">
-                <Link2 className="size-4" />
+                <ImageIcon className="size-4" />
               </Button.Root>
             </Popover.Trigger>
             <Popover.Content className="p-2">
               <form
-                onSubmit={handleSubmit(onSubmitURL)}
+                onSubmit={handleSubmitFormLink(onSubmitImage)}
                 className="flex items-center gap-1 text-end"
               >
-                <Input.Root {...register('url')} placeholder="URL" />
+                <Input.Root {...registerFormLink('link')} placeholder="URL" />
 
                 <Button.Root type="submit" size="sm">
                   <Check className="size-4" />
@@ -328,34 +363,356 @@ export const Header = () => {
               </form>
             </Popover.Content>
           </Popover.Root>
-        )}
+        </div>
 
-        {editor?.isActive('link') && (
-          <Button.Root size="icon" variant="ghost" onClick={commands.unsetLink}>
-            <Link2Off className="size-4" />
+        <div className="ms-auto flex h-9 items-center gap-2 rounded-md border">
+          <Button.Root
+            size="icon"
+            variant="ghost"
+            onClick={() => setShowModal(true)}
+          >
+            <CircleHelp className="size-4" />
           </Button.Root>
-        )}
+        </div>
+      </header>
 
-        <Popover.Root>
-          <Popover.Trigger asChild>
-            <Button.Root size="icon" variant="ghost">
-              <ImageIcon className="size-4" />
-            </Button.Root>
-          </Popover.Trigger>
-          <Popover.Content className="p-2">
-            <form
-              onSubmit={handleSubmitFormLink(onSubmitImage)}
-              className="flex items-center gap-1 text-end"
-            >
-              <Input.Root {...registerFormLink('link')} placeholder="URL" />
+      <Dialog.Root open={showModal} onOpenChange={setShowModal}>
+        <Dialog.Content className="max-w-3xl">
+          <Dialog.Header>
+            <Dialog.Title>Atalhos do Editor</Dialog.Title>
+            <Dialog.Description>
+              Confira os atalhos disponíveis para facilitar sua edição
+            </Dialog.Description>
+          </Dialog.Header>
+          <div className="max-h-[624px] overflow-y-auto scrollbar-thin scrollbar-thumb-red-300">
+            <table className="table-auto">
+              <thead className="border-b-2 border-black">
+                <tr className="font-normal">
+                  <th>Comandos</th>
+                  <th>Windows/Linux</th>
+                  <th>macOS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b text-start">
+                  <td>Desfazer</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> + <KeyButton>Z</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Z</KeyButton>
+                    </div>
+                  </td>
+                </tr>
 
-              <Button.Root type="submit" size="sm">
-                <Check className="size-4" />
-              </Button.Root>
-            </form>
-          </Popover.Content>
-        </Popover.Root>
-      </div>
-    </header>
+                <tr className="border-b text-start">
+                  <td>Refazer</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> + <KeyButton>Y</KeyButton>{' '}
+                      ou <KeyButton>Shift</KeyButton> +{' '}
+                      <KeyButton>Control</KeyButton> + <KeyButton>Z</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Z</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Parágrafo</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Alt</KeyButton> + <KeyButton>0</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Z</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Cabeçalho 1</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Alt</KeyButton> + <KeyButton>1</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Alt</KeyButton> +{' '}
+                      <KeyButton>1</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Cabeçalho 2</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Alt</KeyButton> + <KeyButton>2</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Alt</KeyButton> +{' '}
+                      <KeyButton>2</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Cabeçalho 3</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Alt</KeyButton> + <KeyButton>3</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Alt</KeyButton> +{' '}
+                      <KeyButton>3</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Cabeçalho 4</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Alt</KeyButton> + <KeyButton>4</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Alt</KeyButton> +{' '}
+                      <KeyButton>4</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Cabeçalho 5</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Alt</KeyButton> + <KeyButton>5</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Alt</KeyButton> +{' '}
+                      <KeyButton>5</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Cabeçalho 6</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Alt</KeyButton> + <KeyButton>6</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Alt</KeyButton> +{' '}
+                      <KeyButton>6</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Negrito</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> + <KeyButton>B</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>B</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Sublinhado</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> + <KeyButton>U</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>U</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Itálico</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> + <KeyButton>I</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>I</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Riscado</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Shift</KeyButton> + <KeyButton>S</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Shift</KeyButton>{' '}
+                      + <KeyButton>S</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Código</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> + <KeyButton>E</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>E</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Alinhamento Esquerda</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Shift</KeyButton> + <KeyButton>L</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Shift</KeyButton>{' '}
+                      + <KeyButton>L</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Alinhamento Centro</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Shift</KeyButton> + <KeyButton>E</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Shift</KeyButton>{' '}
+                      + <KeyButton>E</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Alinhamento Direita</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Shift</KeyButton> + <KeyButton>R</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Shift</KeyButton>{' '}
+                      + <KeyButton>R</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Alinhamento Justificado</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Shift</KeyButton> + <KeyButton>J</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Shift</KeyButton>{' '}
+                      + <KeyButton>J</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Lista com Marcadores</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Shift</KeyButton> + <KeyButton>8</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Shift</KeyButton>{' '}
+                      + <KeyButton>8</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr className="border-b text-start">
+                  <td>Lista Ordenada</td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Control</KeyButton> +{' '}
+                      <KeyButton>Shift</KeyButton> + <KeyButton>7</KeyButton>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="my-2 flex items-center justify-center gap-2 text-sm">
+                      <KeyButton>Cmd</KeyButton> + <KeyButton>Shift</KeyButton>{' '}
+                      + <KeyButton>7</KeyButton>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </Dialog.Content>
+      </Dialog.Root>
+    </>
+  )
+}
+
+function KeyButton({ children }: PropsWithChildren) {
+  return (
+    <button className="rounded border px-2 py-0.5 text-xs">{children}</button>
   )
 }

@@ -1,26 +1,21 @@
 'use client'
 
+import Link from 'next/link'
 import Image from 'next/image'
 import { Fragment } from 'react'
 import { Image as ImageIcon, Play, Star } from 'lucide-react'
 import { SiFacebook, SiX, SiLinkedin, SiInstagram } from 'react-icons/si'
 
+import { iconsMap } from '@/utils/icons-map'
+
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { Carousel } from '@/components/ui/carousel'
 
-import { useGetStates } from '../hooks/use-get-states'
-
 import ImgIcon from '@/assets/images/image.svg'
+import { useGetCategories } from '@/hooks/use-get-categories'
 
-const categories = [
-  'Buffet',
-  'Decoração',
-  'Música e Entretenimento',
-  'Animação Infantil',
-  'Fotografia e Filmagem',
-  'Espaço para Eventos',
-]
+import { useGetStates } from '../hooks/use-get-states'
 
 const mostPopulars = [
   {
@@ -96,6 +91,7 @@ const reviews = [
 
 export default function Home() {
   const { data: states } = useGetStates()
+  const { data: categories } = useGetCategories()
 
   return (
     <>
@@ -111,18 +107,13 @@ export default function Home() {
                 <Select.Value placeholder="Selecione a categoria" />
               </Select.Trigger>
               <Select.Content>
-                <Select.Item value="buffet">Buffet</Select.Item>
-                <Select.Item value="decoracao">Decoração</Select.Item>
-                <Select.Item value="musica_entretenimento">
-                  Música e Entretenimento
-                </Select.Item>
-                <Select.Item value="animacao_infantil">
-                  Animação Infantil
-                </Select.Item>
-                <Select.Item value="fotografia_filmagem">
-                  Fotografia e Filmagem
-                </Select.Item>
-                <Select.Item value="espaco">Espaço para Eventos</Select.Item>
+                {categories?.map((category) => (
+                  <Fragment key={category.id}>
+                    <Select.Item value={category.name}>
+                      {category.name}
+                    </Select.Item>
+                  </Fragment>
+                ))}
               </Select.Content>
             </Select.Root>
 
@@ -158,7 +149,7 @@ export default function Home() {
             <h3 className="text-lg font-semibold">Pesquisar por categoria</h3>
 
             <span className="ms-auto block text-sm">
-              Mostrar tudo ({categories.length})
+              Mostrar tudo ({categories?.length})
             </span>
           </div>
 
@@ -167,17 +158,19 @@ export default function Home() {
             className="w-full max-w-full"
           >
             <Carousel.Content>
-              {categories.map((category) => (
+              {categories?.map((category) => (
                 <Carousel.Item
-                  key={category}
+                  key={category.id}
                   className="md:basis-1/2 lg:basis-1/4"
                 >
-                  <div className="flex flex-col gap-2">
-                    <div className="flex min-h-56 items-center justify-center rounded-md border">
-                      <ImageIcon className="size-12 text-zinc-400" />
+                  <Link href={`/categoria/${category.slug}`}>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex min-h-56 items-center justify-center rounded-md border transition-all hover:bg-secondary">
+                        {iconsMap[category.slug]}
+                      </div>
                     </div>
-                  </div>
-                  <h3 className="mt-1 font-semibold">{category}</h3>
+                    <h3 className="mt-1 font-semibold">{category.name}</h3>
+                  </Link>
                 </Carousel.Item>
               ))}
             </Carousel.Content>

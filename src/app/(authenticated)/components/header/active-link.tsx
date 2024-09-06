@@ -18,7 +18,7 @@ export function Link({ href, ...props }: Props) {
       href={href}
       data-active={isActive}
       className={cn(
-        'font-semibold hover:underline data-[active=true]:text-muted-foreground data-[active=true]:no-underline',
+        'font-semibold data-[active=true]:text-muted-foreground data-[active=true]:no-underline hover:underline',
       )}
       {...props}
     />
