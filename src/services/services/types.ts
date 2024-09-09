@@ -22,6 +22,7 @@ export type ServicesPreview = {
 }
 
 export type GetServicesResponse = ServicesPreview[]
+export type CreateServiceParams = Partial<ServicesPreview>
 export type UpdateServiceParams = {
   id: string
   data: Partial<ServicesPreview>

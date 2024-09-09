@@ -4,9 +4,19 @@ import {
   type ServicesPreview,
   type GetServicesResponse,
   type UpdateServiceParams,
+  type CreateServiceParams,
 } from './types'
 
 export const services = {
+  async create(data: CreateServiceParams) {
+    const { data: createdData } = await axios.post<ServicesPreview>(
+      '/services',
+      data,
+    )
+
+    return createdData
+  },
+
   async update({ id, data }: UpdateServiceParams) {
     const { data: updatedData } = await axios.put<ServicesPreview>(
       '/services/' + id,
@@ -22,12 +32,14 @@ export const services = {
     return data
   },
 
-  async getByUserId(id: string) {
-    const { data } = await axios.get<GetServicesResponse>('/user/services', {
-      headers: {
-        Authorization: id,
-      },
-    })
+  async getByRating() {
+    const { data } = await axios.get<ServicesPreview>('/services/rating')
+
+    return data
+  },
+
+  async getByUserId() {
+    const { data } = await axios.get<GetServicesResponse>('/user/services')
 
     return data
   },
