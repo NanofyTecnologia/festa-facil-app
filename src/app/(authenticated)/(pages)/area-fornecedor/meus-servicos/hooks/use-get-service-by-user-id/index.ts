@@ -3,18 +3,14 @@ import { keepPreviousData } from '@tanstack/react-query'
 
 import { services } from '@/services/services'
 
-import { IProps } from './types'
-
-export function useGetServiceByUserId(props: IProps) {
-  const { id } = props
-
+export function useGetServiceByUserId() {
   const query = createQuery({
     queryKey: ['get-services'],
     fetcher: services.getByUserId,
     placeholderData: keepPreviousData,
   })
 
-  const queryResponse = query({ variables: id })
+  const queryResponse = query()
 
   return {
     ...queryResponse,

@@ -14,9 +14,7 @@ export function Content() {
   const { data } = useSession()
   const [location, setLocation] = useState('')
 
-  const { data: services } = useGetServiceByUserId({
-    id: 'cm0fcccu60000ly9rcif76xeg',
-  })
+  const { data: services } = useGetServiceByUserId()
 
   const sanitizeHTML = (str: string) => {
     return str.replace(/<\/?[^>]+(>|$)/g, '')
