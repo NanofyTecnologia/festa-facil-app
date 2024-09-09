@@ -1,12 +1,12 @@
 'use client'
 
 import { z } from 'zod'
+import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import axios from '@/lib/axios'
 
 const signInSchema = z.object({
   email: z
@@ -18,9 +18,18 @@ const signInSchema = z.object({
 type SignInData = z.infer<typeof signInSchema>
 
 export default function Form() {
-  const { register, handleSubmit } = useForm<SignInData>()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { isSubmitted },
+  } = useForm<SignInData>()
 
   const onSubmit: SubmitHandler<SignInData> = async (data) => {
+    setIsSubmitting(true)
+
     const response = await signIn('email', {
       ...data,
       redirect: false,
@@ -28,20 +37,42 @@ export default function Form() {
 
     console.log(response)
 
-    axios.interceptors.request.use((config) => {
-      config.headers.Authorization = 'token'
-
-      return config
-    })
+    setIsSubmitting(false)
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 text-end">
-      <Input.Root placeholder="E-mail" {...register('email')} />
+    <>
+      {!isSubmitted && (
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 text-end">
+          <Input.Root
+            placeholder="E-mail"
+            {...register('email')}
+            disabled={isSubmitting}
+          />
 
-      <Button.Root type="submit" size="sm" className="px-6">
-        Enviar
-      </Button.Root>
-    </form>
+          <Button.Root
+            type="submit"
+            size="sm"
+            className="px-6"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Enviando...' : 'Enviar'}
+          </Button.Root>
+        </form>
+      )}
+
+      {isSubmitted && (
+        <div className="text-center">
+          <h1 className="mb-2 text-lg">
+            E-mail enviado com sucesso! Verifique sua caixa de mensagem para
+            acessar sua conta.
+          </h1>
+
+          <Button.Root size="sm" onClick={() => reset()}>
+            Enviar novamente
+          </Button.Root>
+        </div>
+      )}
+    </>
   )
 }

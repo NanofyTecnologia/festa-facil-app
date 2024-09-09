@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { Fragment, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import { useHookFormMask } from 'use-mask-input'
 import { z } from 'zod'
 import { CircleAlert, ExternalLink } from 'lucide-react'
@@ -22,6 +22,7 @@ import { useGetCategories } from '@/hooks/use-get-categories'
 import { IParams } from './page'
 import { useGetServiceById } from './hook/use-get-service-by-id'
 import { useUpdateService } from './hook/use-update-service'
+import { useCreateService } from './hook/use-create-service'
 
 const serviceSchema = z.object({
   name: z
@@ -47,6 +48,8 @@ export default function Content() {
 
   const { data: categories } = useGetCategories()
   const { data: service } = useGetServiceById({ id })
+
+  const { mutate: handleCreateService } = useCreateService()
   const { mutate: handleUpdateService, isPending } = useUpdateService()
 
   const {
@@ -71,7 +74,24 @@ export default function Content() {
           },
         },
       )
+
+      return
     }
+
+    handleCreateService(
+      {
+        ...data,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Serviço criado com sucesso!')
+        },
+      },
+    )
+  }
+
+  const onError: SubmitErrorHandler<CreateServiceData> = (error) => {
+    console.log(error)
   }
 
   const handleDefaultValues = () => {
@@ -123,17 +143,23 @@ export default function Content() {
             )}
           </h2>
 
-          <Button.Root variant="link" asChild>
-            <Link href={`/${id}`} target="_blank">
-              Visualizar na página <ExternalLink className="ms-1 size-4" />
-            </Link>
-          </Button.Root>
+          {isEditing && (
+            <Button.Root variant="link" asChild>
+              <Link href={`/${id}`} target="_blank">
+                Visualizar na página <ExternalLink className="ms-1 size-4" />
+              </Link>
+            </Button.Root>
+          )}
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-end">
+        <form
+          onSubmit={handleSubmit(onSubmit, onError)}
+          className="space-y-4 text-end"
+        >
           <div className="relative flex items-center">
             <Input.Root
               {...register('name')}
+              placeholder="Nome do serviço"
               data-error={errors.name ? 'true' : 'false'}
             />
 
@@ -188,6 +214,7 @@ export default function Content() {
 
             <div className="relative flex items-center">
               <Input.Root
+                placeholder="Telefone"
                 {...registerWithMask(
                   'phone',
                   ['(99) 9999-9999', '(99) 99999-9999'],
@@ -213,6 +240,7 @@ export default function Content() {
 
             <div className="relative flex items-center">
               <Input.Root
+                placeholder="E-mail"
                 {...register('email')}
                 data-error={errors.email ? 'true' : 'false'}
               />

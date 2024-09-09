@@ -2,13 +2,16 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 import { Fragment, useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 
 import { env } from '@/lib/env/index.mjs'
 
 import { useGetServiceByUserId } from './hooks/use-get-service-by-user-id'
 
 export function Content() {
+  const { data } = useSession()
   const [location, setLocation] = useState('')
 
   const { data: services } = useGetServiceByUserId({
@@ -18,6 +21,12 @@ export function Content() {
   const sanitizeHTML = (str: string) => {
     return str.replace(/<\/?[^>]+(>|$)/g, '')
   }
+
+  useEffect(() => {
+    if (data?.user.id) {
+      localStorage.setItem('csrftoken', data.user.id)
+    }
+  }, [data])
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -95,6 +104,13 @@ export function Content() {
                   </Link>
                 </Fragment>
               ))}
+
+              <Link
+                href={`/area-fornecedor/servico/novo-servico`}
+                className="flex items-center justify-center rounded-md border bg-secondary p-4 text-center transition-colors hover:border-zinc-400"
+              >
+                <Plus className="size-4" /> Criar novo serviço
+              </Link>
             </div>
           </div>
         </div>
