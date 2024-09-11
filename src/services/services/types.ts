@@ -8,6 +8,7 @@ export type ServicesPreview = {
   image: string
   phone: string
   email: string
+  rating: number
   createdAt: Date
   updatedAt: Date
   images: {

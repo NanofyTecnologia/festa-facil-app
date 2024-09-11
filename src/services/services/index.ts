@@ -33,7 +33,7 @@ export const services = {
   },
 
   async getByRating() {
-    const { data } = await axios.get<ServicesPreview>('/services/rating')
+    const { data } = await axios.get<GetServicesResponse>('/services/rating')
 
     return data
   },
