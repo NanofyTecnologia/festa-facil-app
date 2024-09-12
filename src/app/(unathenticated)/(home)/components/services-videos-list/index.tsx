@@ -27,10 +27,13 @@ export default function ServicesVideosList() {
               const emptyStar = 5 - Math.ceil(ratingRounded)
 
               return (
-                <Carousel.Item key={service.id}>
+                <Carousel.Item
+                  key={service.id}
+                  className="sm:basis-1/2 lg:basis-1/3 2xl:basis-1/4"
+                >
                   <Link href={`/servico/${service.id}`}>
                     <div className="rounded-md bg-secondary p-4">
-                      <video autoPlay muted loop className="rounded">
+                      <video loop muted autoPlay className="rounded">
                         <source src={service.video} type="video/mp4" />
                         <track
                           src={service.video}
