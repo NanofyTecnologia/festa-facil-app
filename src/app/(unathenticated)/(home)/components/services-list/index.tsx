@@ -4,9 +4,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Star } from 'lucide-react'
 
-import { Carousel } from '@/components/ui/carousel'
-
 import { loadImageUrl } from '@/utils/image-url'
+
+import { Carousel } from '@/components/ui/carousel'
 import { useGetServiceByRating } from '@/hooks/use-get-services-by-rating'
 
 export default function ServiceList() {
@@ -16,7 +16,7 @@ export default function ServiceList() {
     <Carousel.Root>
       <Carousel.Content>
         {services?.map((service) => (
-          <Carousel.Item key={service.id} className="">
+          <Carousel.Item key={service.id}>
             <Link href={`/servico/${service.id}`}>
               <div className="rounded-md bg-secondary p-4">
                 <Image

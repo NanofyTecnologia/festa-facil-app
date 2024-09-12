@@ -8,6 +8,12 @@ import {
 } from './types'
 
 export const services = {
+  async get() {
+    const { data: services } = await axios.get<GetServicesResponse>('/services')
+
+    return services
+  },
+
   async create(data: CreateServiceParams) {
     const { data: createdData } = await axios.post<ServicesPreview>(
       '/services',

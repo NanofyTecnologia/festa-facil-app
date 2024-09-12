@@ -6,6 +6,7 @@ export type ServicesPreview = {
   state: string
   city: string
   image: string
+  video: string
   phone: string
   email: string
   rating: number

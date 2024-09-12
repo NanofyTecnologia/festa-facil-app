@@ -1,10 +1,14 @@
+import Image from 'next/image'
 import { Search } from 'lucide-react'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
-import CategoryList from './components/category-list'
+import ImgIcon from '@/assets/images/image.svg'
+
 import ServiceList from './components/services-list'
+import CategoryList from './components/category-list'
+import ServicesVideosList from './components/services-videos-list'
 
 export default function Page() {
   return (
@@ -36,6 +40,33 @@ export default function Page() {
         <h2 className="mb-2 font-semibold">Recomendados</h2>
 
         <ServiceList />
+      </section>
+
+      <section className="px-4 py-6">
+        <div className="rounded bg-secondary p-4">
+          <Image src={ImgIcon} className="w-full" alt="" />
+
+          <p className="mb-6 text-justify text-base">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Consequuntur recusandae provident molestias unde quaerat quasi
+            voluptate officia et eaque? Deleniti earum doloremque quas delectus
+            quae? Rem voluptates accusantium quo voluptatum. Lorem ipsum dolor
+            sit amet consectetur adipisicing elit. Consequuntur recusandae
+            provident molestias unde quaerat quasi voluptate officia et eaque?
+            Deleniti earum doloremque quas delectus quae? Rem voluptates
+            accusantium quo voluptatum.
+          </p>
+
+          <div className="text-end">
+            <Button.Root className="px-6">Ver Mais</Button.Root>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-6">
+        <h2 className="mb-2 font-semibold">Videos dos Fornecedores</h2>
+
+        <ServicesVideosList />
       </section>
     </>
   )
