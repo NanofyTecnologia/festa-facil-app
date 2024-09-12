@@ -22,7 +22,7 @@ import { Accordion } from '@/components/ui/accordion'
 
 import { useGetCategories } from '@/hooks/use-get-categories'
 
-import SignIn from './sign-in'
+import SignIn from '../sign-in'
 
 export default function Header() {
   const { data } = useSession()
