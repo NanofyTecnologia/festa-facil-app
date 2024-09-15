@@ -49,12 +49,12 @@ export default function Header() {
           </Button.Root>
         </nav>
 
-        <div className="mx-auto hidden h-[68px] max-w-7xl justify-between px-4 py-4 md:flex">
+        <div className="mx-auto hidden h-[68px] max-w-7xl justify-between px-4 py-4 md:flex 2xl:px-0">
           <h1 className="text-2xl font-semibold">Festa Fácil</h1>
 
           <nav className="flex items-center gap-4 text-zinc-500">
             <Link
-              href="#"
+              href="/"
               className="block rounded p-2 font-medium transition-all hover:bg-secondary hover:text-black"
             >
               Inicio
@@ -97,7 +97,7 @@ export default function Header() {
                   <Dropdown.Trigger asChild>
                     <Button.Root
                       variant="link"
-                      className="text-base text-zinc-600"
+                      className="px-0 text-base text-zinc-600"
                     >
                       Minha conta
                       <ChevronDown className="ms-1 size-4" />
@@ -142,14 +142,28 @@ export default function Header() {
           </Sheet.Header>
 
           <div className="h-full space-y-0.5">
-            {isAuthenticated && (
-              <Accordion.Root type="single" collapsible>
+            {!isAuthenticated && (
+              <Button.Root
+                asChild
+                variant="link"
+                onClick={() => {
+                  setShowDialog(true)
+                  setShowSideMenu(false)
+                }}
+                className="w-full justify-start rounded p-2 text-base font-normal text-zinc-500 hover:bg-secondary hover:no-underline"
+              >
+                <Link href="#">Entrar</Link>
+              </Button.Root>
+            )}
+
+            <Accordion.Root type="single" collapsible>
+              {isAuthenticated && (
                 <Accordion.Item value="account" className="border-0">
                   <Accordion.Trigger className="rounded p-2 text-base font-normal text-zinc-500 hover:bg-secondary hover:no-underline">
                     Minha conta
                   </Accordion.Trigger>
                   <Accordion.Content>
-                    <ul className="space-y-0.5 pl-4 text-base text-zinc-500">
+                    <ul className="mt-2 space-y-1 pl-4 text-base text-zinc-500">
                       <li>
                         <Link
                           href="#"
@@ -172,30 +186,14 @@ export default function Header() {
                     </ul>
                   </Accordion.Content>
                 </Accordion.Item>
-              </Accordion.Root>
-            )}
+              )}
 
-            {!isAuthenticated && (
-              <Button.Root
-                asChild
-                variant="link"
-                onClick={() => {
-                  setShowDialog(true)
-                  setShowSideMenu(false)
-                }}
-                className="w-full justify-start rounded p-2 text-base font-normal text-zinc-500 hover:bg-secondary hover:no-underline"
-              >
-                <Link href="#">Entrar</Link>
-              </Button.Root>
-            )}
-
-            <Accordion.Root type="single" collapsible>
               <Accordion.Item value="categories" className="border-0">
                 <Accordion.Trigger className="rounded p-2 text-base font-normal text-zinc-500 hover:bg-secondary hover:no-underline">
                   Ver categorias
                 </Accordion.Trigger>
                 <Accordion.Content>
-                  <ul className="space-y-0.5 pl-4 text-base text-zinc-500">
+                  <ul className="mt-2 space-y-1 pl-4 text-base text-zinc-500">
                     {categories?.map((category) => (
                       <Fragment key={category.id}>
                         <li>

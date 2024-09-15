@@ -5,6 +5,7 @@ import {
   type GetServicesResponse,
   type UpdateServiceParams,
   type CreateServiceParams,
+  type GetServicesByCategoryParams,
 } from './types'
 
 export const services = {
@@ -51,7 +52,7 @@ export const services = {
   },
 
   async getByCategory({ q }: { q: string }) {
-    const { data } = await axios.get<GetServicesResponse>(
+    const { data } = await axios.get<GetServicesByCategoryParams>(
       '/services/category',
       {
         params: {

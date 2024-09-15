@@ -9,6 +9,7 @@ export type ServicesPreview = {
   video: string
   phone: string
   email: string
+  about: string
   rating: number
   createdAt: Date
   updatedAt: Date
@@ -23,6 +24,10 @@ export type ServicesPreview = {
   }
 }
 
+export type GetServicesByCategoryParams = {
+  name: string
+  result: ServicesPreview[]
+}
 export type GetServicesResponse = ServicesPreview[]
 export type CreateServiceParams = Partial<ServicesPreview>
 export type UpdateServiceParams = {

@@ -56,7 +56,7 @@ export default function Page() {
             width={396}
             height={396}
             src={ImageFrame}
-            className="w-full rounded-md object-contain"
+            className="w-full rounded-md object-contain lg:max-w-80"
             alt=""
           />
 
@@ -98,17 +98,23 @@ export default function Page() {
         <h2 className="mb-2 text-xl font-semibold">Lorem ipsum dolor</h2>
 
         <p className="text-justify">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae, est
-          pariatur. Quia, expedita repudiandae dolores adipisci placeat error,
-          praesentium quas corrupti illum suscipit ipsum facilis exercitationem.
-          Amet maxime quae blanditiis.
+          orem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tempor
+          imperdiet dictum. Nunc ac cursus est, sit amet vehicula dolor. Aliquam
+          felis libero, viverra fermentum ligula et, iaculis porta ligula.
+          Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus
+          consectetur nisi ut enim pulvinar aliquam. Duis sit amet leo ligula.
+          In fermentum sed purus sit amet convallis. Nam sem velit, ullamcorper
+          a blandit gravida, cursus a eros. Ut a ultricies ipsum. Donec tempor
+          nulla eget odio bibendum, et consequat dui rutrum.
         </p>
 
         <p className="mt-4 text-justify">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae, est
-          pariatur. Quia, expedita repudiandae dolores adipisci placeat error,
-          praesentium quas corrupti illum suscipit ipsum facilis exercitationem.
-          Amet maxime quae blanditiis.
+          Praesent porta erat ut justo hendrerit, et eleifend quam placerat.
+          Aenean a nibh tincidunt, hendrerit velit at, laoreet felis. Duis in mi
+          nec urna egestas volutpat eu vitae massa. Suspendisse ligula ante,
+          aliquet vel velit et, fringilla hendrerit diam. Donec ornare dui ut
+          pretium dictum. Aenean bibendum augue nibh, vel varius tellus
+          tristique id. Vivamus blandit pulvinar quam vel eleifend.
         </p>
       </section>
 

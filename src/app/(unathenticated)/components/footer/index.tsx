@@ -7,7 +7,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="border-t px-4 py-6">
+    <footer className="mt-auto border-t px-4 py-6">
       <div className="text-center">
         <h1 className="text-xl font-bold text-zinc-500">Festa Fácil</h1>
         <p className="text-sm text-zinc-300">
