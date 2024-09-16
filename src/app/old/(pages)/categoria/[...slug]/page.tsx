@@ -5,8 +5,9 @@ import Image from 'next/image'
 import { Fragment } from 'react'
 import { useParams } from 'next/navigation'
 
-import { useGetServicesByCategory } from './hooks/use-get-services-by-category'
 import { env } from '@/lib/env/index.mjs'
+
+import { useGetServicesByCategory } from './hooks/use-get-services-by-category'
 
 export default function Page() {
   const { slug } = useParams()

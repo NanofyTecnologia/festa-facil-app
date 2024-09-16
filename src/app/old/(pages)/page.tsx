@@ -16,39 +16,7 @@ import ImgIcon from '@/assets/images/image.svg'
 import { useGetCategories } from '@/hooks/use-get-categories'
 
 import { useGetStates } from '../hooks/use-get-states'
-
-const mostPopulars = [
-  {
-    id: '1',
-    rating: 4.5,
-    name: 'Empresa XPTO',
-    category: 'Música e Entretenimento',
-  },
-  {
-    id: '2',
-    rating: 4.7,
-    name: 'Empresa ABCD',
-    category: 'Fotografia e Filmagem',
-  },
-  {
-    id: '3',
-    rating: 4.7,
-    name: 'Empresa EFGH',
-    category: 'Buffet',
-  },
-  {
-    id: '31',
-    rating: 4.2,
-    name: 'Empresa EFGH',
-    category: 'Buffet',
-  },
-  {
-    id: '32',
-    rating: 4.9,
-    name: 'Empresa EFGH',
-    category: 'Buffet',
-  },
-]
+import { useGetByRating } from './hooks/use-get-service-rating'
 
 const reviews = [
   {
@@ -92,6 +60,7 @@ const reviews = [
 export default function Home() {
   const { data: states } = useGetStates()
   const { data: categories } = useGetCategories()
+  const { data: mostPopulars } = useGetByRating()
 
   return (
     <>
@@ -184,7 +153,7 @@ export default function Home() {
             <h3 className="text-lg font-semibold">Mais populares</h3>
 
             <span className="ms-auto block text-sm">
-              Mostrar tudo ({mostPopulars.length})
+              Mostrar tudo ({mostPopulars?.length})
             </span>
           </div>
 
@@ -193,7 +162,7 @@ export default function Home() {
             className="w-full max-w-full"
           >
             <Carousel.Content>
-              {mostPopulars.map((popular) => (
+              {mostPopulars?.map((popular) => (
                 <Carousel.Item
                   key={popular.id}
                   className="md:basis-1/2 lg:basis-1/4"
@@ -255,7 +224,7 @@ export default function Home() {
             <h3 className="text-lg font-semibold">Videos dos fornecedores</h3>
 
             <span className="ms-auto block text-sm">
-              Mostrar tudo ({mostPopulars.length})
+              Mostrar tudo ({mostPopulars?.length})
             </span>
           </div>
 
@@ -264,7 +233,7 @@ export default function Home() {
             className="w-full max-w-full"
           >
             <Carousel.Content>
-              {mostPopulars.map((popular) => (
+              {mostPopulars?.map((popular) => (
                 <Carousel.Item
                   key={popular.id}
                   className="md:basis-1/2 lg:basis-1/4"
@@ -293,7 +262,7 @@ export default function Home() {
             <h3 className="text-lg font-semibold">Avaliações</h3>
 
             <span className="ms-auto block text-sm">
-              Mostrar tudo ({mostPopulars.length})
+              Mostrar tudo ({mostPopulars?.length})
             </span>
           </div>
 

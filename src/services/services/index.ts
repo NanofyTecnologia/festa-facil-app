@@ -5,9 +5,16 @@ import {
   type GetServicesResponse,
   type UpdateServiceParams,
   type CreateServiceParams,
+  type GetServicesByCategoryParams,
 } from './types'
 
 export const services = {
+  async get() {
+    const { data: services } = await axios.get<GetServicesResponse>('/services')
+
+    return services
+  },
+
   async create(data: CreateServiceParams) {
     const { data: createdData } = await axios.post<ServicesPreview>(
       '/services',
@@ -33,7 +40,7 @@ export const services = {
   },
 
   async getByRating() {
-    const { data } = await axios.get<ServicesPreview>('/services/rating')
+    const { data } = await axios.get<GetServicesResponse>('/services/rating')
 
     return data
   },
@@ -45,7 +52,7 @@ export const services = {
   },
 
   async getByCategory({ q }: { q: string }) {
-    const { data } = await axios.get<GetServicesResponse>(
+    const { data } = await axios.get<GetServicesByCategoryParams>(
       '/services/category',
       {
         params: {
