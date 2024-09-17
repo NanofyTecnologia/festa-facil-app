@@ -3,7 +3,7 @@ import { keepPreviousData } from '@tanstack/react-query'
 
 import { services } from '@/services/services'
 
-import { IProps } from './types'
+import { type IProps } from './types'
 
 export function useGetServicesByCategory(props: IProps) {
   const { q } = props
