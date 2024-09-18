@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify'
 import { createMutation } from 'react-query-kit'
 
-import { services } from '@/services/services'
+import { services } from '@/services/companies'
 
 export function useCreateService() {
   const mutation = createMutation({

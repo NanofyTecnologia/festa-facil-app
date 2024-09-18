@@ -1,4 +1,4 @@
-export type ServicesPreview = {
+export type CompanyPreview = {
   id: string
   name: string
   description: string
@@ -24,13 +24,13 @@ export type ServicesPreview = {
   }
 }
 
-export type GetServicesByCategoryParams = {
+export type GetCompanyByCategoryResponse = {
   name: string
-  result: ServicesPreview[]
+  result: CompanyPreview[]
 }
-export type GetServicesResponse = ServicesPreview[]
-export type CreateServiceParams = Partial<ServicesPreview>
-export type UpdateServiceParams = {
+export type GetCompaniesResponse = CompanyPreview[]
+export type CreateCompanyParams = Partial<CompanyPreview>
+export type UpdateCompanyParams = {
   id: string
-  data: Partial<ServicesPreview>
+  data: Partial<CompanyPreview>
 }

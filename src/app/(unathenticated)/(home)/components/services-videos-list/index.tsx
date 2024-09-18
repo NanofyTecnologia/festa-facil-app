@@ -1,36 +1,35 @@
 'use client'
 
 import Link from 'next/link'
-import { Fragment } from 'react'
 
 import { Badge } from '@/components/ui/badge'
 import { Carousel } from '@/components/ui/carousel'
 
-import { useGetServices } from '@/hooks/use-get-services'
+import { useGetCompanies } from '@/hooks/use-get-companies'
 import RatingStars from '@/app/(unathenticated)/components/rating-stars'
 
 export default function ServicesVideosList() {
-  const { data: services } = useGetServices()
+  const { data: companies } = useGetCompanies()
 
   return (
     <>
       <Carousel.Root>
         <Carousel.Content>
-          {services
-            ?.filter((service) => {
-              return service.video
+          {companies
+            ?.filter((company) => {
+              return company.video
             })
-            .map((service) => (
+            .map((company) => (
               <Carousel.Item
-                key={service.id}
+                key={company.id}
                 className="sm:basis-1/2 lg:basis-1/3 2xl:basis-1/4"
               >
-                <Link href={`/servico/${service.id}`}>
+                <Link href={`/servico/${company.id}`}>
                   <div className="rounded-md bg-secondary p-4">
                     <video loop muted autoPlay className="rounded">
-                      <source src={service.video} type="video/mp4" />
+                      <source src={company.video} type="video/mp4" />
                       <track
-                        src={service.video}
+                        src={company.video}
                         kind="subtitles"
                         srcLang="pt-br"
                         label="Português (Brasil)"
@@ -38,15 +37,15 @@ export default function ServicesVideosList() {
                     </video>
 
                     <div className="mt-4 flex items-start justify-between">
-                      <h3 className="font-semibold">{service.name}</h3>
+                      <h3 className="font-semibold">{company.name}</h3>
 
                       <div className="mb-1 flex items-center gap-1 rounded-full border bg-white p-0.5">
-                        <RatingStars rating={service.rating} />
+                        <RatingStars rating={company.rating} />
                       </div>
                     </div>
 
                     <div className="mt-4">
-                      <Badge.Root>{service.category.name}</Badge.Root>
+                      <Badge.Root>{company.category.name}</Badge.Root>
                     </div>
                   </div>
                 </Link>

@@ -1,16 +1,16 @@
 import { createQuery } from 'react-query-kit'
 import { keepPreviousData } from '@tanstack/react-query'
 
-import { services } from '@/services/services'
+import { companies } from '@/services/companies'
 
 import { type IProps } from './types'
 
-export function useGetServiceById(props: IProps) {
+export function useGetCompanyById(props: IProps) {
   const { id } = props
 
   const query = createQuery({
     queryKey: ['get-service-by-id'],
-    fetcher: services.getById,
+    fetcher: companies.getById,
     placeholderData: keepPreviousData,
   })
 

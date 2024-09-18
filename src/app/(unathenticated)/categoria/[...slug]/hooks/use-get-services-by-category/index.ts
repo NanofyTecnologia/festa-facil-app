@@ -1,7 +1,7 @@
 import { createQuery } from 'react-query-kit'
 import { keepPreviousData } from '@tanstack/react-query'
 
-import { services } from '@/services/services'
+import { services } from '@/services/companies'
 
 import { type IProps } from './types'
 

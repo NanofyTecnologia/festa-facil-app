@@ -112,7 +112,7 @@ export default function Header() {
                       </NextLink>
                     </Dropdown.Item>
                     <Dropdown.Item asChild>
-                      <NextLink href="/area-do-fornecedor">
+                      <NextLink href="/area-fornecedor">
                         <ChartArea className="me-2 size-4" /> Área do Fornecedor
                       </NextLink>
                     </Dropdown.Item>
@@ -252,8 +252,8 @@ export default function Header() {
       <Dialog.Root open={showDialog} onOpenChange={setShowDialog}>
         <Dialog.Content className="flex h-full max-w-2xl flex-col justify-start sm:h-auto sm:max-w-md">
           <Dialog.Header>
-            <Dialog.Title className="">Acessar conta</Dialog.Title>
-            <Dialog.Description className="">
+            <Dialog.Title>Acessar conta</Dialog.Title>
+            <Dialog.Description>
               Acesse sua conta na plataforma da Festa Fácil ou crie uma nova
             </Dialog.Description>
           </Dialog.Header>

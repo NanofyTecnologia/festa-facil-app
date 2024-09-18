@@ -1,12 +1,24 @@
 'use client'
 
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { ChevronLeft, CircleHelp, Pencil, User } from 'lucide-react'
+import { ChevronLeft, MoveRight, Pencil, User } from 'lucide-react'
+import { z } from 'zod'
+import { toast } from 'react-toastify'
+import { useHookFormMask } from 'use-mask-input'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Tooltip } from '@/components/ui/tooltip'
+
+import { validateCPF } from '@/utils/validate-cpf'
+
+import { useGetUser } from '../hooks/use-get-user'
+import { useUpdateUser } from '../hooks/use-update-user'
 
 const role: { [key: string]: string } = {
   ADMIN: 'Administrador',
@@ -14,9 +26,64 @@ const role: { [key: string]: string } = {
   CONSUMER: 'Normal',
 }
 
+const userSchema = z.object({
+  name: z.string().min(1, { message: 'Insira seu nome' }),
+  email: z
+    .string()
+    .email({ message: 'E-mail inválido' })
+    .min(1, { message: 'Insira seu e-mail' }),
+  cpf: z.string().refine(validateCPF, { message: 'CPF inválido' }),
+})
+
+type UserData = z.infer<typeof userSchema>
+
 export default function Content() {
   const { back } = useRouter()
-  const { data } = useSession()
+  const { data, update } = useSession()
+
+  const { mutate: handleUpdateUser } = useUpdateUser()
+  const { data: user } = useGetUser({ id: data?.user.id })
+
+  const { reset, register, handleSubmit } = useForm<UserData>({
+    resolver: zodResolver(userSchema),
+  })
+  const registerWithMask = useHookFormMask(register)
+
+  const onSubmit: SubmitHandler<UserData> = (data) => {
+    if (!user?.id) {
+      return toast.error('Usuário não encontrado!')
+    }
+
+    handleUpdateUser(
+      {
+        data: {
+          ...data,
+        },
+        userId: user.id,
+      },
+      {
+        onSuccess: () => {
+          update({ ...data })
+        },
+      },
+    )
+  }
+
+  const handleDefaultValues = () => {
+    if (!user) {
+      return
+    }
+
+    const { cpf, name, email } = user
+
+    reset({
+      cpf,
+      name,
+      email,
+    })
+  }
+
+  useEffect(handleDefaultValues, [user, reset])
 
   if (!data?.user) {
     return (
@@ -28,7 +95,7 @@ export default function Content() {
 
   return (
     <>
-      <div className="mt-4 flex items-center gap-4 px-4">
+      <div className="mt-4 flex items-center gap-4 px-4 sm:m-4 sm:rounded-md md:mx-auto md:max-w-lg">
         <Button.Root
           size="icon"
           variant="default"
@@ -41,7 +108,7 @@ export default function Content() {
         <h1 className="text-lg font-medium">Minha conta</h1>
       </div>
 
-      <main className="px-4 py-6 sm:m-4 sm:rounded-md md:mx-auto md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl">
+      <main className="px-4 py-6 sm:m-4 sm:rounded-md md:mx-auto md:max-w-lg">
         <form className="flex items-start gap-2">
           {data?.user.image && <Image src={data?.user.image} alt="" />}
 
@@ -61,27 +128,62 @@ export default function Content() {
             </>
           )}
 
-          <div className="space-y-0.5">
+          <div>
             <h2 className="font-semibold">{data?.user.name}</h2>
 
-            <div className="flex gap-2">
-              <p className="font-medium text-zinc-500">
-                {role[data?.user.role]}
-              </p>
-
-              <Tooltip.Provider>
-                <Tooltip.Root delayDuration={5000}>
-                  <Tooltip.Trigger type="button">
-                    <CircleHelp className="size-4" />
-                  </Tooltip.Trigger>
-                  <Tooltip.Content>
-                    Esse é o nivel de acesso da sua conta
-                  </Tooltip.Content>
-                </Tooltip.Root>
-              </Tooltip.Provider>
-            </div>
+            <Badge.Root variant="outline">Free</Badge.Root>
           </div>
         </form>
+
+        <div className="mt-6 rounded-md border bg-secondary p-4">
+          <h2 className="mb-4 font-semibold">Seu perfil</h2>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <Input.Root
+              placeholder="Nome"
+              className="bg-white"
+              {...register('name')}
+            />
+
+            <Input.Root
+              placeholder="E-mail"
+              className="bg-white"
+              {...register('email')}
+            />
+
+            <Input.Root
+              placeholder="CPF"
+              className="bg-white"
+              {...registerWithMask('cpf', ['999.999.999-99'], {
+                showMaskOnFocus: false,
+                showMaskOnHover: false,
+              })}
+            />
+
+            <Button.Root type="submit" size="sm" className="w-full">
+              Salvar
+            </Button.Root>
+          </form>
+        </div>
+
+        <div className="mt-6 rounded-md border bg-secondary">
+          <div className="flex items-center justify-between p-4">
+            <div className="5 space-y-0">
+              <h2 className="text-sm">Conta</h2>
+              <p className="text-base font-semibold">{role[data?.user.role]}</p>
+            </div>
+
+            {data.user.role !== 'SUPPLIER' && (
+              <Button.Root>Tornar-se fornecedor</Button.Root>
+            )}
+          </div>
+
+          <div className="flex justify-center bg-zinc-200 px-4 py-2">
+            <Button.Root variant="link">
+              Sobre minha conta <MoveRight className="ms-2 size-5" />
+            </Button.Root>
+          </div>
+        </div>
       </main>
     </>
   )
