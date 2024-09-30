@@ -4,8 +4,8 @@ import { Table } from '@/components/ui/table'
 
 import { createColumnHelper } from '@tanstack/react-table'
 
-import { useGetOfferingsByUserId } from './hooks/use-get-offerings-by-user-id'
 import { Offering } from '@/services/offerings/types'
+import { useGetOfferingsByUserId } from './hooks/use-get-offerings-by-user-id'
 
 export default function Content() {
   const { data } = useGetOfferingsByUserId()
@@ -28,8 +28,15 @@ export default function Content() {
   return (
     <>
       <Table.Root>
-        <Table.Content columns={columns} data={data ?? []} />
+        <Table.Content
+          columns={columns}
+          data={data ?? []}
+          emptyMessageComponent={() => (
+            <Table.EmptyMessage>Nenhum serviço encontrado</Table.EmptyMessage>
+          )}
+        />
       </Table.Root>
+      A
     </>
   )
 }

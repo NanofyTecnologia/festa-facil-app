@@ -1,10 +1,10 @@
 import { createMutation } from 'react-query-kit'
 
-import { services } from '@/services/companies'
+import { companies } from '@/services/companies'
 
 export const useUpdateService = () => {
   const mutation = createMutation({
-    mutationFn: services.update,
+    mutationFn: companies.update,
     mutationKey: ['update-service'],
     onError: () => {
       return 'error'
