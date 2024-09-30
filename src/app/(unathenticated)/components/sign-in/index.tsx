@@ -35,7 +35,7 @@ export default function SignIn() {
       signIn('email', {
         ...data,
         redirect: false,
-        callbackUrl: `/auth/csrfToken?callbackUrl=${pathname}`,
+        callbackUrl: `/api/auth/csrfToken?callbackUrl=${pathname}`,
       }),
       {
         pending: 'Enviando...',

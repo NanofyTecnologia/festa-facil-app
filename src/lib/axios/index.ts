@@ -7,6 +7,7 @@ const BASE_URL = env.NEXT_PUBLIC_API_URL
 function getAPIClient() {
   const instance = axios.create({
     baseURL: BASE_URL,
+    withCredentials: true,
   })
 
   instance.interceptors.request.use(async (config) => {
