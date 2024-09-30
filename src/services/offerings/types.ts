@@ -15,4 +15,4 @@ export type Offering = {
   profilePic: string
 }
 
-export type GetOfferingsResponse = Offering
+export type GetOfferingsResponse = Offering[]
