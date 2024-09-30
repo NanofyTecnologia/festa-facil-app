@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 
 import ImageFrame from '@/assets/images/image.png'
 
-import ServiceList from './components/services-list'
+import ServiceList from './components/companies-list'
 import CategoryList from './components/category-list'
 import PartnersList from './components/partners-list'
 import ServicesVideosList from './components/services-videos-list'

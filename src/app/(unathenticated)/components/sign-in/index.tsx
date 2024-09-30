@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { usePathname } from 'next/navigation'
 
 const signInSchema = z.object({
   email: z
@@ -18,6 +19,8 @@ const signInSchema = z.object({
 type SignInData = z.infer<typeof signInSchema>
 
 export default function SignIn() {
+  const pathname = usePathname()
+
   const {
     reset,
     register,
@@ -28,10 +31,17 @@ export default function SignIn() {
   })
 
   const onSubmit: SubmitHandler<SignInData> = async (data) => {
-    await toast.promise(signIn('email', { ...data, redirect: false }), {
-      pending: 'Enviando...',
-      success: 'E-mail enviado com sucesso!',
-    })
+    await toast.promise(
+      signIn('email', {
+        ...data,
+        redirect: false,
+        callbackUrl: `/api/auth/csrfToken?callbackUrl=${pathname}`,
+      }),
+      {
+        pending: 'Enviando...',
+        success: 'E-mail enviado com sucesso!',
+      },
+    )
   }
 
   return (

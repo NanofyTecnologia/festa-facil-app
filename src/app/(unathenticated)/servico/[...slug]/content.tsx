@@ -8,7 +8,7 @@ import { Fragment } from 'react'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 
-import { useGetServiceById } from './hooks/use-get-service-by-id'
+import { useGetCompanyById } from './hooks/use-get-company-by-id'
 
 import RatingStars from '../../components/rating-stars'
 
@@ -16,7 +16,7 @@ export default function Content() {
   const { slug } = useParams()
   const { back } = useRouter()
 
-  const { data: service, isLoading } = useGetServiceById({ id: slug[0] })
+  const { data: service, isLoading } = useGetCompanyById({ id: slug[0] })
 
   if (isLoading || !service) {
     return (
