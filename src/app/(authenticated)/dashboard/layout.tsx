@@ -12,7 +12,7 @@ export default function Layout({ children }: PropsWithChildren) {
         <div className="flex flex-1 flex-col">
           <Header />
 
-          <div className="py-6 md:px-12">{children}</div>
+          <div className="py-6 md:px-6">{children}</div>
         </div>
       </div>
     </>

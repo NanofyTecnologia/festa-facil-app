@@ -35,6 +35,12 @@ export default function Sidebar() {
                       <MoveRight className="size-4" />
                     </Link>
                   </li>
+                  <li>
+                    <Link href="/dashboard/servicos/criar">
+                      Criar
+                      <MoveRight className="size-4" />
+                    </Link>
+                  </li>
                 </ul>
               </Accordion.Content>
             </Accordion.Item>

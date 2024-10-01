@@ -1,9 +1,9 @@
 export type Offering = {
   id: string
   name: string
+  email: string
   phone: string
   city: string
-  categoryId: string
   cep: string
   slug: string
   state: string
@@ -13,6 +13,11 @@ export type Offering = {
   updatedAt: string
   banner: string
   profilePic: string
+  categoryId: string
+  category: {
+    name: string
+    slug: string
+  }
 }
 
 export type GetOfferingsResponse = Offering[]
