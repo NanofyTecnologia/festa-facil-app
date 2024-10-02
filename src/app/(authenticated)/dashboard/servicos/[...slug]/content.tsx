@@ -1,121 +1,335 @@
 'use client'
 
-import Image from 'next/image'
-import { useCallback } from 'react'
+import { useParams } from 'next/navigation'
+import { useEffect } from 'react'
+import { useHookFormMask } from 'use-mask-input'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Image as ImageIcon } from 'lucide-react'
-import { useDropzone } from 'react-dropzone'
+import { Link, Search } from 'lucide-react'
+import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { useImagePreview } from '@/hooks/use-image-preview'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Select } from '@/components/ui/select'
+import { Editor } from '@/components/ui/editor'
 
+import { address } from '@/services/address'
+import { normalizeSlug } from '@/utils/normalize-slug'
+import { useGetCategories } from '@/hooks/use-get-categories'
+
+import { type IParams } from './page'
 import { serviceSchema, type ServiceData } from './schema'
 
+import { useCreateOffer } from '../hooks/use-create-offer'
+import { useUpdateOffer } from '../hooks/use-update-offer'
+import { useGetOfferById } from '../hooks/use-get-offer-by-id'
+import { upload } from '@/services/upload'
+
 export default function Content() {
-  const { watch, setValue, reset, register, handleSubmit } =
-    useForm<ServiceData>({
-      resolver: zodResolver(serviceSchema),
-    })
-
-  const { banner, profilePic } = watch()
-
-  const [imagePreviewBanner] = useImagePreview(banner)
-  const [imagePreviewPicture] = useImagePreview(profilePic)
-
-  const onSubmit: SubmitHandler<ServiceData> = (data) => {
-    console.log(data)
-  }
-
-  const onDropBanner = useCallback((acceptedFiles: File[]) => {
-    setValue('banner', acceptedFiles)
-  }, [])
-
-  const onDropPicture = useCallback((acceptedFiles: File[]) => {
-    setValue('profilePic', acceptedFiles)
-  }, [])
+  const { slug } = useParams<IParams>()
+  const { id, isEditing } = normalizeSlug(slug)
 
   const {
-    getRootProps: getRootPropsPicture,
-    getInputProps: getInputPropsPicture,
-  } = useDropzone({
-    onDrop: onDropPicture,
+    watch,
+    reset,
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ServiceData>({
+    resolver: zodResolver(serviceSchema),
   })
 
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop: onDropBanner,
-  })
+  const { cep, name } = watch()
+
+  const { data: categories } = useGetCategories()
+  const registerWithMask = useHookFormMask(register)
+
+  const { data: offering } = useGetOfferById({ id })
+  const { mutate: handleUpdateOffer } = useUpdateOffer()
+  const { mutate: handleCreateOffer } = useCreateOffer()
+
+  const uploadFile = async (file: File[]): Promise<string> => {
+    if (file?.length === 0) return ''
+
+    const formData = new FormData()
+    formData.append('file', file[0])
+
+    const fileURL = await upload.create(formData)
+
+    return fileURL
+  }
+
+  const onSubmit: SubmitHandler<ServiceData> = async (data) => {
+    const { banner, profilePic, ...dataWithoutFile } = data
+
+    const bannerPath = await uploadFile(banner)
+    const profilePath = await uploadFile(profilePic)
+
+    if (banner.length)
+      if (id) {
+        handleUpdateOffer(
+          {
+            id,
+            ...dataWithoutFile,
+            banner: bannerPath,
+            profilePic: profilePath,
+          },
+          {
+            onSuccess: () => {
+              toast.success('Atualizado com sucesso!')
+            },
+          },
+        )
+
+        return
+      }
+
+    handleCreateOffer(
+      {
+        ...dataWithoutFile,
+        banner: bannerPath,
+        profilePic: profilePath,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Criado com sucesso!')
+        },
+      },
+    )
+  }
+
+  const handleDefaultValues = () => {
+    if (!offering) {
+      return
+    }
+
+    const { cep, name, city, phone, state, email, categoryId, description } =
+      offering
+
+    reset({
+      cep,
+      name,
+      city,
+      phone,
+      state,
+      email,
+      categoryId,
+      description,
+    })
+  }
+
+  const handleCreateSafeURL = () => {
+    if (!name) return
+
+    const safeURL = name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9]/g, '-')
+      .toLowerCase()
+
+    setValue('slug', safeURL)
+  }
+
+  const handleLoadingAddress = async () => {
+    const data = await address.get(cep)
+
+    setValue('state', data.estado)
+    setValue('city', data.localidade)
+  }
+
+  const cepRegex = /^[0-9]{5}-[0-9]{3}$/
+  const isValidCep = cepRegex.test(cep)
+
+  useEffect(handleDefaultValues, [reset, offering])
 
   return (
     <>
-      <div className="mx-auto max-w-7xl">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div
-            {...getRootProps()}
-            className="group flex h-72 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed transition-colors hover:border-black"
-          >
-            {!imagePreviewBanner && (
-              <>
-                <ImageIcon className="size-12 text-border transition-colors group-hover:text-black" />
+      <div className="px-6">
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-xl font-semibold">
+            {isEditing ? 'Editando serviço' : 'Novo serviço'}
+          </h1>
+        </div>
 
-                <h1>
-                  Arraste e solte alguns arquivos aqui ou clique para selecionar
-                  os arquivos
-                </h1>
-                <p className="text-sm text-zinc-400">
-                  O tamanho máximo das imagens é 10MB
-                </p>
-              </>
-            )}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid flex-1 grid-cols-4 gap-4"
+        >
+          <div className="space-y-0.5">
+            <Label.Root htmlFor="name">Nome do serviço</Label.Root>
+            <Input.Root
+              id="name"
+              {...register('name')}
+              placeholder="Decorações para festas"
+            />
 
-            {imagePreviewBanner && (
-              <Image
-                width={1280}
-                height={288}
-                src={imagePreviewBanner}
-                alt="pre visualizacao de imagem"
-                className="h-full w-full object-cover transition-opacity group-hover:opacity-80"
-              />
-            )}
-
-            <input type="file" hidden {...getInputProps} />
+            <p className="text-sm text-destructive">{errors.name?.message}</p>
           </div>
 
-          <div className="flex items-center">
-            <div
-              {...getRootPropsPicture()}
-              className="group flex size-40 -translate-y-20 translate-x-10 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed bg-white transition-colors hover:border-black"
-            >
-              {!imagePreviewPicture && (
-                <>
-                  <ImageIcon className="size-10 text-border transition-colors group-hover:text-black" />
-                  <h2 className="text-center text-xs">
-                    Arraste e solte uma imagem
-                  </h2>
-                </>
-              )}
+          <div className="space-y-0.5">
+            <Label.Root htmlFor="image">Imagem do perfil</Label.Root>
+            <Input.Root
+              id="image"
+              type="file"
+              {...register('profilePic')}
+              className="px-2 py-1.5"
+              placeholder="Decorações para festas"
+            />
 
-              {imagePreviewPicture && (
-                <Image
-                  width={160}
-                  height={160}
-                  src={imagePreviewPicture}
-                  alt="pre visualizacao de imagem"
-                  className="h-full w-full object-cover transition-opacity group-hover:opacity-80"
-                />
-              )}
+            <p className="text-sm text-destructive">
+              {errors.profilePic?.message}
+            </p>
+          </div>
 
-              <input {...getInputPropsPicture} type="file" hidden />
+          <div className="space-y-0.5">
+            <Label.Root htmlFor="banner">Banner do perfil</Label.Root>
+            <Input.Root
+              id="banner"
+              type="file"
+              {...register('banner')}
+              className="px-2 py-1.5"
+              placeholder="Decorações para festas"
+            />
+
+            <p className="text-sm text-destructive">{errors.banner?.message}</p>
+          </div>
+
+          <div className="space-y-0.5">
+            <Label.Root htmlFor="slug">URL amigável</Label.Root>
+
+            <div className="relative flex items-center">
+              <Input.Root
+                id="slug"
+                {...register('slug')}
+                className="px-2 py-1.5"
+                placeholder="decoracoes-para-festa"
+              />
+
+              <button
+                type="button"
+                className="absolute right-4 disabled:text-zinc-500"
+                onClick={() => handleCreateSafeURL()}
+              >
+                <Link className="size-4" />
+              </button>
             </div>
 
-            <div className="-translate-y-14 translate-x-12 space-y-2">
-              <h1>
-                <input
-                  type="text"
-                  className="h-9 rounded-lg bg-secondary px-2"
-                  placeholder="Insira o nome do serviço"
-                />
-              </h1>
+            <p className="text-sm text-destructive">{errors.banner?.message}</p>
+          </div>
+
+          <div className="space-y-0.5">
+            <Label.Root htmlFor="category">Categoria</Label.Root>
+            <Select.Root>
+              <Select.Trigger id="category">
+                <Select.Value placeholder="Selecione a categoria" />
+              </Select.Trigger>
+              <Select.Content>
+                {categories?.map((category) => (
+                  <Select.Item key={category.id} value={category.id}>
+                    {category.name}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select.Root>
+
+            <p className="text-sm text-destructive">
+              {errors.categoryId?.message}
+            </p>
+          </div>
+
+          <div className="space-y-0.5">
+            <Label.Root htmlFor="phone">Telefone</Label.Root>
+            <Input.Root
+              id="phone"
+              placeholder="(12) 3456-7890"
+              {...registerWithMask(
+                'phone',
+                ['(99) 9999-9999', '(99) 99999-9999'],
+                {
+                  showMaskOnFocus: false,
+                  showMaskOnHover: false,
+                  removeMaskOnSubmit: true,
+                },
+              )}
+            />
+
+            <p className="text-sm text-destructive">{errors.phone?.message}</p>
+          </div>
+
+          <div className="space-y-0.5">
+            <Label.Root htmlFor="email">E-mail</Label.Root>
+            <Input.Root
+              id="email"
+              placeholder="exemplo@email.com.br"
+              {...register('email')}
+            />
+
+            <p className="text-sm text-destructive">{errors.email?.message}</p>
+          </div>
+
+          <div className="space-y-0.5">
+            <Label.Root htmlFor="cep">CEP</Label.Root>
+
+            <div className="relative flex items-center">
+              <Input.Root
+                id="cep"
+                placeholder="12345-678"
+                {...registerWithMask('cep', ['99999-999'], {
+                  showMaskOnFocus: false,
+                  showMaskOnHover: false,
+                  removeMaskOnSubmit: true,
+                })}
+              />
+
+              <button
+                type="button"
+                className="absolute right-4 disabled:text-zinc-500"
+                disabled={!isValidCep}
+                onClick={() => handleLoadingAddress()}
+              >
+                <Search className="size-4" />
+              </button>
             </div>
+
+            <p className="text-sm text-destructive">{errors.cep?.message}</p>
+          </div>
+
+          <div className="space-y-0.5">
+            <Label.Root htmlFor="city">Cidade</Label.Root>
+
+            <Input.Root
+              id="city"
+              placeholder="São Carlos"
+              {...register('city')}
+            />
+
+            <p className="text-sm text-destructive">{errors.city?.message}</p>
+          </div>
+
+          <div className="space-y-0.5">
+            <Label.Root htmlFor="state">Estado</Label.Root>
+
+            <Input.Root
+              id="state"
+              placeholder="São Paulo"
+              {...register('state')}
+            />
+
+            <p className="text-sm text-destructive">{errors.city?.message}</p>
+          </div>
+
+          <div className="col-span-full space-y-0.5">
+            <Label.Root>Descrição</Label.Root>
+            <Editor.Root
+              value={watch('description')}
+              onValueChange={(value) => setValue('description', value)}
+            />
+          </div>
+
+          <div className="col-span-full flex items-center justify-end">
+            <Button.Root className="w-36">Enviar</Button.Root>
           </div>
         </form>
       </div>

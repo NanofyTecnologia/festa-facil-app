@@ -20,4 +20,15 @@ export type Offering = {
   }
 }
 
+export type GetByIdOfferingParams = {
+  id: string | undefined
+}
+export type GetbyIdOfferingResponse = Offering
+
 export type GetOfferingsResponse = Offering[]
+
+export type PostOfferingParams = Partial<Offering>
+export type PostOfferingResponse = Offering
+
+export type PutOfferingParams = Partial<Offering>
+export type PutOfferingResponse = Offering

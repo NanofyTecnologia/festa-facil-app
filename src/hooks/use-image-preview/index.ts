@@ -1,8 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 
-export function useImagePreview(file: FileList | File[] | null): [string] {
+export function useImagePreview(
+  file: FileList | File[] | null,
+): [string, Dispatch<SetStateAction<string>>] {
   const [src, setSrc] = useState<string>('')
 
   useEffect(() => {
@@ -15,5 +17,5 @@ export function useImagePreview(file: FileList | File[] | null): [string] {
     }
   }, [file])
 
-  return [src]
+  return [src, setSrc]
 }

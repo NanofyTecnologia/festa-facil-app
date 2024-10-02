@@ -14,6 +14,7 @@ export const serviceSchema = z.object({
   state: z.string().min(1, 'Insira o estado'),
   city: z.string().min(1, 'Insira a cidade'),
   cep: z.string().min(1, 'Insira o CEP'),
+
   slug: z.string().min(1, 'Insira uma URL amigável'),
   categoryId: z.string().min(1, 'Selecione a categoria'),
 })

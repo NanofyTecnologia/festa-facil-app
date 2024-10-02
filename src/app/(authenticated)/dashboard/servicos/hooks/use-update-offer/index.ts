@@ -1,15 +1,15 @@
 import { toast } from 'react-toastify'
 import { createMutation } from 'react-query-kit'
 
-import { companies } from '@/services/companies'
+import { offerings } from '@/services/offerings'
 
-export function useCreateService() {
+export function useUpdateOffer() {
   const mutation = createMutation({
-    mutationFn: companies.create,
-    mutationKey: ['create-service'],
+    mutationFn: offerings.update,
+    mutationKey: ['update-offer'],
     onError: () => {
       return toast.error('Ops! Algo deu errado. Tente novamente.', {
-        toastId: 'create-service-error',
+        toastId: 'update-offer-error',
       })
     },
   })
