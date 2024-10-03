@@ -18,5 +18,6 @@ export function useGetOfferById(props: IProps) {
 
   return {
     ...queryResponse,
+    queryKey: query.getKey(),
   }
 }

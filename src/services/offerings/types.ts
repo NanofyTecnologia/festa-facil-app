@@ -32,3 +32,5 @@ export type PostOfferingResponse = Offering
 
 export type PutOfferingParams = Partial<Offering>
 export type PutOfferingResponse = Offering
+
+export type DeleteOfferingParams = { id: string }

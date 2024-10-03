@@ -8,6 +8,7 @@ import {
   type PutOfferingResponse,
   type GetByIdOfferingParams,
   type GetbyIdOfferingResponse,
+  type DeleteOfferingParams,
 } from './types'
 
 export const offerings = {
@@ -33,6 +34,12 @@ export const offerings = {
 
   async update(params: PutOfferingParams) {
     const { data } = await axios.put<PutOfferingResponse>('/offering', params)
+
+    return data
+  },
+
+  async delete(params: DeleteOfferingParams) {
+    const { data } = await axios.delete('/offering/' + params.id)
 
     return data
   },

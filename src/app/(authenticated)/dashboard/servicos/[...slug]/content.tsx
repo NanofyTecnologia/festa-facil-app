@@ -1,6 +1,6 @@
 'use client'
 
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useHookFormMask } from 'use-mask-input'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { Editor } from '@/components/ui/editor'
 
+import { upload } from '@/services/upload'
 import { address } from '@/services/address'
 import { normalizeSlug } from '@/utils/normalize-slug'
 import { useGetCategories } from '@/hooks/use-get-categories'
@@ -24,9 +25,9 @@ import { serviceSchema, type ServiceData } from './schema'
 import { useCreateOffer } from '../hooks/use-create-offer'
 import { useUpdateOffer } from '../hooks/use-update-offer'
 import { useGetOfferById } from '../hooks/use-get-offer-by-id'
-import { upload } from '@/services/upload'
 
 export default function Content() {
+  const { replace } = useRouter()
   const { slug } = useParams<IParams>()
   const { id, isEditing } = normalizeSlug(slug)
 
@@ -41,7 +42,7 @@ export default function Content() {
     resolver: zodResolver(serviceSchema),
   })
 
-  const { cep, name } = watch()
+  const { cep, name, categoryId } = watch()
 
   const { data: categories } = useGetCategories()
   const registerWithMask = useHookFormMask(register)
@@ -95,6 +96,7 @@ export default function Content() {
       {
         onSuccess: () => {
           toast.success('Criado com sucesso!')
+          replace('/dashboard/servicos/listar')
         },
       },
     )
@@ -165,7 +167,7 @@ export default function Content() {
               placeholder="Decorações para festas"
             />
 
-            <p className="text-sm text-destructive">{errors.name?.message}</p>
+            <p className="text-xs text-destructive">{errors.name?.message}</p>
           </div>
 
           <div className="space-y-0.5">
@@ -178,8 +180,8 @@ export default function Content() {
               placeholder="Decorações para festas"
             />
 
-            <p className="text-sm text-destructive">
-              {errors.profilePic?.message}
+            <p className="text-xs text-destructive">
+              {errors.profilePic?.message?.toString()}
             </p>
           </div>
 
@@ -193,7 +195,9 @@ export default function Content() {
               placeholder="Decorações para festas"
             />
 
-            <p className="text-sm text-destructive">{errors.banner?.message}</p>
+            <p className="text-xs text-destructive">
+              {errors.banner?.message?.toString()}
+            </p>
           </div>
 
           <div className="space-y-0.5">
@@ -216,12 +220,15 @@ export default function Content() {
               </button>
             </div>
 
-            <p className="text-sm text-destructive">{errors.banner?.message}</p>
+            <p className="text-xs text-destructive">{errors.slug?.message}</p>
           </div>
 
           <div className="space-y-0.5">
             <Label.Root htmlFor="category">Categoria</Label.Root>
-            <Select.Root>
+            <Select.Root
+              value={categoryId}
+              onValueChange={(value) => setValue('categoryId', value)}
+            >
               <Select.Trigger id="category">
                 <Select.Value placeholder="Selecione a categoria" />
               </Select.Trigger>
@@ -234,7 +241,7 @@ export default function Content() {
               </Select.Content>
             </Select.Root>
 
-            <p className="text-sm text-destructive">
+            <p className="text-xs text-destructive">
               {errors.categoryId?.message}
             </p>
           </div>
@@ -255,7 +262,7 @@ export default function Content() {
               )}
             />
 
-            <p className="text-sm text-destructive">{errors.phone?.message}</p>
+            <p className="text-xs text-destructive">{errors.phone?.message}</p>
           </div>
 
           <div className="space-y-0.5">
@@ -266,7 +273,7 @@ export default function Content() {
               {...register('email')}
             />
 
-            <p className="text-sm text-destructive">{errors.email?.message}</p>
+            <p className="text-xs text-destructive">{errors.email?.message}</p>
           </div>
 
           <div className="space-y-0.5">
@@ -293,7 +300,7 @@ export default function Content() {
               </button>
             </div>
 
-            <p className="text-sm text-destructive">{errors.cep?.message}</p>
+            <p className="text-xs text-destructive">{errors.cep?.message}</p>
           </div>
 
           <div className="space-y-0.5">
@@ -305,7 +312,7 @@ export default function Content() {
               {...register('city')}
             />
 
-            <p className="text-sm text-destructive">{errors.city?.message}</p>
+            <p className="text-xs text-destructive">{errors.city?.message}</p>
           </div>
 
           <div className="space-y-0.5">
@@ -317,7 +324,7 @@ export default function Content() {
               {...register('state')}
             />
 
-            <p className="text-sm text-destructive">{errors.city?.message}</p>
+            <p className="text-xs text-destructive">{errors.city?.message}</p>
           </div>
 
           <div className="col-span-full space-y-0.5">
@@ -329,7 +336,9 @@ export default function Content() {
           </div>
 
           <div className="col-span-full flex items-center justify-end">
-            <Button.Root className="w-36">Enviar</Button.Root>
+            <Button.Root type="submit" className="w-36">
+              Enviar
+            </Button.Root>
           </div>
         </form>
       </div>

@@ -15,5 +15,6 @@ export function useGetOfferingsByUserId() {
 
   return {
     ...queryResponse,
+    queryKey: query.getKey(),
   }
 }

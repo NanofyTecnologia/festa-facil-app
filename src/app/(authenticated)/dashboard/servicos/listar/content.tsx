@@ -7,13 +7,17 @@ import { createColumnHelper } from '@tanstack/react-table'
 
 import { Badge } from '@/components/ui/badge'
 import { Table } from '@/components/ui/table'
+import { Dialog } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 
 import { Offering } from '@/services/offerings/types'
+
+import { useDeleteOffer } from './hooks/use-delete-offer'
 import { useGetOfferingsByUserId } from './hooks/use-get-offerings-by-user-id'
 
 export default function Content() {
-  const { data } = useGetOfferingsByUserId()
+  const { data, queryKey } = useGetOfferingsByUserId()
+  const { mutate: handleDeleteOffer } = useDeleteOffer({ queryKey })
 
   const columnHelper = createColumnHelper<Offering>()
 
@@ -116,7 +120,7 @@ export default function Content() {
     columnHelper.display({
       id: 'actions',
       header: ({ header }) => <Table.Head header={header}></Table.Head>,
-      cell: ({ cell }) => {
+      cell: ({ cell, row }) => {
         return (
           <Table.Cell cell={cell}>
             <div className="flex items-center justify-end gap-2">
@@ -127,9 +131,39 @@ export default function Content() {
                 <Edit className="size-4" />
               </Button.Root>
 
-              <Button.Root size="icon" variant="destructive">
-                <Trash className="size-4" />
-              </Button.Root>
+              <Dialog.Root>
+                <Dialog.Trigger asChild>
+                  <Button.Root size="icon" variant="destructive">
+                    <Trash className="size-4" />
+                  </Button.Root>
+                </Dialog.Trigger>
+                <Dialog.Content>
+                  <Dialog.Header>
+                    <Dialog.Title>
+                      Tem certeza que deseja excluir esse serviço?
+                    </Dialog.Title>
+                    <Dialog.Description>
+                      Ao excluir um serviço o mesmo não poderá ser recuperado!
+                    </Dialog.Description>
+                  </Dialog.Header>
+
+                  <Dialog.Footer>
+                    <Dialog.Close asChild>
+                      <Button.Root size="sm" variant="ghost">
+                        Cancelar
+                      </Button.Root>
+                    </Dialog.Close>
+
+                    <Button.Root
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDeleteOffer({ id: row.original.id })}
+                    >
+                      Excluir
+                    </Button.Root>
+                  </Dialog.Footer>
+                </Dialog.Content>
+              </Dialog.Root>
             </div>
           </Table.Cell>
         )

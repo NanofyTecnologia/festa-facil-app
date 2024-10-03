@@ -22,7 +22,6 @@ import { useGetCategories } from '@/hooks/use-get-categories'
 import { IParams } from './page'
 import { useGetServiceById } from './hook/use-get-service-by-id'
 import { useUpdateService } from './hook/use-update-service'
-import { useCreateService } from './hook/use-create-service'
 
 const serviceSchema = z.object({
   name: z
