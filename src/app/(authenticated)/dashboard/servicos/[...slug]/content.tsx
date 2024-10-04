@@ -25,6 +25,7 @@ import { serviceSchema, type ServiceData } from './schema'
 import { useCreateOffer } from '../hooks/use-create-offer'
 import { useUpdateOffer } from '../hooks/use-update-offer'
 import { useGetOfferById } from '../hooks/use-get-offer-by-id'
+import { Switch } from '@/components/ui/switch'
 
 export default function Content() {
   const { replace } = useRouter()
@@ -48,8 +49,10 @@ export default function Content() {
   const registerWithMask = useHookFormMask(register)
 
   const { data: offering } = useGetOfferById({ id })
-  const { mutate: handleUpdateOffer } = useUpdateOffer()
-  const { mutate: handleCreateOffer } = useCreateOffer()
+  const { mutate: handleUpdateOffer, isPending: isPendingUpdate } =
+    useUpdateOffer()
+  const { mutate: handleCreateOffer, isPending: isPendingCreate } =
+    useCreateOffer()
 
   const uploadFile = async (file: File[]): Promise<string> => {
     if (file?.length === 0) return ''
@@ -68,24 +71,23 @@ export default function Content() {
     const bannerPath = await uploadFile(banner)
     const profilePath = await uploadFile(profilePic)
 
-    if (banner.length)
-      if (id) {
-        handleUpdateOffer(
-          {
-            id,
-            ...dataWithoutFile,
-            banner: bannerPath,
-            profilePic: profilePath,
+    if (id) {
+      handleUpdateOffer(
+        {
+          id,
+          ...dataWithoutFile,
+          banner: bannerPath,
+          profilePic: profilePath,
+        },
+        {
+          onSuccess: () => {
+            toast.success('Atualizado com sucesso!')
           },
-          {
-            onSuccess: () => {
-              toast.success('Atualizado com sucesso!')
-            },
-          },
-        )
+        },
+      )
 
-        return
-      }
+      return
+    }
 
     handleCreateOffer(
       {
@@ -107,12 +109,22 @@ export default function Content() {
       return
     }
 
-    const { cep, name, city, phone, state, email, categoryId, description } =
-      offering
+    const {
+      cep,
+      name,
+      slug,
+      city,
+      phone,
+      state,
+      email,
+      categoryId,
+      description,
+    } = offering
 
     reset({
       cep,
       name,
+      slug,
       city,
       phone,
       state,
@@ -144,30 +156,181 @@ export default function Content() {
   const cepRegex = /^[0-9]{5}-[0-9]{3}$/
   const isValidCep = cepRegex.test(cep)
 
+  const isLoading = isPendingUpdate || isPendingCreate
+
   useEffect(handleDefaultValues, [reset, offering])
 
   return (
     <>
-      <div className="px-6">
+      <div className="mx-auto max-w-4xl px-6">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-xl font-semibold">
             {isEditing ? 'Editando serviço' : 'Novo serviço'}
           </h1>
         </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid flex-1 grid-cols-4 gap-4"
-        >
-          <div className="space-y-0.5">
-            <Label.Root htmlFor="name">Nome do serviço</Label.Root>
-            <Input.Root
-              id="name"
-              {...register('name')}
-              placeholder="Decorações para festas"
-            />
+        <form onSubmit={handleSubmit(onSubmit)} className="flex-1 space-y-10">
+          <div className="rounded-md border bg-white">
+            <div className="border-b p-6">
+              <h2 className="text-lg font-medium">Informações principais</h2>
+            </div>
 
-            <p className="text-xs text-destructive">{errors.name?.message}</p>
+            <div className="space-y-6 p-6">
+              <div className="space-y-0.5">
+                <Label.Root htmlFor="name">Nome do serviço</Label.Root>
+                <Input.Root
+                  id="name"
+                  {...register('name')}
+                  placeholder="Ex: Decorações para festas"
+                />
+
+                <p className="text-xs text-destructive">
+                  {errors.name?.message}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-0.5">
+                  <Label.Root htmlFor="category">Categoria</Label.Root>
+
+                  <Select.Root
+                    value={categoryId}
+                    onValueChange={(value) => setValue('categoryId', value)}
+                  >
+                    <Select.Trigger id="category">
+                      <Select.Value placeholder="Selecione a categoria" />
+                    </Select.Trigger>
+                    <Select.Content>
+                      {categories?.map((category) => (
+                        <Select.Item key={category.id} value={category.id}>
+                          {category.name}
+                        </Select.Item>
+                      ))}
+                    </Select.Content>
+                  </Select.Root>
+
+                  <p className="text-xs text-destructive">
+                    {errors.categoryId?.message}
+                  </p>
+                </div>
+
+                <div className="space-y-0.5">
+                  <Label.Root>Página ativa?</Label.Root>
+                  <div className="flex h-9 items-center">
+                    <Switch.Root disabled />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-full space-y-0.5">
+                <Label.Root>Descrição</Label.Root>
+                <Editor.Root
+                  value={watch('description')}
+                  onValueChange={(value) => setValue('description', value)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-md border bg-white">
+            <div className="border-b p-6">
+              <h2 className="text-lg font-medium">Contato</h2>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6 p-6">
+              <div className="space-y-0.5">
+                <Label.Root htmlFor="email">E-mail</Label.Root>
+                <Input.Root
+                  id="email"
+                  placeholder="exemplo@email.com.br"
+                  {...register('email')}
+                />
+
+                <p className="text-xs text-destructive">
+                  {errors.email?.message}
+                </p>
+              </div>
+
+              <div className="space-y-0.5">
+                <Label.Root htmlFor="phone">Telefone</Label.Root>
+                <Input.Root
+                  id="phone"
+                  placeholder="(12) 3456-7890"
+                  {...registerWithMask(
+                    'phone',
+                    ['(99) 9999-9999', '(99) 99999-9999'],
+                    {
+                      showMaskOnFocus: false,
+                      showMaskOnHover: false,
+                      removeMaskOnSubmit: true,
+                    },
+                  )}
+                />
+
+                <p className="text-xs text-destructive">
+                  {errors.phone?.message}
+                </p>
+              </div>
+
+              <div className="col-span-full grid grid-cols-3 gap-6">
+                <div className="space-y-0.5">
+                  <Label.Root htmlFor="cep">CEP</Label.Root>
+
+                  <div className="relative flex items-center">
+                    <Input.Root
+                      id="cep"
+                      placeholder="12345-678"
+                      {...registerWithMask('cep', ['99999-999'], {
+                        showMaskOnFocus: false,
+                        showMaskOnHover: false,
+                        removeMaskOnSubmit: true,
+                      })}
+                    />
+
+                    <button
+                      type="button"
+                      className="absolute right-4 disabled:text-zinc-500"
+                      disabled={!isValidCep}
+                      onClick={() => handleLoadingAddress()}
+                    >
+                      <Search className="size-4" />
+                    </button>
+                  </div>
+
+                  <p className="text-xs text-destructive">
+                    {errors.cep?.message}
+                  </p>
+                </div>
+
+                <div className="space-y-0.5">
+                  <Label.Root htmlFor="city">Cidade</Label.Root>
+
+                  <Input.Root
+                    id="city"
+                    placeholder="São Carlos"
+                    {...register('city')}
+                  />
+
+                  <p className="text-xs text-destructive">
+                    {errors.city?.message}
+                  </p>
+                </div>
+
+                <div className="space-y-0.5">
+                  <Label.Root htmlFor="state">Estado</Label.Root>
+
+                  <Input.Root
+                    id="state"
+                    placeholder="São Paulo"
+                    {...register('state')}
+                  />
+
+                  <p className="text-xs text-destructive">
+                    {errors.city?.message}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-0.5">
@@ -223,120 +386,8 @@ export default function Content() {
             <p className="text-xs text-destructive">{errors.slug?.message}</p>
           </div>
 
-          <div className="space-y-0.5">
-            <Label.Root htmlFor="category">Categoria</Label.Root>
-            <Select.Root
-              value={categoryId}
-              onValueChange={(value) => setValue('categoryId', value)}
-            >
-              <Select.Trigger id="category">
-                <Select.Value placeholder="Selecione a categoria" />
-              </Select.Trigger>
-              <Select.Content>
-                {categories?.map((category) => (
-                  <Select.Item key={category.id} value={category.id}>
-                    {category.name}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select.Root>
-
-            <p className="text-xs text-destructive">
-              {errors.categoryId?.message}
-            </p>
-          </div>
-
-          <div className="space-y-0.5">
-            <Label.Root htmlFor="phone">Telefone</Label.Root>
-            <Input.Root
-              id="phone"
-              placeholder="(12) 3456-7890"
-              {...registerWithMask(
-                'phone',
-                ['(99) 9999-9999', '(99) 99999-9999'],
-                {
-                  showMaskOnFocus: false,
-                  showMaskOnHover: false,
-                  removeMaskOnSubmit: true,
-                },
-              )}
-            />
-
-            <p className="text-xs text-destructive">{errors.phone?.message}</p>
-          </div>
-
-          <div className="space-y-0.5">
-            <Label.Root htmlFor="email">E-mail</Label.Root>
-            <Input.Root
-              id="email"
-              placeholder="exemplo@email.com.br"
-              {...register('email')}
-            />
-
-            <p className="text-xs text-destructive">{errors.email?.message}</p>
-          </div>
-
-          <div className="space-y-0.5">
-            <Label.Root htmlFor="cep">CEP</Label.Root>
-
-            <div className="relative flex items-center">
-              <Input.Root
-                id="cep"
-                placeholder="12345-678"
-                {...registerWithMask('cep', ['99999-999'], {
-                  showMaskOnFocus: false,
-                  showMaskOnHover: false,
-                  removeMaskOnSubmit: true,
-                })}
-              />
-
-              <button
-                type="button"
-                className="absolute right-4 disabled:text-zinc-500"
-                disabled={!isValidCep}
-                onClick={() => handleLoadingAddress()}
-              >
-                <Search className="size-4" />
-              </button>
-            </div>
-
-            <p className="text-xs text-destructive">{errors.cep?.message}</p>
-          </div>
-
-          <div className="space-y-0.5">
-            <Label.Root htmlFor="city">Cidade</Label.Root>
-
-            <Input.Root
-              id="city"
-              placeholder="São Carlos"
-              {...register('city')}
-            />
-
-            <p className="text-xs text-destructive">{errors.city?.message}</p>
-          </div>
-
-          <div className="space-y-0.5">
-            <Label.Root htmlFor="state">Estado</Label.Root>
-
-            <Input.Root
-              id="state"
-              placeholder="São Paulo"
-              {...register('state')}
-            />
-
-            <p className="text-xs text-destructive">{errors.city?.message}</p>
-          </div>
-
-          <div className="col-span-full space-y-0.5">
-            <Label.Root>Descrição</Label.Root>
-            <Editor.Root
-              value={watch('description')}
-              onValueChange={(value) => setValue('description', value)}
-            />
-          </div>
-
           <div className="col-span-full flex items-center justify-end">
-            <Button.Root type="submit" className="w-36">
+            <Button.Root type="submit" className="w-36" disabled={isLoading}>
               Enviar
             </Button.Root>
           </div>

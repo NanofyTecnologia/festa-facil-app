@@ -151,7 +151,7 @@ export const Header = () => {
 
   return (
     <>
-      <header className="flex items-center justify-start gap-4 border-b p-2">
+      <header className="flex flex-wrap items-center justify-start gap-4 border-b p-2">
         <div className="flex h-9 items-center gap-2 overflow-hidden rounded-md border">
           <Button.Root size="icon" variant="ghost" onClick={commands.undo}>
             <Undo className="size-4" />

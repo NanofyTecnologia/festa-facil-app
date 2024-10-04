@@ -125,10 +125,13 @@ export default function Content() {
           <Table.Cell cell={cell}>
             <div className="flex items-center justify-end gap-2">
               <Button.Root
+                asChild
                 size="icon"
                 className="bg-yellow-500 hover:bg-yellow-500/90"
               >
-                <Edit className="size-4" />
+                <Link href={`/dashboard/servicos/${row.original.id}/editar`}>
+                  <Edit className="size-4" />
+                </Link>
               </Button.Root>
 
               <Dialog.Root>
@@ -187,7 +190,18 @@ export default function Content() {
           columns={columns}
           data={data ?? []}
           emptyMessageComponent={() => (
-            <Table.EmptyMessage>Nenhum serviço encontrado</Table.EmptyMessage>
+            <Table.EmptyMessage>
+              <div className="p-4 text-center">
+                <p className="mb-2">Nenhum serviço encontrado</p>
+
+                <Link
+                  href="/dashboard/servicos/criar"
+                  className="text-sm text-zinc-500 hover:underline"
+                >
+                  Criar novo serviço
+                </Link>
+              </div>
+            </Table.EmptyMessage>
           )}
         />
       </Table.Root>

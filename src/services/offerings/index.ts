@@ -33,7 +33,10 @@ export const offerings = {
   },
 
   async update(params: PutOfferingParams) {
-    const { data } = await axios.put<PutOfferingResponse>('/offering', params)
+    const { data } = await axios.put<PutOfferingResponse>(
+      '/offering/' + params.id,
+      params,
+    )
 
     return data
   },
