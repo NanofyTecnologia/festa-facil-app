@@ -1,18 +1,21 @@
 'use client'
 
 import { useParams, useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useHookFormMask } from 'use-mask-input'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, Search } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FaRegImage } from 'react-icons/fa'
+import { useDropzone } from 'react-dropzone'
 
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { Editor } from '@/components/ui/editor'
+import { Switch } from '@/components/ui/switch'
 
 import { upload } from '@/services/upload'
 import { address } from '@/services/address'
@@ -25,7 +28,8 @@ import { serviceSchema, type ServiceData } from './schema'
 import { useCreateOffer } from '../hooks/use-create-offer'
 import { useUpdateOffer } from '../hooks/use-update-offer'
 import { useGetOfferById } from '../hooks/use-get-offer-by-id'
-import { Switch } from '@/components/ui/switch'
+import { useImagePreview } from '@/hooks/use-image-preview'
+import Image from 'next/image'
 
 export default function Content() {
   const { replace } = useRouter()
@@ -43,7 +47,7 @@ export default function Content() {
     resolver: zodResolver(serviceSchema),
   })
 
-  const { cep, name, categoryId } = watch()
+  const { cep, name, categoryId, banner } = watch()
 
   const { data: categories } = useGetCategories()
   const registerWithMask = useHookFormMask(register)
@@ -64,6 +68,12 @@ export default function Content() {
 
     return fileURL
   }
+
+  const [imagePreview] = useImagePreview(banner)
+
+  const onDrop = useCallback((acceptedFiles) => {
+    setValue('banner', acceptedFiles)
+  }, [])
 
   const onSubmit: SubmitHandler<ServiceData> = async (data) => {
     const { banner, profilePic, ...dataWithoutFile } = data
@@ -153,6 +163,8 @@ export default function Content() {
     setValue('city', data.localidade)
   }
 
+  const { getRootProps, getInputProps } = useDropzone({ onDrop })
+
   const cepRegex = /^[0-9]{5}-[0-9]{3}$/
   const isValidCep = cepRegex.test(cep)
 
@@ -237,7 +249,7 @@ export default function Content() {
               <h2 className="text-lg font-medium">Contato</h2>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 p-6">
+            <div className="grid grid-cols-3 gap-6 p-6">
               <div className="space-y-0.5">
                 <Label.Root htmlFor="email">E-mail</Label.Root>
                 <Input.Root
@@ -272,118 +284,121 @@ export default function Content() {
                 </p>
               </div>
 
-              <div className="col-span-full grid grid-cols-3 gap-6">
-                <div className="space-y-0.5">
-                  <Label.Root htmlFor="cep">CEP</Label.Root>
+              <div className="space-y-0.5">
+                <Label.Root htmlFor="slug">URL amigável</Label.Root>
 
-                  <div className="relative flex items-center">
-                    <Input.Root
-                      id="cep"
-                      placeholder="12345-678"
-                      {...registerWithMask('cep', ['99999-999'], {
-                        showMaskOnFocus: false,
-                        showMaskOnHover: false,
-                        removeMaskOnSubmit: true,
-                      })}
-                    />
-
-                    <button
-                      type="button"
-                      className="absolute right-4 disabled:text-zinc-500"
-                      disabled={!isValidCep}
-                      onClick={() => handleLoadingAddress()}
-                    >
-                      <Search className="size-4" />
-                    </button>
-                  </div>
-
-                  <p className="text-xs text-destructive">
-                    {errors.cep?.message}
-                  </p>
-                </div>
-
-                <div className="space-y-0.5">
-                  <Label.Root htmlFor="city">Cidade</Label.Root>
-
+                <div className="relative flex items-center">
                   <Input.Root
-                    id="city"
-                    placeholder="São Carlos"
-                    {...register('city')}
+                    id="slug"
+                    {...register('slug')}
+                    className="px-2 py-1.5"
+                    placeholder="decoracoes-para-festa"
                   />
 
-                  <p className="text-xs text-destructive">
-                    {errors.city?.message}
-                  </p>
+                  <button
+                    type="button"
+                    className="absolute right-4 disabled:text-zinc-500"
+                    onClick={() => handleCreateSafeURL()}
+                  >
+                    <Link className="size-4" />
+                  </button>
                 </div>
 
-                <div className="space-y-0.5">
-                  <Label.Root htmlFor="state">Estado</Label.Root>
+                <p className="text-xs text-destructive">
+                  {errors.slug?.message}
+                </p>
+              </div>
 
+              <div className="space-y-0.5">
+                <Label.Root htmlFor="cep">CEP</Label.Root>
+
+                <div className="relative flex items-center">
                   <Input.Root
-                    id="state"
-                    placeholder="São Paulo"
-                    {...register('state')}
+                    id="cep"
+                    placeholder="12345-678"
+                    {...registerWithMask('cep', ['99999-999'], {
+                      showMaskOnFocus: false,
+                      showMaskOnHover: false,
+                      removeMaskOnSubmit: true,
+                    })}
                   />
 
-                  <p className="text-xs text-destructive">
-                    {errors.city?.message}
-                  </p>
+                  <button
+                    type="button"
+                    className="absolute right-4 disabled:text-zinc-500"
+                    disabled={!isValidCep}
+                    onClick={() => handleLoadingAddress()}
+                  >
+                    <Search className="size-4" />
+                  </button>
                 </div>
+
+                <p className="text-xs text-destructive">
+                  {errors.cep?.message}
+                </p>
+              </div>
+
+              <div className="space-y-0.5">
+                <Label.Root htmlFor="city">Cidade</Label.Root>
+
+                <Input.Root
+                  id="city"
+                  placeholder="São Carlos"
+                  {...register('city')}
+                />
+
+                <p className="text-xs text-destructive">
+                  {errors.city?.message}
+                </p>
+              </div>
+
+              <div className="space-y-0.5">
+                <Label.Root htmlFor="state">Estado</Label.Root>
+
+                <Input.Root
+                  id="state"
+                  placeholder="São Paulo"
+                  {...register('state')}
+                />
+
+                <p className="text-xs text-destructive">
+                  {errors.city?.message}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="space-y-0.5">
-            <Label.Root htmlFor="image">Imagem do perfil</Label.Root>
-            <Input.Root
-              id="image"
-              type="file"
-              {...register('profilePic')}
-              className="px-2 py-1.5"
-              placeholder="Decorações para festas"
-            />
-
-            <p className="text-xs text-destructive">
-              {errors.profilePic?.message?.toString()}
-            </p>
-          </div>
-
-          <div className="space-y-0.5">
-            <Label.Root htmlFor="banner">Banner do perfil</Label.Root>
-            <Input.Root
-              id="banner"
-              type="file"
-              {...register('banner')}
-              className="px-2 py-1.5"
-              placeholder="Decorações para festas"
-            />
-
-            <p className="text-xs text-destructive">
-              {errors.banner?.message?.toString()}
-            </p>
-          </div>
-
-          <div className="space-y-0.5">
-            <Label.Root htmlFor="slug">URL amigável</Label.Root>
-
-            <div className="relative flex items-center">
-              <Input.Root
-                id="slug"
-                {...register('slug')}
-                className="px-2 py-1.5"
-                placeholder="decoracoes-para-festa"
-              />
-
-              <button
-                type="button"
-                className="absolute right-4 disabled:text-zinc-500"
-                onClick={() => handleCreateSafeURL()}
-              >
-                <Link className="size-4" />
-              </button>
+          <div className="rounded-md border bg-white">
+            <div className="border-b p-6">
+              <h2 className="text-lg font-medium">Capa da página</h2>
             </div>
 
-            <p className="text-xs text-destructive">{errors.slug?.message}</p>
+            <div className="p-6">
+              <div
+                {...getRootProps()}
+                className="flex h-96 cursor-pointer items-center justify-center overflow-hidden rounded-md border-2 border-dashed transition-colors hover:border-foreground hover:text-zinc-500"
+              >
+                {!imagePreview && (
+                  <div className="flex flex-col items-center space-y-1">
+                    <FaRegImage className="size-10" />
+                    <p>Arraste e solte sua imagem aqui</p>
+                    <p className="text-xs">A imagem deve ter no máximo 10MB.</p>
+                  </div>
+                )}
+
+                {imagePreview && (
+                  <Image
+                    width={798}
+                    height={384}
+                    src={imagePreview}
+                    alt="image preview"
+                    className="h-full w-full object-cover"
+                  />
+                )}
+
+                <input {...getInputProps()} hidden />
+              </div>
+            </div>
           </div>
 
           <div className="col-span-full flex items-center justify-end">

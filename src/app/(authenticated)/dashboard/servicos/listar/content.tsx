@@ -185,7 +185,7 @@ export default function Content() {
         </Button.Root>
       </div>
 
-      <Table.Root>
+      <Table.Root className="bg-white">
         <Table.Content
           columns={columns}
           data={data ?? []}
