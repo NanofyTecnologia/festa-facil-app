@@ -76,10 +76,9 @@ export default function Content() {
   }, [])
 
   const onSubmit: SubmitHandler<ServiceData> = async (data) => {
-    const { banner, profilePic, ...dataWithoutFile } = data
+    const { banner, ...dataWithoutFile } = data
 
     const bannerPath = await uploadFile(banner)
-    const profilePath = await uploadFile(profilePic)
 
     if (id) {
       handleUpdateOffer(
@@ -87,7 +86,6 @@ export default function Content() {
           id,
           ...dataWithoutFile,
           banner: bannerPath,
-          profilePic: profilePath,
         },
         {
           onSuccess: () => {
@@ -103,7 +101,6 @@ export default function Content() {
       {
         ...dataWithoutFile,
         banner: bannerPath,
-        profilePic: profilePath,
       },
       {
         onSuccess: () => {
