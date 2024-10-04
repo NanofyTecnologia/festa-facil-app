@@ -71,7 +71,7 @@ export default function Content() {
 
   const [imagePreview] = useImagePreview(banner)
 
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback((acceptedFiles: FileList | File[] | null) => {
     setValue('banner', acceptedFiles)
   }, [])
 

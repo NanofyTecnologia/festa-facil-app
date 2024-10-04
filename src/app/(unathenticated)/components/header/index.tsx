@@ -112,7 +112,7 @@ export default function Header() {
                       </NextLink>
                     </Dropdown.Item>
                     <Dropdown.Item asChild>
-                      <NextLink href="/area-fornecedor">
+                      <NextLink href="/dashboard">
                         <ChartArea className="me-2 size-4" /> Área do Fornecedor
                       </NextLink>
                     </Dropdown.Item>
@@ -176,7 +176,7 @@ export default function Header() {
 
                       <li>
                         <Link
-                          href="#"
+                          href="/dashboard"
                           className="flex items-center justify-between rounded px-2 py-2 hover:bg-secondary hover:no-underline"
                         >
                           Área do Fornecedor
