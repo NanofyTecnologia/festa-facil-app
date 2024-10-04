@@ -11,7 +11,7 @@ import { signOut } from 'next-auth/react'
 export default function Sidebar() {
   return (
     <>
-      <div className="hidden min-h-screen w-full max-w-64 border-e md:flex md:flex-col">
+      <div className="sticky top-0 hidden max-h-screen min-h-screen w-full max-w-64 border-e bg-white md:flex md:flex-col">
         <div className="h-16 border-b p-4 text-center">
           <h1 className="text-xl font-semibold">Dashboard</h1>
         </div>
@@ -32,6 +32,12 @@ export default function Sidebar() {
                   <li>
                     <Link href="/dashboard/servicos/listar">
                       Listar
+                      <MoveRight className="size-4" />
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/dashboard/servicos/criar">
+                      Criar
                       <MoveRight className="size-4" />
                     </Link>
                   </li>

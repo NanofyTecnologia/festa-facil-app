@@ -4,6 +4,7 @@ import { EditorContent, useEditor, EditorContext } from '@tiptap/react'
 
 import { Header } from './header'
 import { extensions } from './extensions'
+import { useEffect, useState } from 'react'
 
 interface EditorRootProps {
   value?: string
@@ -12,6 +13,7 @@ interface EditorRootProps {
 
 export const Root = (props: EditorRootProps) => {
   const { value, onValueChange } = props
+  const [mounted, setMounted] = useState(false)
 
   const editor = useEditor({
     extensions,
@@ -20,6 +22,13 @@ export const Root = (props: EditorRootProps) => {
       onValueChange(editor.getHTML())
     },
   })
+
+  useEffect(() => {
+    if (editor && value !== undefined && !mounted) {
+      setMounted(true)
+      editor.commands.setContent(value)
+    }
+  }, [value, editor, mounted])
 
   return (
     <div className="rounded-md border">

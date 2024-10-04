@@ -151,8 +151,8 @@ export const Header = () => {
 
   return (
     <>
-      <header className="flex items-center justify-start gap-4 border-b p-2">
-        <div className="flex h-9 items-center gap-2 rounded-md border">
+      <header className="flex flex-wrap items-center justify-start gap-4 border-b p-2">
+        <div className="flex h-9 items-center gap-2 overflow-hidden rounded-md border">
           <Button.Root size="icon" variant="ghost" onClick={commands.undo}>
             <Undo className="size-4" />
           </Button.Root>
@@ -206,7 +206,7 @@ export const Header = () => {
           </Popover.Root>
         </div>
 
-        <div className="flex h-9 items-center gap-2 rounded-md border">
+        <div className="flex h-9 items-center gap-2 overflow-hidden rounded-md border">
           <Button.Root
             size="icon"
             variant="ghost"
@@ -253,7 +253,7 @@ export const Header = () => {
           </Button.Root>
         </div>
 
-        <div className="flex h-9 items-center gap-2 rounded-md border">
+        <div className="flex h-9 items-center gap-2 overflow-hidden rounded-md border">
           <Button.Root
             size="icon"
             variant="ghost"
@@ -291,7 +291,7 @@ export const Header = () => {
           </Button.Root>
         </div>
 
-        <div className="flex h-9 items-center gap-2 rounded-md border">
+        <div className="flex h-9 items-center gap-2 overflow-hidden rounded-md border">
           <Button.Root
             size="icon"
             variant="ghost"
@@ -311,7 +311,7 @@ export const Header = () => {
           </Button.Root>
         </div>
 
-        <div className="flex h-9 items-center gap-2 rounded-md border">
+        <div className="flex h-9 items-center gap-2 overflow-hidden rounded-md border">
           {!editor?.isActive('link') && (
             <Popover.Root>
               <Popover.Trigger asChild>
@@ -326,7 +326,13 @@ export const Header = () => {
                 >
                   <Input.Root {...register('url')} placeholder="URL" />
 
-                  <Button.Root type="submit" size="sm">
+                  <Button.Root
+                    type="button"
+                    onClick={() => {
+                      handleSubmit(onSubmitURL)()
+                    }}
+                    size="sm"
+                  >
                     <Check className="size-4" />
                   </Button.Root>
                 </form>
@@ -365,7 +371,7 @@ export const Header = () => {
           </Popover.Root>
         </div>
 
-        <div className="ms-auto flex h-9 items-center gap-2 rounded-md border">
+        <div className="ms-auto flex h-9 items-center gap-2 overflow-hidden rounded-md border">
           <Button.Root
             size="icon"
             variant="ghost"

@@ -17,7 +17,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="flex h-16 items-center justify-between border-b px-4 md:justify-end md:px-12">
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-white px-4 md:justify-end md:px-12">
         <div className="flex gap-1">
           <CircleUser className="size-6" />
 
