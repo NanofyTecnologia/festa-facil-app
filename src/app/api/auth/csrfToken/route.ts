@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.redirect(url.toString(), {
     headers: {
-      'Set-Cookie': `csrfToken=${session?.user.id}; HttpOnly; Path=/; Max-Age=2592000; SameSite=None; Secure`,
+      'Set-Cookie': `csrfToken=${session?.user.id}; Path=/; Max-Age=2592000; SameSite=None; Secure`,
     },
   })
 }
