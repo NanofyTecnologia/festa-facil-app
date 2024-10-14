@@ -20,13 +20,15 @@ export default function CompanyList() {
           >
             <Link href={`/servico/${company.id}`}>
               <div className="rounded-md bg-secondary p-4">
-                <Image
-                  width={256}
-                  height={256}
-                  src={company.image}
-                  className="h-64 w-full rounded object-cover"
-                  alt=""
-                />
+                {company.image && (
+                  <Image
+                    width={256}
+                    height={256}
+                    src={company.image}
+                    className="h-64 w-full rounded object-cover"
+                    alt=""
+                  />
+                )}
               </div>
 
               <div className="mt-4 flex items-center justify-between">

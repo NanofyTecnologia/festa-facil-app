@@ -18,13 +18,15 @@ export default function PartnersList() {
               key={company.id}
               className="basis-1/4 sm:basis-1/6 md:basis-[12.5%] xl:basis-[10%]"
             >
-              <Image
-                width={256}
-                height={256}
-                src={company.image}
-                className="size-20 rounded-full object-cover"
-                alt={company.name}
-              />
+              {company.image && (
+                <Image
+                  width={256}
+                  height={256}
+                  src={company.image}
+                  className="size-20 rounded-full object-cover"
+                  alt={company.name}
+                />
+              )}
             </Carousel.Item>
           ))}
         </Carousel.Content>

@@ -26,15 +26,17 @@ export default function ServicesVideosList() {
               >
                 <Link href={`/servico/${company.id}`}>
                   <div className="rounded-md bg-secondary p-4">
-                    <video loop muted autoPlay className="rounded">
-                      <source src={company.video} type="video/mp4" />
-                      <track
-                        src={company.video}
-                        kind="subtitles"
-                        srcLang="pt-br"
-                        label="Português (Brasil)"
-                      />
-                    </video>
+                    {company.video && (
+                      <video loop muted autoPlay className="rounded">
+                        <source src={company.video} type="video/mp4" />
+                        <track
+                          src={company.video}
+                          kind="subtitles"
+                          srcLang="pt-br"
+                          label="Português (Brasil)"
+                        />
+                      </video>
+                    )}
 
                     <div className="mt-4 flex items-start justify-between">
                       <h3 className="font-semibold">{company.name}</h3>
