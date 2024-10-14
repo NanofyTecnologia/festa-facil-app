@@ -9,7 +9,9 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <Content />
+      <main className="px-4 md:px-0">
+        <Content />
+      </main>
     </>
   )
 }

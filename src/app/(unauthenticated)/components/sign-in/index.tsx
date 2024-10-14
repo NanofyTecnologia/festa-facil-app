@@ -61,7 +61,6 @@ export default function SignIn() {
               type="submit"
               className="w-full"
               disabled={isSubmitting}
-              size="sm"
             >
               Acessar
             </Button.Root>

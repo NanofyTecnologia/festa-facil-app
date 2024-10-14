@@ -49,6 +49,7 @@ export default function Sidebar() {
 
         <div className="p-4">
           <Button.Root
+            size="sm"
             className="w-full"
             variant="destructive"
             onClick={() => signOut()}

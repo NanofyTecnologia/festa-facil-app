@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Carousel } from '@/components/ui/carousel'
 
 import { useGetCompanies } from '@/hooks/use-get-companies'
-import RatingStars from '@/app/(unathenticated)/components/rating-stars'
+import RatingStars from '@/app/(unauthenticated)/components/rating-stars'
 
 export default function ServicesVideosList() {
   const { data: companies } = useGetCompanies()
