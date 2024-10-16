@@ -27,13 +27,15 @@ export default function Content() {
             <Fragment key={index}>
               <Link href={`/servico/${service.id}`}>
                 <div className="rounded-md border bg-secondary p-4">
-                  <Image
-                    width={256}
-                    height={256}
-                    src={service.image}
-                    alt={service.name}
-                    className="max-h-60 w-full rounded-md object-cover"
-                  />
+                  {service.image && (
+                    <Image
+                      width={256}
+                      height={256}
+                      src={service.image}
+                      alt={service.name}
+                      className="max-h-60 w-full rounded-md object-cover"
+                    />
+                  )}
 
                   <div className="mt-4 flex items-center justify-between">
                     <h3 className="font-semibold">{service.name}</h3>

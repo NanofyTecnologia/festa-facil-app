@@ -2,7 +2,8 @@
 
 import { Bar, BarChart } from 'recharts'
 
-import { ChartConfig, ChartContainer } from '@/components/ui/chart'
+import { Chart } from '@/components/ui/chart'
+import { ChartConfig } from '@/components/ui/chart/root'
 
 const chartConfig = {
   desktop: {
@@ -29,12 +30,12 @@ export default function Page() {
     <>
       <div className="mx-auto max-w-4xl">
         <div className="rounded-md border bg-white py-4">
-          <ChartContainer config={chartConfig}>
+          <Chart.Root config={chartConfig}>
             <BarChart accessibilityLayer data={chartData}>
               <Bar dataKey="desktop" fill="#000" radius={4} />
               <Bar dataKey="mobile" fill="#666" radius={4} />
             </BarChart>
-          </ChartContainer>
+          </Chart.Root>
         </div>
       </div>
     </>

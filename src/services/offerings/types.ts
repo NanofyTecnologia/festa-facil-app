@@ -25,6 +25,11 @@ export type GetByIdOfferingParams = {
 }
 export type GetbyIdOfferingResponse = Offering
 
+export type GetOfferingByCategoryParams = {
+  q: string
+}
+export type GetOfferingByCategoryResponse = Offering[]
+
 export type GetOfferingsResponse = Offering[]
 
 export type PostOfferingParams = Partial<Offering>

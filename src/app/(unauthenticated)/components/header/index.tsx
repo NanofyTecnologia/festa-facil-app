@@ -111,9 +111,12 @@ export default function Header() {
                         <Settings className="me-2 size-4" /> Configurações
                       </NextLink>
                     </Dropdown.Item>
-                    <Dropdown.Item asChild>
+                    <Dropdown.Item
+                      asChild
+                      disabled={data.user.role !== 'SUPPLIER'}
+                    >
                       <NextLink href="/dashboard">
-                        <ChartArea className="me-2 size-4" /> Área do Fornecedor
+                        <ChartArea className="me-2 size-4" /> Dashboard
                       </NextLink>
                     </Dropdown.Item>
                     <Dropdown.Separator />

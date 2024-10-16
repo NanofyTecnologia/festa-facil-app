@@ -177,7 +177,7 @@ export default function Content() {
   return (
     <>
       <div className="mb-4">
-        <Button.Root variant="outline" asChild>
+        <Button.Root size="sm" asChild>
           <Link href="/dashboard/servicos/criar">
             <Plus className="me-2 size-5" />
             Novo serviço
