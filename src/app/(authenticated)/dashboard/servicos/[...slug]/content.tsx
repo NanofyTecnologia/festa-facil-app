@@ -206,7 +206,7 @@ export default function Content() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div className="space-y-0.5">
                   <Label.Root htmlFor="category">Categoria</Label.Root>
 
@@ -254,7 +254,7 @@ export default function Content() {
               <h2 className="text-lg font-medium">Contato</h2>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 p-6">
+            <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
               <div className="space-y-0.5">
                 <Label.Root htmlFor="email">E-mail</Label.Root>
                 <Input.Root
