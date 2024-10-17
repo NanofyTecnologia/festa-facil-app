@@ -1,4 +1,4 @@
-import { ChartConfig } from '../chart'
+import { ChartConfig } from './root'
 
 export function getPayloadConfigFromPayload(
   config: ChartConfig,
