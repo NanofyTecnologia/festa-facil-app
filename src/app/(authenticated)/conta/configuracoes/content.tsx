@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { ChevronLeft, MoveRight, Pencil, User } from 'lucide-react'
@@ -11,9 +11,12 @@ import { useHookFormMask } from 'use-mask-input'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Dialog } from '@/components/ui/dialog'
+import { Checkbox } from '@/components/ui/checkbox'
 
 import { validateCPF } from '@/utils/validate-cpf'
 
@@ -40,6 +43,8 @@ type UserData = z.infer<typeof userSchema>
 export default function Content() {
   const { back } = useRouter()
   const { data, update } = useSession()
+
+  const [showDialog, setShowDialog] = useState(false)
 
   const { mutate: handleUpdateUser } = useUpdateUser()
   const { data: user } = useGetUser({ id: data?.user.id })
@@ -81,6 +86,30 @@ export default function Content() {
       name,
       email,
     })
+  }
+
+  const handleUpdateAccount = () => {
+    if (!user) {
+      return
+    }
+
+    handleUpdateUser(
+      {
+        data: {
+          role: 'SUPPLIER',
+        },
+        userId: user.id,
+      },
+      {
+        onSuccess: () => {
+          update({
+            role: 'SUPPLIER',
+          })
+          setShowDialog(false)
+          toast.success('Sua conta agora é fornecedora')
+        },
+      },
+    )
   }
 
   useEffect(handleDefaultValues, [user, reset])
@@ -149,6 +178,7 @@ export default function Content() {
               placeholder="E-mail"
               className="bg-white"
               {...register('email')}
+              disabled
             />
 
             <Input.Root
@@ -174,7 +204,9 @@ export default function Content() {
             </div>
 
             {data.user.role !== 'SUPPLIER' && (
-              <Button.Root>Tornar-se fornecedor</Button.Root>
+              <Button.Root onClick={() => setShowDialog(true)}>
+                Tornar-se fornecedor
+              </Button.Root>
             )}
           </div>
 
@@ -185,6 +217,45 @@ export default function Content() {
           </div>
         </div>
       </main>
+
+      <Dialog.Root open={showDialog} onOpenChange={setShowDialog}>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>
+              Você está prestes a se tornar um fornecedor
+            </Dialog.Title>
+            <Dialog.Description>
+              Aceite os termos e condições abaixo para transformar sua conta em
+              fornecedora
+            </Dialog.Description>
+          </Dialog.Header>
+
+          <div className="py-6">
+            <form action="" className="flex items-center gap-2">
+              <Checkbox.Root id="terms" />
+              <Label.Root htmlFor="terms">
+                Aceitar termos e condições
+              </Label.Root>
+            </form>
+          </div>
+
+          <Dialog.Footer>
+            <Dialog.Close asChild>
+              <Button.Root size="sm" variant="ghost">
+                Cancelar
+              </Button.Root>
+            </Dialog.Close>
+
+            <Button.Root
+              size="sm"
+              variant="destructive"
+              onClick={() => handleUpdateAccount()}
+            >
+              Alterar conta
+            </Button.Root>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog.Root>
     </>
   )
 }

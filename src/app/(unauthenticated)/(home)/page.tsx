@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 
 import ImageFrame from '@/assets/images/image.png'
 
-import ServiceList from './components/companies-list'
+import OfferingList from './components/offering-list'
 import CategoryList from './components/category-list'
 import PartnersList from './components/partners-list'
 import ServicesVideosList from './components/services-videos-list'
@@ -47,7 +47,7 @@ export default function Page() {
       <section className="px-4 py-6 md:mx-auto md:max-w-3xl md:px-0 lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl">
         <h2 className="mb-2 font-semibold">Recomendados</h2>
 
-        <ServiceList />
+        <OfferingList />
       </section>
 
       <section className="px-4 py-6 md:mx-auto md:max-w-3xl md:px-0 lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl">

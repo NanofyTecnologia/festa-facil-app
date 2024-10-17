@@ -55,8 +55,8 @@ export function Content<T>({
   const allColumnsWithoutHeader = columns.every((column) => !column.header)
 
   return (
-    <div className="rounded-md border">
-      <table className="w-full table-fixed border-spacing-0">
+    <div className="overflow-x-auto rounded-md border bg-white">
+      <table className="w-full table-auto border-spacing-0">
         <thead data-hidden={allColumnsWithoutHeader}>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>

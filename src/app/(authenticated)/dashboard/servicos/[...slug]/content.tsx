@@ -1,10 +1,11 @@
 'use client'
 
+import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
 import { useHookFormMask } from 'use-mask-input'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link, Search } from 'lucide-react'
+import { ChevronLeft, Link, Search } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FaRegImage } from 'react-icons/fa'
@@ -19,7 +20,10 @@ import { Switch } from '@/components/ui/switch'
 
 import { upload } from '@/services/upload'
 import { address } from '@/services/address'
+
 import { normalizeSlug } from '@/utils/normalize-slug'
+
+import { useImagePreview } from '@/hooks/use-image-preview'
 import { useGetCategories } from '@/hooks/use-get-categories'
 
 import { type IParams } from './page'
@@ -28,11 +32,9 @@ import { serviceSchema, type ServiceData } from './schema'
 import { useCreateOffer } from '../hooks/use-create-offer'
 import { useUpdateOffer } from '../hooks/use-update-offer'
 import { useGetOfferById } from '../hooks/use-get-offer-by-id'
-import { useImagePreview } from '@/hooks/use-image-preview'
-import Image from 'next/image'
 
 export default function Content() {
-  const { replace } = useRouter()
+  const { replace, back } = useRouter()
   const { slug } = useParams<IParams>()
   const { id, isEditing } = normalizeSlug(slug)
 
@@ -59,7 +61,7 @@ export default function Content() {
     useCreateOffer()
 
   const uploadFile = async (file: File[]): Promise<string> => {
-    if (file?.length === 0) return ''
+    if (!file) return ''
 
     const formData = new FormData()
     formData.append('file', file[0])
@@ -69,7 +71,7 @@ export default function Content() {
     return fileURL
   }
 
-  const [imagePreview] = useImagePreview(banner)
+  const [imagePreview, setImagePreview] = useImagePreview(banner)
 
   const onDrop = useCallback((acceptedFiles: FileList | File[] | null) => {
     setValue('banner', acceptedFiles)
@@ -123,11 +125,13 @@ export default function Content() {
       city,
       phone,
       state,
+      banner,
       email,
       categoryId,
       description,
     } = offering
 
+    setImagePreview(banner)
     reset({
       cep,
       name,
@@ -172,7 +176,11 @@ export default function Content() {
   return (
     <>
       <div className="mx-auto max-w-4xl px-6">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex items-center justify-start gap-2">
+          <Button.Root variant="ghost" size="icon" onClick={() => back()}>
+            <ChevronLeft className="size-5" />
+          </Button.Root>
+
           <h1 className="text-xl font-semibold">
             {isEditing ? 'Editando serviço' : 'Novo serviço'}
           </h1>
@@ -198,7 +206,7 @@ export default function Content() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div className="space-y-0.5">
                   <Label.Root htmlFor="category">Categoria</Label.Root>
 
@@ -246,7 +254,7 @@ export default function Content() {
               <h2 className="text-lg font-medium">Contato</h2>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 p-6">
+            <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
               <div className="space-y-0.5">
                 <Label.Root htmlFor="email">E-mail</Label.Root>
                 <Input.Root

@@ -9,6 +9,8 @@ import {
   type GetByIdOfferingParams,
   type GetbyIdOfferingResponse,
   type DeleteOfferingParams,
+  type GetOfferingByCategoryParams,
+  type GetOfferingByCategoryResponse,
 } from './types'
 
 export const offerings = {
@@ -22,6 +24,25 @@ export const offerings = {
 
   async getByUserId() {
     const { data } = await axios.get<GetOfferingsResponse>('/offering/user')
+
+    return data
+  },
+
+  async getByCategory(params: GetOfferingByCategoryParams) {
+    const { data } = await axios.get<GetOfferingByCategoryResponse>(
+      '/offering/companies',
+      {
+        params: {
+          q: params.q,
+        },
+      },
+    )
+
+    return data
+  },
+
+  async getByRating() {
+    const { data } = await axios.get<GetOfferingsResponse>('/offering/rating')
 
     return data
   },

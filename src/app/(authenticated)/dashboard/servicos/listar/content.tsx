@@ -177,7 +177,7 @@ export default function Content() {
   return (
     <>
       <div className="mb-4">
-        <Button.Root size="sm" variant="outline" asChild>
+        <Button.Root size="sm" asChild>
           <Link href="/dashboard/servicos/criar">
             <Plus className="me-2 size-5" />
             Novo serviço
@@ -185,7 +185,7 @@ export default function Content() {
         </Button.Root>
       </div>
 
-      <Table.Root className="bg-white">
+      <Table.Root className="overflow-x-auto bg-white">
         <Table.Content
           columns={columns}
           data={data ?? []}
