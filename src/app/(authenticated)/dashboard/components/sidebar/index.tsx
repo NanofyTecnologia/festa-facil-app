@@ -1,14 +1,16 @@
 'use client'
 
 import { MoveRight } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 
+import { Button } from '@/components/ui/button'
 import { Accordion } from '@/components/ui/accordion'
 
 import Link from './link'
-import { Button } from '@/components/ui/button'
-import { signOut } from 'next-auth/react'
 
 export default function Sidebar() {
+  const { data } = useSession()
+
   return (
     <>
       <div className="sticky top-0 hidden max-h-screen min-h-screen w-full max-w-64 border-e bg-white md:flex md:flex-col">
@@ -27,7 +29,7 @@ export default function Sidebar() {
               <Accordion.Trigger className="rounded p-2 text-base font-medium text-zinc-500 hover:bg-secondary hover:text-black hover:no-underline">
                 Serviços
               </Accordion.Trigger>
-              <Accordion.Content>
+              <Accordion.Content className="pb-0">
                 <ul className="mt-2 space-y-1 pl-4 text-base text-zinc-500">
                   <li>
                     <Link href="/dashboard/servicos/listar">
@@ -45,6 +47,13 @@ export default function Sidebar() {
               </Accordion.Content>
             </Accordion.Item>
           </Accordion.Root>
+
+          {data?.user.role === 'ADMIN' && (
+            <Link href="/dashboard/categorias">
+              Categorias
+              <MoveRight className="size-4" />
+            </Link>
+          )}
         </div>
 
         <div className="p-4">

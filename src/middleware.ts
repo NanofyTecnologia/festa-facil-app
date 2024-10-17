@@ -13,21 +13,22 @@ export default withAuth(
     const allowedRolesForRoute = {
       '/dashboard': ['ADMIN', 'SUPPLIER'],
       '/conta': ['ADMIN', 'SUPPLIER', 'CUSTOMER'],
+      '/dashboard/categorias': ['ADMIN'],
     }
 
-    const matchedRoute = Object.keys(allowedRolesForRoute).find((route) =>
-      req.nextUrl.pathname.startsWith(route),
-    )
+    const matchedRoute = req.nextUrl.pathname
 
     if (!matchedRoute) {
       return NextResponse.redirect(new URL('/', req.url))
     }
 
+    console.log(matchedRoute)
+
     if (
       matchedRoute &&
       // eslint-disable-next-line
       // @ts-ignore
-      !allowedRolesForRoute[matchedRoute].includes(userRole)
+      !allowedRolesForRoute[matchedRoute]?.includes(userRole)
     ) {
       return NextResponse.redirect(new URL('/', req.url))
     }

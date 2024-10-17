@@ -3,6 +3,8 @@ import { type PropsWithChildren } from 'react'
 import Header from './components/header'
 import Sidebar from './components/sidebar'
 
+import UpdateRole from './update-role'
+
 export default function Layout({ children }: PropsWithChildren) {
   return (
     <>
@@ -15,6 +17,8 @@ export default function Layout({ children }: PropsWithChildren) {
           <div className="max-w-[100vw] py-6 md:px-6">{children}</div>
         </div>
       </div>
+
+      <UpdateRole />
     </>
   )
 }

@@ -7,4 +7,10 @@ export const categories = {
 
     return data
   },
+
+  async create() {
+    const { data } = await axios.post('/categories')
+
+    return data
+  },
 }

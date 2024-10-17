@@ -5,3 +5,5 @@ export type Category = {
 }
 
 export type GetCategoriesResponse = Category[]
+
+export type PostCategoriesResponse = Omit<Category, 'id'>
