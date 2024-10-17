@@ -9,6 +9,16 @@ const nextConfig = {
         pathname: '/uploads/**',
       },
       {
+        protocol: 'http',
+        hostname: 'festafacil.devfy.com.br',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'festafacil.devfy.com.br',
+        pathname: '/uploads/**',
+      },
+      {
         protocol: 'https',
         hostname: 'gtreqzctrqppqncegkpw.supabase.co',
         pathname: '/storage/**',
