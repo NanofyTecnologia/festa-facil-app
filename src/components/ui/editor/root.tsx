@@ -21,6 +21,7 @@ export const Root = (props: EditorRootProps) => {
     onUpdate: ({ editor }) => {
       onValueChange(editor.getHTML())
     },
+    immediatelyRender: false,
   })
 
   useEffect(() => {
