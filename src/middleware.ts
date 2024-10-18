@@ -14,6 +14,8 @@ export default withAuth(
       '/dashboard': ['ADMIN', 'SUPPLIER'],
       '/conta': ['ADMIN', 'SUPPLIER', 'CUSTOMER'],
       '/dashboard/categorias': ['ADMIN'],
+      '/dashboard/servicos/listar': ['ADMIN', 'SUPPLIER'],
+      '/dashboard/servicos/criar': ['ADMIN', 'SUPPLIER'],
     }
 
     const matchedRoute = req.nextUrl.pathname
@@ -21,8 +23,6 @@ export default withAuth(
     if (!matchedRoute) {
       return NextResponse.redirect(new URL('/', req.url))
     }
-
-    console.log(matchedRoute)
 
     if (
       matchedRoute &&

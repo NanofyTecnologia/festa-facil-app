@@ -20,10 +20,6 @@ export default function UpdateRole() {
           <Button.Root size="sm" onClick={() => update({ role: 'SUPPLIER' })}>
             SUPPLIER
           </Button.Root>
-
-          <Button.Root size="sm" onClick={() => update({ role: 'CUSTOMER' })}>
-            CUSTOMER
-          </Button.Root>
         </div>
       </div>
     </>

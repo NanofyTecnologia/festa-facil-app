@@ -18,11 +18,18 @@ export default function Sidebar() {
           <h1 className="text-xl font-semibold">Dashboard</h1>
         </div>
 
-        <div className="flex-1 space-y-4 p-4">
+        <div className="flex-1 space-y-2 p-4">
           <Link href="/dashboard">
             Dashboard
             <MoveRight className="size-4" />
           </Link>
+
+          {data?.user.role === 'ADMIN' && (
+            <Link href="/dashboard/categorias">
+              Categorias
+              <MoveRight className="size-4" />
+            </Link>
+          )}
 
           <Accordion.Root type="single" collapsible>
             <Accordion.Item value="category" className="border-0">
@@ -47,13 +54,6 @@ export default function Sidebar() {
               </Accordion.Content>
             </Accordion.Item>
           </Accordion.Root>
-
-          {data?.user.role === 'ADMIN' && (
-            <Link href="/dashboard/categorias">
-              Categorias
-              <MoveRight className="size-4" />
-            </Link>
-          )}
         </div>
 
         <div className="p-4">
