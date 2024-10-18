@@ -1,35 +1,32 @@
 import { NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { withAuth } from 'next-auth/middleware'
-
 import { env } from './lib/env/index.mjs'
+
+type AllowedRoles = { [key: string]: string[] }
 
 export default withAuth(
   async (req) => {
     const token = await getToken({ req, secret: env.NEXTAUTH_SECRET })
+    const userRole = token?.role || ''
 
-    const userRole = token?.role
-
-    const allowedRolesForRoute = {
+    const allowedRolesForRoute: AllowedRoles = {
       '/dashboard': ['ADMIN', 'SUPPLIER'],
       '/conta': ['ADMIN', 'SUPPLIER', 'CUSTOMER'],
       '/dashboard/categorias': ['ADMIN'],
-      '/dashboard/servicos/listar': ['ADMIN', 'SUPPLIER'],
-      '/dashboard/servicos/criar': ['ADMIN', 'SUPPLIER'],
+      '/dashboard/servicos/:path*': ['ADMIN', 'SUPPLIER'],
     }
 
-    const matchedRoute = req.nextUrl.pathname
+    const matchedRoute = Object.keys(allowedRolesForRoute).find((route) => {
+      const routeRegex = new RegExp(`^${route.replace(/:[^/]+(\*)?/g, '.*')}$`)
+      return routeRegex.test(req.nextUrl.pathname)
+    })
 
     if (!matchedRoute) {
       return NextResponse.redirect(new URL('/', req.url))
     }
 
-    if (
-      matchedRoute &&
-      // eslint-disable-next-line
-      // @ts-ignore
-      !allowedRolesForRoute[matchedRoute]?.includes(userRole)
-    ) {
+    if (!allowedRolesForRoute[matchedRoute]?.includes(userRole)) {
       return NextResponse.redirect(new URL('/', req.url))
     }
 

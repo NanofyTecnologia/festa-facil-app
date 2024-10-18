@@ -2,6 +2,7 @@ export type Offering = {
   id: string
   name: string
   email: string
+  active: boolean
   phone: string
   city: string
   cep: string

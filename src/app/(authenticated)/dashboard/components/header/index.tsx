@@ -47,22 +47,25 @@ export default function Header() {
             <Sheet.Description />
           </Sheet.Header>
 
-          <div className="h-full space-y-4">
-            <Link href="/conta/configuracoes">
-              Minha conta <MoveRight className="size-4" />
-            </Link>
-
+          <div className="h-full space-y-2">
             <Link href="/dashboard">
               Dashboard
               <MoveRight className="size-4" />
             </Link>
+
+            {data?.user.role === 'ADMIN' && (
+              <Link href="/dashboard/categorias">
+                Categorias
+                <MoveRight className="size-4" />
+              </Link>
+            )}
 
             <Accordion.Root type="single" collapsible>
               <Accordion.Item value="category" className="border-0">
                 <Accordion.Trigger className="rounded p-2 text-base font-medium text-zinc-500 hover:bg-secondary hover:text-black hover:no-underline">
                   Serviços
                 </Accordion.Trigger>
-                <Accordion.Content>
+                <Accordion.Content className="pb-0">
                   <ul className="mt-2 space-y-1 pl-4 text-base text-zinc-500">
                     <li>
                       <Link href="/dashboard/servicos/listar">
@@ -70,10 +73,20 @@ export default function Header() {
                         <MoveRight className="size-4" />
                       </Link>
                     </li>
+                    <li>
+                      <Link href="/dashboard/servicos/criar">
+                        Criar
+                        <MoveRight className="size-4" />
+                      </Link>
+                    </li>
                   </ul>
                 </Accordion.Content>
               </Accordion.Item>
             </Accordion.Root>
+
+            <Link href="/conta/configuracoes">
+              Minha conta <MoveRight className="size-4" />
+            </Link>
           </div>
 
           <Button.Root

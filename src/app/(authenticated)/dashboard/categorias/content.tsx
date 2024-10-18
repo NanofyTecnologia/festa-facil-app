@@ -217,7 +217,7 @@ export default function Content() {
 
             <div className="space-y-0.5">
               <Label.Root htmlFor="slug" className="flex items-center gap-1">
-                URL
+                URL amigável
                 <Tooltip.Provider>
                   <Tooltip.Root>
                     <Tooltip.Trigger type="button">

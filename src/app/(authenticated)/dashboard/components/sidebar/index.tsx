@@ -54,6 +54,10 @@ export default function Sidebar() {
               </Accordion.Content>
             </Accordion.Item>
           </Accordion.Root>
+
+          <Link href="/conta/configuracoes">
+            Minha conta <MoveRight className="size-4" />
+          </Link>
         </div>
 
         <div className="p-4">

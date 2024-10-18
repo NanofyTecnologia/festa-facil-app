@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
 import { useHookFormMask } from 'use-mask-input'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ChevronLeft, Link, Search } from 'lucide-react'
+import { ChevronLeft, Info, Link, Search } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FaRegImage } from 'react-icons/fa'
@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { Editor } from '@/components/ui/editor'
 import { Switch } from '@/components/ui/switch'
+import { Tooltip } from '@/components/ui/tooltip'
 
 import { upload } from '@/services/upload'
 import { address } from '@/services/address'
@@ -47,9 +48,12 @@ export default function Content() {
     formState: { errors },
   } = useForm<ServiceData>({
     resolver: zodResolver(serviceSchema),
+    defaultValues: {
+      active: true,
+    },
   })
 
-  const { cep, name, categoryId, banner } = watch()
+  const { cep, name, categoryId, banner, active } = watch()
 
   const { data: categories } = useGetCategories()
   const registerWithMask = useHookFormMask(register)
@@ -125,8 +129,9 @@ export default function Content() {
       city,
       phone,
       state,
-      banner,
       email,
+      banner,
+      active,
       categoryId,
       description,
     } = offering
@@ -140,6 +145,7 @@ export default function Content() {
       phone,
       state,
       email,
+      active,
       categoryId,
       description,
     })
@@ -175,7 +181,7 @@ export default function Content() {
 
   return (
     <>
-      <div className="mx-auto max-w-4xl px-6">
+      <div className="mx-auto max-w-4xl">
         <div className="mb-6 flex items-center justify-start gap-2">
           <Button.Root variant="ghost" size="icon" onClick={() => back()}>
             <ChevronLeft className="size-5" />
@@ -233,8 +239,11 @@ export default function Content() {
 
                 <div className="space-y-0.5">
                   <Label.Root>Página ativa?</Label.Root>
-                  <div className="flex h-9 items-center">
-                    <Switch.Root disabled />
+                  <div className="flex h-12 items-center">
+                    <Switch.Root
+                      checked={active}
+                      onCheckedChange={(value) => setValue('active', value)}
+                    />
                   </div>
                 </div>
               </div>
@@ -290,7 +299,21 @@ export default function Content() {
               </div>
 
               <div className="space-y-0.5">
-                <Label.Root htmlFor="slug">URL amigável</Label.Root>
+                <Label.Root htmlFor="slug" className="flex items-center gap-2">
+                  URL amigável{' '}
+                  <Tooltip.Provider>
+                    <Tooltip.Root>
+                      <Tooltip.Trigger type="button">
+                        <Info className="size-4" />
+                      </Tooltip.Trigger>
+                      <Tooltip.Content>
+                        Esse é o caminho para simplificar a URL do serviço.
+                        Exemplo da URL com a opção{' '}
+                        {"'/servicos/decoracoes-para-festa'"}
+                      </Tooltip.Content>
+                    </Tooltip.Root>
+                  </Tooltip.Provider>
+                </Label.Root>
 
                 <div className="relative flex items-center">
                   <Input.Root
