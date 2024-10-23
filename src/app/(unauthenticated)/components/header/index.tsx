@@ -193,7 +193,7 @@ export default function Header() {
                           href="/dashboard"
                           className="flex items-center justify-between rounded px-2 py-2 hover:bg-secondary hover:no-underline"
                         >
-                          Área do Fornecedor
+                          Dashboard
                           <MoveRight className="size-4" />
                         </Link>
                       </li>

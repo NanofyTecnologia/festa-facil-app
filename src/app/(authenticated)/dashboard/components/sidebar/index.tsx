@@ -55,6 +55,30 @@ export default function Sidebar() {
             </Accordion.Item>
           </Accordion.Root>
 
+          <Accordion.Root type="single" collapsible>
+            <Accordion.Item value="category" className="border-0">
+              <Accordion.Trigger className="rounded p-2 text-base font-medium text-zinc-500 hover:bg-secondary hover:text-black hover:no-underline">
+                Parceiros
+              </Accordion.Trigger>
+              <Accordion.Content className="pb-0">
+                <ul className="mt-2 space-y-1 pl-4 text-base text-zinc-500">
+                  <li>
+                    <Link href="/dashboard/parceiros/listar">
+                      Listar
+                      <MoveRight className="size-4" />
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/dashboard/parceiros/criar">
+                      Criar
+                      <MoveRight className="size-4" />
+                    </Link>
+                  </li>
+                </ul>
+              </Accordion.Content>
+            </Accordion.Item>
+          </Accordion.Root>
+
           <Link href="/conta/configuracoes">
             Minha conta <MoveRight className="size-4" />
           </Link>

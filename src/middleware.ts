@@ -15,6 +15,7 @@ export default withAuth(
       '/conta': ['ADMIN', 'SUPPLIER', 'CUSTOMER'],
       '/dashboard/categorias': ['ADMIN'],
       '/dashboard/servicos/:path*': ['ADMIN', 'SUPPLIER'],
+      '/dashboard/parceiros/:path*': ['ADMIN', 'SUPPLIER'],
     }
 
     const matchedRoute = Object.keys(allowedRolesForRoute).find((route) => {
