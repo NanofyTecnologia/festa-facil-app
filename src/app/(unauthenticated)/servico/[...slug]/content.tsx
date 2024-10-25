@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import { normalizeSlug } from '@/utils/normalize-slug'
 
 import { useGetOfferingById } from './hooks/use-get-offering-by-id'
+import { Badge } from '@/components/ui/badge'
 
 interface IParams {
   [key: string]: string[]
@@ -20,7 +21,7 @@ export default function Content() {
 
   return (
     <>
-      <div className="mx-auto max-w-7xl py-6">
+      <div className="mx-auto px-4 py-6 xl:max-w-7xl xl:px-0">
         {data?.banner && (
           <Image
             width={1280}
@@ -31,7 +32,11 @@ export default function Content() {
           />
         )}
 
-        <h1 className="mt-4 text-xl font-semibold">{data?.name}</h1>
+        <div className="mt-4 flex items-center justify-between">
+          <h1 className="text-3xl font-semibold">{data?.name}</h1>
+
+          <Badge.Root>{data?.category.name}</Badge.Root>
+        </div>
 
         <div
           className="tiptap mt-6"

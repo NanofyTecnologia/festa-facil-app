@@ -196,7 +196,7 @@ export default function Content() {
       </Table.Root>
 
       <Dialog.Root open={showDialog} onOpenChange={setShowDialog}>
-        <Dialog.Content>
+        <Dialog.Content className="flex h-full w-full max-w-2xl flex-col justify-start sm:h-auto sm:max-w-xl">
           <Dialog.Header>
             <Dialog.Title>Adicionar categoria</Dialog.Title>
             <Dialog.Description />
@@ -251,14 +251,16 @@ export default function Content() {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-4">
+            <div className="flex flex-col-reverse items-center justify-end gap-4 sm:flex sm:flex-row">
               <Dialog.Close asChild>
                 <Button.Root variant="ghost" size="sm">
                   Cancelar
                 </Button.Root>
               </Dialog.Close>
 
-              <Button.Root type="submit">Adicionar</Button.Root>
+              <Button.Root className="w-full sm:w-auto" type="submit">
+                Adicionar
+              </Button.Root>
             </div>
           </form>
         </Dialog.Content>

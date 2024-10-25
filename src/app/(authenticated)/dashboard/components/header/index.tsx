@@ -84,6 +84,13 @@ export default function Header() {
               </Accordion.Item>
             </Accordion.Root>
 
+            {data?.user.role === 'ADMIN' && (
+              <Link href="/dashboard/parceiros">
+                Parceiros
+                <MoveRight className="size-4" />
+              </Link>
+            )}
+
             <Link href="/conta/configuracoes">
               Minha conta <MoveRight className="size-4" />
             </Link>

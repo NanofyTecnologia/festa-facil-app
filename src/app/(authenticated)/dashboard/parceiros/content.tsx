@@ -106,13 +106,6 @@ export default function Content() {
       cell: ({ cell, row }) => (
         <Table.Cell cell={cell}>
           <div className="flex items-center justify-end gap-2">
-            {/* <Button.Root
-              size="icon"
-              className="bg-yellow-500 hover:bg-yellow-500/90"
-            >
-              <Edit className="size-4" />
-            </Button.Root> */}
-
             <Dialog.Root>
               <Dialog.Trigger asChild>
                 <Button.Root size="icon" variant="destructive">
@@ -231,7 +224,7 @@ export default function Content() {
       </Table.Root>
 
       <Dialog.Root open={showDialog} onOpenChange={setShowDialog}>
-        <Dialog.Content className="w-full max-w-xl">
+        <Dialog.Content className="flex h-full w-full max-w-2xl flex-col justify-start sm:h-auto sm:max-w-xl">
           <Dialog.Header>
             <Dialog.Title>Adicionar novo parceiro</Dialog.Title>
             <Dialog.Description />
@@ -239,11 +232,11 @@ export default function Content() {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex items-start gap-4"
+            className="flex flex-col items-start gap-4 sm:flex-row"
           >
             <div
               {...getRootProps()}
-              className="flex h-40 w-52 cursor-pointer items-center justify-center overflow-hidden rounded-md border-2 border-dashed transition-colors hover:border-foreground hover:text-zinc-500"
+              className="flex h-64 w-full cursor-pointer items-center justify-center overflow-hidden rounded-md border-2 border-dashed transition-colors hover:border-foreground hover:text-zinc-500 sm:h-40 sm:w-52"
             >
               {!imagePreview && (
                 <div className="flex flex-col items-center justify-center space-y-1">
@@ -270,7 +263,7 @@ export default function Content() {
               <input {...getInputProps()} hidden />
             </div>
 
-            <div className="flex-1 space-y-4">
+            <div className="w-full flex-1 space-y-4">
               <div className="space-y-0.5">
                 <Label.Root htmlFor="name">Parceiro</Label.Root>
 
@@ -323,7 +316,7 @@ export default function Content() {
                   </Button.Root>
                 </Dialog.Close>
 
-                <Button.Root type="submit" size="sm">
+                <Button.Root type="submit" className="h-12 sm:h-9" size="sm">
                   Adicionar parceiro
                 </Button.Root>
               </Dialog.Footer>
