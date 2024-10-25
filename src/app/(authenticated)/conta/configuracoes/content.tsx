@@ -204,7 +204,11 @@ export default function Content() {
             </div>
 
             {data.user.role !== 'SUPPLIER' && (
-              <Button.Root onClick={() => setShowDialog(true)}>
+              <Button.Root
+                size="sm"
+                onClick={() => setShowDialog(true)}
+                disabled={data.user.role === 'ADMIN'}
+              >
                 Tornar-se fornecedor
               </Button.Root>
             )}

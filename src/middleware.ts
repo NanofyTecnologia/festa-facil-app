@@ -12,10 +12,10 @@ export default withAuth(
 
     const allowedRolesForRoute: AllowedRoles = {
       '/dashboard': ['ADMIN', 'SUPPLIER'],
-      '/conta': ['ADMIN', 'SUPPLIER', 'CUSTOMER'],
+      '/conta/configuracoes': ['ADMIN', 'SUPPLIER', 'CUSTOMER'],
       '/dashboard/categorias': ['ADMIN'],
       '/dashboard/servicos/:path*': ['ADMIN', 'SUPPLIER'],
-      '/dashboard/parceiros/:path*': ['ADMIN', 'SUPPLIER'],
+      '/dashboard/parceiros': ['ADMIN', 'SUPPLIER'],
     }
 
     const matchedRoute = Object.keys(allowedRolesForRoute).find((route) => {
