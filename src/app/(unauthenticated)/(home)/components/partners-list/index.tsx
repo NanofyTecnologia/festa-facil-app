@@ -4,27 +4,27 @@ import Image from 'next/image'
 
 import { Carousel } from '@/components/ui/carousel'
 
-import { useGetCompanies } from '@/hooks/use-get-companies'
+import { useGetPartners } from '@/hooks/use-get-partners'
 
 export default function PartnersList() {
-  const { data: companies } = useGetCompanies()
+  const { data: partners } = useGetPartners()
 
   return (
     <>
       <Carousel.Root>
         <Carousel.Content>
-          {companies?.map((company) => (
+          {partners?.map((partner) => (
             <Carousel.Item
-              key={company.id}
+              key={partner.id}
               className="basis-1/4 sm:basis-1/6 md:basis-[12.5%] xl:basis-[10%]"
             >
-              {company.image && (
+              {partner.picture && (
                 <Image
                   width={256}
                   height={256}
-                  src={company.image}
-                  className="size-20 rounded-full object-cover"
-                  alt={company.name}
+                  src={partner.picture}
+                  className="rounded-lg object-cover"
+                  alt={partner.name}
                 />
               )}
             </Carousel.Item>

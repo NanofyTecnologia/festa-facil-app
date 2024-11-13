@@ -9,6 +9,11 @@ export type Partner = {
 
 export type GetPartnersResponse = Partner[]
 
+export type CreatePartnerParams = Omit<
+  Partner,
+  'id' | 'createdAt' | 'updatedAt'
+>
+
 export type DeletePartnerParams = {
   id: string
 }

@@ -1,6 +1,10 @@
 import axios from '@/lib/axios'
 
-import { type DeletePartnerParams, type GetPartnersResponse } from './types'
+import {
+  type CreatePartnerParams,
+  type DeletePartnerParams,
+  type GetPartnersResponse,
+} from './types'
 
 export const partners = {
   async get() {
@@ -9,7 +13,7 @@ export const partners = {
     return data
   },
 
-  async create(params) {
+  async create(params: CreatePartnerParams) {
     const { data } = await axios.post('/partner', params)
 
     return data

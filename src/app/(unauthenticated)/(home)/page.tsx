@@ -3,6 +3,7 @@ import { Search } from 'lucide-react'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Select } from '@/components/ui/select'
 
 import ImageFrame from '@/assets/images/image.png'
 
@@ -21,19 +22,30 @@ export default function Page() {
             sonhos
           </h1>
 
-          <div className="relative mt-12 flex items-center">
-            <Input.Root
-              placeholder="Pesquisar..."
-              className="h-10 bg-white pe-12"
-            />
+          <div className="mt-12 grid grid-cols-2 items-center gap-4">
+            <div className="relative flex items-center">
+              <Input.Root
+                placeholder="Pesquisar..."
+                className="h-10 bg-white pe-12"
+              />
 
-            <Button.Root
-              size="icon"
-              variant="ghost"
-              className="absolute right-2"
-            >
-              <Search className="size-4" />
-            </Button.Root>
+              <Button.Root
+                size="icon"
+                variant="ghost"
+                className="absolute right-2"
+              >
+                <Search className="size-4" />
+              </Button.Root>
+            </div>
+
+            <Select.Root>
+              <Select.Trigger>
+                <Select.Value placeholder="Selecione a cidade" />
+              </Select.Trigger>
+              <Select.Content>
+                <Select.Item value="sao carlos">São Carlos</Select.Item>
+              </Select.Content>
+            </Select.Root>
           </div>
         </div>
       </main>

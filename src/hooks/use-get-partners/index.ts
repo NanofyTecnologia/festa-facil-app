@@ -2,12 +2,12 @@ import { createQuery } from 'react-query-kit'
 
 import { keepPreviousData } from '@tanstack/react-query'
 
-import { companies } from '@/services/companies'
+import { partners } from '@/services/partners'
 
-export function useGetCompanies() {
+export function useGetPartners() {
   const query = createQuery({
     queryKey: ['get-services'],
-    fetcher: companies.get,
+    fetcher: partners.get,
     placeholderData: keepPreviousData,
   })
 

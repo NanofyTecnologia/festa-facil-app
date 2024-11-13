@@ -87,7 +87,7 @@ export default function SignIn() {
 
           <Button.Root
             variant="secondary"
-            className="w-full text-base"
+            className="mt-6 w-full text-base"
             onClick={() => reset()}
           >
             Enviar novamente
