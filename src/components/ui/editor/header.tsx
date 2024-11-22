@@ -163,7 +163,7 @@ export const Header = () => {
         </div>
 
         <Select.Root value={defaultFormat()} onValueChange={changeFormat}>
-          <Select.Trigger className="max-w-60">
+          <Select.Trigger className="h-9 max-w-60 rounded-md">
             <Select.Value />
           </Select.Trigger>
           <Select.Content>

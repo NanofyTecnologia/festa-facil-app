@@ -21,6 +21,7 @@ export const Root = (props: EditorRootProps) => {
     onUpdate: ({ editor }) => {
       onValueChange(editor.getHTML())
     },
+    immediatelyRender: false,
   })
 
   useEffect(() => {
@@ -36,8 +37,8 @@ export const Root = (props: EditorRootProps) => {
         <Header />
 
         <EditorContent
-          className="min-h-60 p-2 text-start text-base"
           editor={editor}
+          className="min-h-60 p-2 text-start text-base"
         />
       </EditorContext.Provider>
     </div>

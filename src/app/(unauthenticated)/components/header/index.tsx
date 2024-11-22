@@ -103,24 +103,35 @@ export default function Header() {
                       <ChevronDown className="ms-1 size-4" />
                     </Button.Root>
                   </Dropdown.Trigger>
-                  <Dropdown.Content className="w-full max-w-sm">
+                  <Dropdown.Content className="w-64">
                     <Dropdown.Label>Conta</Dropdown.Label>
+
                     <Dropdown.Separator />
-                    <Dropdown.Item asChild>
-                      <NextLink href="/conta/configuracoes">
-                        <Settings className="me-2 size-4" /> Configurações
-                      </NextLink>
-                    </Dropdown.Item>
+
                     <Dropdown.Item
                       asChild
-                      disabled={data.user.role !== 'SUPPLIER'}
+                      disabled={data.user.role === 'CUSTOMER'}
                     >
-                      <NextLink href="/dashboard">
+                      <NextLink href="/dashboard" className="font-medium">
                         <ChartArea className="me-2 size-4" /> Dashboard
                       </NextLink>
                     </Dropdown.Item>
+
+                    <Dropdown.Item asChild>
+                      <NextLink
+                        href="/conta/configuracoes"
+                        className="font-medium"
+                      >
+                        <Settings className="me-2 size-4" /> Configurações
+                      </NextLink>
+                    </Dropdown.Item>
+
                     <Dropdown.Separator />
-                    <Dropdown.Item onClick={() => signOut()}>
+
+                    <Dropdown.Item
+                      onClick={() => signOut()}
+                      className="font-medium"
+                    >
                       <LogOut className="me-2 size-4" /> Desconectar
                     </Dropdown.Item>
                   </Dropdown.Content>
@@ -182,7 +193,7 @@ export default function Header() {
                           href="/dashboard"
                           className="flex items-center justify-between rounded px-2 py-2 hover:bg-secondary hover:no-underline"
                         >
-                          Área do Fornecedor
+                          Dashboard
                           <MoveRight className="size-4" />
                         </Link>
                       </li>

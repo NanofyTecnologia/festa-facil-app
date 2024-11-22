@@ -47,6 +47,12 @@ export const offerings = {
     return data
   },
 
+  async getOfferingsToModerate() {
+    const { data } = await axios.get<GetOfferingsResponse>('/offering/moderate')
+
+    return data
+  },
+
   async create(params: PostOfferingParams) {
     const { data } = await axios.post<PostOfferingResponse>('/offering', params)
 

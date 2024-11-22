@@ -15,5 +15,6 @@ export function useGetCategories() {
 
   return {
     ...queryResponse,
+    queryKey: query.getKey(),
   }
 }
