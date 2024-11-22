@@ -8,7 +8,7 @@ export default function SwitchRole() {
   const { update } = useSession()
 
   return (
-    <div className="absolute bottom-4 right-4 flex items-center gap-2">
+    <div className="fixed bottom-4 right-1/2 flex translate-x-1/2 items-center gap-2">
       <Button.Root size="sm" onClick={() => update({ role: 'ADMIN' })}>
         Admin
       </Button.Root>

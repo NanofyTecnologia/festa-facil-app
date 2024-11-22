@@ -50,6 +50,15 @@ export default function Sidebar() {
                       <MoveRight className="size-4" />
                     </Link>
                   </li>
+
+                  {data?.user.role === 'ADMIN' && (
+                    <li>
+                      <Link href="/dashboard/servicos/moderar">
+                        Moderar
+                        <MoveRight className="size-4" />
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </Accordion.Content>
             </Accordion.Item>

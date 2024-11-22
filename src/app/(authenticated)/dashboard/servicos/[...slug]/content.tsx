@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
 import { useHookFormMask } from 'use-mask-input'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ChevronLeft, Info, Link, Search } from 'lucide-react'
+import { ChevronLeft, CircleHelp, Info, Link, Search } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FaRegImage } from 'react-icons/fa'
@@ -49,7 +49,7 @@ export default function Content() {
   } = useForm<ServiceData>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
-      active: true,
+      active: false,
     },
   })
 
@@ -239,11 +239,26 @@ export default function Content() {
 
                 <div className="space-y-0.5">
                   <Label.Root>Página ativa?</Label.Root>
-                  <div className="flex h-12 items-center">
+                  <div className="flex h-12 items-center gap-2">
                     <Switch.Root
+                      disabled
                       checked={active}
                       onCheckedChange={(value) => setValue('active', value)}
                     />
+
+                    {!id && (
+                      <Tooltip.Provider>
+                        <Tooltip.Root>
+                          <Tooltip.Trigger>
+                            <CircleHelp className="size-4 text-zinc-400" />
+                          </Tooltip.Trigger>
+                          <Tooltip.Content>
+                            Você precisará aguardar a avaliação de um
+                            administrador para ativar sua página
+                          </Tooltip.Content>
+                        </Tooltip.Root>
+                      </Tooltip.Provider>
+                    )}
                   </div>
                 </div>
               </div>
