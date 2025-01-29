@@ -44,7 +44,9 @@ export default function Content() {
   const { back } = useRouter()
   const { data, update } = useSession()
 
+  const [checked, setChecked] = useState(false)
   const [showDialog, setShowDialog] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const { mutate: handleUpdateUser } = useUpdateUser()
   const { data: user } = useGetUser({ id: data?.user.id })
@@ -55,6 +57,8 @@ export default function Content() {
   const registerWithMask = useHookFormMask(register)
 
   const onSubmit: SubmitHandler<UserData> = (data) => {
+    setIsSubmitting(true)
+
     if (!user?.id) {
       return toast.error('Usuário não encontrado!')
     }
@@ -69,6 +73,11 @@ export default function Content() {
       {
         onSuccess: () => {
           update({ ...data })
+          setIsSubmitting(false)
+        },
+        onError: () => {
+          toast.error('Ops! Houve algum problema ao atualizar o usuário')
+          setIsSubmitting(false)
         },
       },
     )
@@ -190,8 +199,13 @@ export default function Content() {
               })}
             />
 
-            <Button.Root type="submit" size="sm" className="w-full">
-              Salvar
+            <Button.Root
+              size="sm"
+              type="submit"
+              className="w-full"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Carregando...' : 'Salvar'}
             </Button.Root>
           </form>
         </div>
@@ -236,7 +250,15 @@ export default function Content() {
 
           <div className="py-6">
             <form action="" className="flex items-center gap-2">
-              <Checkbox.Root id="terms" />
+              <Checkbox.Root
+                id="terms"
+                checked={checked}
+                onCheckedChange={(value) => {
+                  if (value === 'indeterminate') return
+
+                  setChecked(value)
+                }}
+              />
               <Label.Root htmlFor="terms">
                 Aceitar termos e condições
               </Label.Root>
@@ -253,6 +275,7 @@ export default function Content() {
             <Button.Root
               size="sm"
               variant="destructive"
+              disabled={!checked}
               onClick={() => handleUpdateAccount()}
             >
               Alterar conta
