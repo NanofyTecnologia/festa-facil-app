@@ -6,7 +6,7 @@ import { companies } from '@/services/companies'
 import { type IProps } from './types'
 
 export function useGetServicesByCategory(props: IProps) {
-  const { q } = props
+  const { id } = props
 
   const query = createQuery({
     queryKey: ['get-services-by-category'],
@@ -14,7 +14,7 @@ export function useGetServicesByCategory(props: IProps) {
     placeholderData: keepPreviousData,
   })
 
-  const queryResponse = query({ variables: { q } })
+  const queryResponse = query({ variables: { id } })
 
-  return { ...queryResponse, queryKey: query.getKey({ q }) }
+  return { ...queryResponse, queryKey: query.getKey({ id }) }
 }

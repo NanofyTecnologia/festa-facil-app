@@ -26,6 +26,11 @@ export type GetByIdOfferingParams = {
 }
 export type GetbyIdOfferingResponse = Offering
 
+export type GetBySlugOfferingParams = {
+  slug: string | undefined
+}
+export type GetbySlugOfferingResponse = Offering
+
 export type GetOfferingByCategoryParams = {
   q: string
 }

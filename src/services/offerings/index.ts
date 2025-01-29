@@ -1,22 +1,31 @@
 import axios from '@/lib/axios'
 
-import {
-  type PostOfferingParams,
-  type PostOfferingResponse,
-  type GetOfferingsResponse,
-  type PutOfferingParams,
-  type PutOfferingResponse,
-  type GetByIdOfferingParams,
-  type GetbyIdOfferingResponse,
-  type DeleteOfferingParams,
-  type GetOfferingByCategoryParams,
-  type GetOfferingByCategoryResponse,
+import type {
+  PostOfferingParams,
+  PostOfferingResponse,
+  GetOfferingsResponse,
+  PutOfferingParams,
+  PutOfferingResponse,
+  GetByIdOfferingParams,
+  GetbyIdOfferingResponse,
+  DeleteOfferingParams,
+  GetOfferingByCategoryParams,
+  GetOfferingByCategoryResponse,
+  GetBySlugOfferingParams,
 } from './types'
 
 export const offerings = {
   async getById(params: GetByIdOfferingParams) {
     const { data } = await axios.get<GetbyIdOfferingResponse>(
       '/offering/' + params.id,
+    )
+
+    return data
+  },
+
+  async getBySlug(params: GetBySlugOfferingParams) {
+    const { data } = await axios.get<GetBySlugOfferingParams>(
+      '/offering/slug/' + params.slug,
     )
 
     return data

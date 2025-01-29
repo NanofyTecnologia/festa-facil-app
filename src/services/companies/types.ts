@@ -5,7 +5,7 @@ export type CompanyPreview = {
   address: string
   state: string
   city: string
-  image: string
+  banner: string
   video: string
   phone: string
   email: string
@@ -24,6 +24,9 @@ export type CompanyPreview = {
   }
 }
 
+export type GetCompanyByCategoryParams = {
+  id: string | undefined
+}
 export type GetCompanyByCategoryResponse = {
   name: string
   result: CompanyPreview[]

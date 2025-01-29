@@ -6,6 +6,7 @@ import {
   type UpdateCompanyParams,
   type CreateCompanyParams,
   type GetCompanyByCategoryResponse,
+  GetCompanyByCategoryParams,
 } from './types'
 
 export const companies = {
@@ -52,14 +53,9 @@ export const companies = {
     return data
   },
 
-  async getByCategory({ q }: { q: string }) {
+  async getByCategory(params: GetCompanyByCategoryParams) {
     const { data } = await axios.get<GetCompanyByCategoryResponse>(
-      '/companies/category',
-      {
-        params: {
-          q,
-        },
-      },
+      '/companies/category/' + params.id,
     )
 
     return data
