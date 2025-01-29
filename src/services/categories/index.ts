@@ -1,13 +1,23 @@
 import axios from '@/lib/axios'
-import {
-  type GetCategoriesResponse,
-  type CreateCategoriesResponse,
-  type DeleteCategoryResponse,
+import type {
+  GetCategoriesResponse,
+  CreateCategoriesResponse,
+  DeleteCategoryResponse,
+  GetCategoriesOfferingParams,
 } from './types'
+import { GetOfferingByCategoryResponse } from '../offerings/types'
 
 export const categories = {
   async get() {
     const { data } = await axios.get<GetCategoriesResponse>('/categories')
+
+    return data
+  },
+
+  async getOfferings(params: GetCategoriesOfferingParams) {
+    const { data } = await axios.get<GetOfferingByCategoryResponse>(
+      '/companies/category/' + params.id,
+    )
 
     return data
   },

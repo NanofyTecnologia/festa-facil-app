@@ -19,6 +19,8 @@ export default function Content() {
 
   const { data } = useGetOfferingById({ id })
 
+  console.log(data)
+
   return (
     <>
       <div className="mx-auto px-4 py-6 xl:max-w-7xl xl:px-0">

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import NextLink from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { Fragment, useState } from 'react'
@@ -11,8 +12,6 @@ import {
   ChartArea,
   ChevronDown,
 } from 'lucide-react'
-import Image from 'next/image'
-import celebraLogo from '@/assets/images/Logo_Horizontal_Roxo_Claro.svg'
 
 import Link from './link'
 
@@ -24,6 +23,7 @@ import { Accordion } from '@/components/ui/accordion'
 
 import { useGetCategories } from '@/hooks/use-get-categories'
 
+import CelebraLogo from '@/assets/images/Logo_Horizontal_Roxo_Claro.svg'
 import SignIn from '../sign-in'
 
 export default function Header() {
@@ -52,11 +52,7 @@ export default function Header() {
         </nav>
 
         <div className="mx-auto hidden h-[68px] max-w-7xl justify-between px-4 py-4 md:flex 2xl:px-0">
-          <Image
-            src={celebraLogo}
-            alt="logo celebra"
-            className="h-auto w-32 object-contain"
-          />
+          <Image src={CelebraLogo} className="w-64 object-fill" alt="celebra" />
 
           <nav className="flex items-center gap-4 text-zinc-500">
             <Link

@@ -6,20 +6,26 @@ import { useParams } from 'next/navigation'
 import { Fragment } from 'react'
 import { Star } from 'lucide-react'
 
+import { Input } from '@/components/ui/input'
+
 import { useGetServicesByCategory } from './hooks/use-get-services-by-category'
 
 export default function Content() {
   const { slug } = useParams()
 
-  const { data: services } = useGetServicesByCategory({ q: slug[0] })
+  const { data: services } = useGetServicesByCategory({ id: slug[0] })
 
   return (
     <>
-      <main className="h-64 bg-secondary px-4 sm:m-4 sm:rounded-md md:mx-auto md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl">
+      <main className="h-64 bg-secondary px-4 sm:my-4 sm:rounded-md md:px-0">
         <div className="flex h-full items-end justify-center pb-6">
           <h2 className="text-3xl font-bold">{services?.name}</h2>
         </div>
       </main>
+
+      <div className="">
+        <Input.Root className="h-9" placeholder="Pesquisar por nome..." />
+      </div>
 
       <section className="py-6 sm:m-4 sm:rounded-md md:mx-auto md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl">
         <div className="grid w-full grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
@@ -27,11 +33,11 @@ export default function Content() {
             <Fragment key={index}>
               <Link href={`/servico/${service.id}`}>
                 <div className="rounded-md border bg-secondary p-4">
-                  {service.image && (
+                  {service.banner && (
                     <Image
                       width={256}
                       height={256}
-                      src={service.image}
+                      src={service.banner}
                       alt={service.name}
                       className="max-h-60 w-full rounded-md object-cover"
                     />

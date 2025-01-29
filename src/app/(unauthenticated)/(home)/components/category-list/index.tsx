@@ -16,7 +16,7 @@ export default function CategoryList() {
         {categories?.map((category) => (
           <Carousel.Item key={category.id} className="basis-auto">
             <Button.Root asChild size="sm" className="rounded-md">
-              <Link href={`/categoria/${category.slug}`}>{category.name}</Link>
+              <Link href={`/categoria/${category.id}`}>{category.name}</Link>
             </Button.Root>
           </Carousel.Item>
         ))}

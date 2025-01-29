@@ -9,6 +9,10 @@ export type Category = {
 
 export type GetCategoriesResponse = Category[]
 
+export type GetCategoriesOfferingParams = {
+  id: string | undefined
+}
+
 export type CreateCategoriesResponse = Omit<Category, 'id' | '_count'>
 
 export type DeleteCategoryResponse = {

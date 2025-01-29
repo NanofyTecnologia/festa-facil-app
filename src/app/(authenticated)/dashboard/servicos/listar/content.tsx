@@ -83,10 +83,10 @@ export default function Content() {
     }),
     columnHelper.accessor('slug', {
       header: ({ header }) => <Table.Head header={header}>URL</Table.Head>,
-      cell: ({ cell, getValue }) => (
+      cell: ({ cell, getValue, row }) => (
         <Table.Cell cell={cell}>
           <div className="flex justify-center text-sm">
-            <Link href={`/servico/${getValue()}`}>
+            <Link href={`/servico/${row.original.id}`}>
               <Badge.Root>{getValue()}</Badge.Root>
             </Link>
           </div>

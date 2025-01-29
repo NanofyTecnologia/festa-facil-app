@@ -1,3 +1,3 @@
 export type IProps = {
-  q: string
+  id: string
 }
