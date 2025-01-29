@@ -23,6 +23,11 @@ const nextConfig = {
         hostname: 'gtreqzctrqppqncegkpw.supabase.co',
         pathname: '/storage/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'b9be-191-13-42-121.ngrok-free.app',
+        pathname: '/uploads/**',
+      },
     ],
   },
 }
