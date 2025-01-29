@@ -1,7 +1,5 @@
 import Image from 'next/image'
-import { Search } from 'lucide-react'
 
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 
@@ -15,29 +13,16 @@ import ServicesVideosList from './components/services-videos-list'
 export default function Page() {
   return (
     <>
-      <main className="bg-secondary px-4 py-12 sm:m-4 sm:rounded-md md:mx-auto md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl">
+      <main className="bg-[#002163] px-4 py-12 sm:m-4 sm:rounded-md md:mx-auto md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl">
         <div className="md:mx-auto md:max-w-md">
-          <h1 className="text-start text-5xl">
-            <b>Encontre tudo</b> para <b>planejar</b> sua <b>festa</b> dos
+          <h1 className="text-start text-5xl text-white">
+            <span className="font-semibold text-[#ffd500]">Encontre tudo</span>{' '}
+            para <span className="font-semibold text-[#ffd500]">planejar</span>{' '}
+            sua <span className="font-semibold text-[#ffd500]">festa</span> dos
             sonhos
           </h1>
 
-          <div className="mt-12 grid grid-cols-2 items-center gap-4">
-            <div className="relative flex items-center">
-              <Input.Root
-                placeholder="Pesquisar..."
-                className="h-10 bg-white pe-12"
-              />
-
-              <Button.Root
-                size="icon"
-                variant="ghost"
-                className="absolute right-2"
-              >
-                <Search className="size-4" />
-              </Button.Root>
-            </div>
-
+          <div className="mt-12">
             <Select.Root>
               <Select.Trigger>
                 <Select.Value placeholder="Selecione a cidade" />
@@ -49,6 +34,8 @@ export default function Page() {
           </div>
         </div>
       </main>
+
+      <div className="px-4 py-12 sm:m-4 sm:rounded-md md:mx-auto md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl"></div>
 
       <section className="px-4 py-6 md:mx-auto md:max-w-3xl md:px-0 lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl">
         <h2 className="mb-2 font-semibold">Categorias</h2>

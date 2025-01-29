@@ -11,6 +11,8 @@ import {
   ChartArea,
   ChevronDown,
 } from 'lucide-react'
+import Image from 'next/image'
+import celebraLogo from '@/assets/images/Logo_Horizontal_Roxo_Claro.svg'
 
 import Link from './link'
 
@@ -50,7 +52,11 @@ export default function Header() {
         </nav>
 
         <div className="mx-auto hidden h-[68px] max-w-7xl justify-between px-4 py-4 md:flex 2xl:px-0">
-          <h1 className="text-2xl font-semibold">Festa Fácil</h1>
+          <Image
+            src={celebraLogo}
+            alt="logo celebra"
+            className="h-auto w-32 object-contain"
+          />
 
           <nav className="flex items-center gap-4 text-zinc-500">
             <Link
@@ -67,12 +73,7 @@ export default function Header() {
               Fornecedores
             </Link>
 
-            <Link
-              href="#"
-              className="block rounded p-2 font-medium transition-all hover:bg-secondary hover:text-black"
-            >
-              Sobre
-            </Link>
+            <Link href="#">Sobre</Link>
 
             <Link
               href="#"

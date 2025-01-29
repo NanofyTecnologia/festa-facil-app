@@ -18,7 +18,7 @@ export default function Link(props: LinkProps & ComponentProps<'a'>) {
       href={href}
       data-active={isActive ? 'true' : 'false'}
       className={cn(
-        'block rounded p-2 font-medium transition-all data-[active=true]:bg-secondary hover:bg-secondary hover:text-black',
+        'block rounded border-2 border-transparent p-1 font-medium transition-all data-[active=true]:bg-[#3c096c] data-[active=true]:text-[#ffd500] hover:bg-secondary hover:text-black',
         className,
       )}
       {...restProps}
