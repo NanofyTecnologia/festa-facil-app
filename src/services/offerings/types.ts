@@ -8,6 +8,7 @@ export type Offering = {
   cep: string
   slug: string
   state: string
+  summary: string
   description: string
   rating: number
   createdAt: string

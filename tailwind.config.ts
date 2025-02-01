@@ -55,6 +55,15 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        app: {
+          primary: '#9D4EDD',
+          secondary: '#FFAA00',
+          darkblue: '#002163',
+          darkpurple: '#3c096c',
+          yellow: '#FFD500',
+          cyan: '#4CC9F0',
+          lime: '#35E95F',
+        },
         gold: '#DAA520',
       },
       borderRadius: {

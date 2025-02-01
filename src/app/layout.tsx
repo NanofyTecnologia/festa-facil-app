@@ -12,8 +12,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Festa Fácil',
-    default: 'Festa Fácil',
+    template: '%s | Celebra',
+    default: 'Celebra',
   },
   description: 'Aplicação em Desenvolvimento',
 }

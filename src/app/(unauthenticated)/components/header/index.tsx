@@ -52,38 +52,27 @@ export default function Header() {
         </nav>
 
         <div className="mx-auto hidden h-[68px] max-w-7xl justify-between px-4 py-4 md:flex 2xl:px-0">
-          <Image src={CelebraLogo} className="w-64 object-fill" alt="celebra" />
+          <Image
+            src={CelebraLogo}
+            className="h-auto w-64 object-fill"
+            alt="Logo Celebra"
+          />
 
           <nav className="flex items-center gap-4 text-zinc-500">
-            <Link
-              href="/"
-              className="block rounded p-2 font-medium transition-all hover:bg-secondary hover:text-black"
-            >
-              Inicio
-            </Link>
+            <Link href="/">Inicio</Link>
 
-            <Link
-              href="#"
-              className="block rounded p-2 font-medium transition-all hover:bg-secondary hover:text-black"
-            >
-              Fornecedores
-            </Link>
+            <Link href="#">Fornecedores</Link>
 
-            <Link href="#">Sobre</Link>
+            <Link href="#sobre-nos">Sobre</Link>
 
-            <Link
-              href="#"
-              className="block rounded p-2 font-medium transition-all hover:bg-secondary hover:text-black"
-            >
-              Entre em contato
-            </Link>
+            <Link href="#">Entre em contato</Link>
 
             <div className="ms-6">
               {!isAuthenticated && (
                 <Button.Root
                   variant="outline"
                   onClick={() => setShowDialog(true)}
-                  className="rounded p-2 px-4 font-medium text-zinc-500 transition-all hover:bg-secondary"
+                  className="border-2 border-app-primary font-medium text-app-primary transition-all hover:bg-purple-100 hover:text-app-primary"
                 >
                   Entrar
                 </Button.Root>

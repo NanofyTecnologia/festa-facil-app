@@ -122,3 +122,62 @@
     outline: none;
   }
 }
+
+.slanted-edge {
+  --p: 80px;
+  height: 360px;
+  width: 680px;
+  aspect-ratio: 1;
+  clip-path: polygon(0 0,100% 0,100% 100%,0 calc(100% - var(--p)));
+  background: #FFAA00;
+}
+
+.rounded-wave {
+  height: 720px;
+  --mask:
+    radial-gradient(120.93px at 50% calc(100% - 165px),#000 99%,#0000 101%) calc(50% - 120px) 0/240px 100%,
+    radial-gradient(120.93px at 50% calc(100% + 105px),#0000 99%,#000 101%) 50% calc(100% - 60px)/240px 100% repeat-x;
+  -webkit-mask: var(--mask);
+          mask: var(--mask);
+}
+
+.ribbon {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+}
+.ribbon {
+  --r: .4em;
+
+  position: absolute;
+  top: 20px;
+  inset-inline: calc(-1*var(--r));
+  text-align: center;
+  line-height: 1.8; 
+  padding: 0 .5em calc(2*var(--r));
+  border-radius: var(--r);
+  --_g:100%/var(--r) calc(2*var(--r)) no-repeat;
+  background: 
+    radial-gradient(100% 50% at right,#0005 98%,#0000 101%) 0    var(--_g),
+    radial-gradient(100% 50% at left ,#0005 98%,#0000 101%) 100% var(--_g),
+    conic-gradient(from 90deg at var(--r) calc(100% - 2*var(--r)),#0000 25%,#4CC9F0 0)
+     0 0/calc(100% - var(--r)) 100%;
+}
+
+.corner-only {
+  --s: 50px;
+  border: 8px solid #4CC9F0; 
+  padding: 10px;
+  mask: 
+    conic-gradient(#000 0 0) content-box,
+    conic-gradient(at var(--s) var(--s),#0000 75%,#000 0) 
+    0 0/calc(100% - var(--s)) calc(100% - var(--s));
+}
+
+.triangle-cut {
+  --b: 60px;
+  --h: 40px;
+
+  aspect-ratio: 1.2;
+  clip-path: polygon(0 0,100% 0,100% calc(50% - var(--b)/2),calc(100% - var(--h)) 50%,100% calc(50% + var(--b)/2),100% 100%,0 100%,0 calc(50% + var(--b)/2),var(--h) 50%,0 calc(50% - var(--b)/2));
+}
