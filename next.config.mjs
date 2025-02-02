@@ -24,8 +24,8 @@ const nextConfig = {
         pathname: '/storage/**',
       },
       {
-        protocol: 'http',
-        hostname: 'b9be-191-13-42-121.ngrok-free.app',
+        protocol: 'https',
+        hostname: '7810-179-94-143-139.ngrok-free.app',
         pathname: '/uploads/**',
       },
     ],
