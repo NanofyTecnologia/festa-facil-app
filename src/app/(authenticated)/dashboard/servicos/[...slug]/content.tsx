@@ -2,10 +2,16 @@
 
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
-import { useCallback, useEffect } from 'react'
+import { Fragment, useCallback, useEffect } from 'react'
 import { useHookFormMask } from 'use-mask-input'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { ChevronLeft, CircleHelp, Info, Link, Search } from 'lucide-react'
+import {
+  FormProvider,
+  SubmitHandler,
+  useFieldArray,
+  UseFieldArrayAppend,
+  useForm,
+} from 'react-hook-form'
+import { ChevronLeft, CircleHelp, Info, Link, Plus, Search } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FaRegImage } from 'react-icons/fa'
@@ -17,22 +23,27 @@ import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { Editor } from '@/components/ui/editor'
 import { Switch } from '@/components/ui/switch'
+import { Dialog } from '@/components/ui/dialog'
 import { Tooltip } from '@/components/ui/tooltip'
+import { Textarea } from '@/components/ui/textarea'
 
 import { upload } from '@/services/upload'
 import { address } from '@/services/address'
 
 import { normalizeSlug } from '@/utils/normalize-slug'
-
+import { useModal } from '@/hooks/use-modal'
 import { useImagePreview } from '@/hooks/use-image-preview'
 import { useGetCategories } from '@/hooks/use-get-categories'
-
-import { type IParams } from './page'
-import { serviceSchema, type ServiceData } from './schema'
 
 import { useCreateOffer } from '../hooks/use-create-offer'
 import { useUpdateOffer } from '../hooks/use-update-offer'
 import { useGetOfferById } from '../hooks/use-get-offer-by-id'
+
+import { type IParams } from './page'
+import { serviceSchema, type ServiceData } from './schema'
+import CardExperience from './components/card-experience'
+import FormExperience from './components/form-experience'
+import { ExperienceData } from './components/form-experience/schema'
 
 export default function Content() {
   const { replace, back } = useRouter()
@@ -40,20 +51,31 @@ export default function Content() {
   const { id, isEditing } = normalizeSlug(slug)
 
   const {
-    watch,
-    reset,
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ServiceData>({
+    open: handleOpenCaseModal,
+    close: handleCloseCaseModal,
+    opened: caseModalIsOpened,
+  } = useModal()
+
+  const methods = useForm<ServiceData>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
       active: false,
     },
   })
-
+  const {
+    watch,
+    reset,
+    control,
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = methods
   const { cep, name, categoryId, banner, active } = watch()
+  const { fields, append, remove } = useFieldArray<ServiceData>({
+    control,
+    name: 'experiences',
+  })
 
   const { data: categories } = useGetCategories()
   const registerWithMask = useHookFormMask(register)
@@ -65,6 +87,8 @@ export default function Content() {
     useCreateOffer()
 
   const uploadFile = async (file: File[]): Promise<string> => {
+    if (typeof file === 'string') return file
+
     if (!file) return ''
 
     const formData = new FormData()
@@ -82,16 +106,30 @@ export default function Content() {
   }, [])
 
   const onSubmit: SubmitHandler<ServiceData> = async (data) => {
-    const { banner, ...dataWithoutFile } = data
+    const { banner, experiences, ...dataWithoutFile } = data
 
     const bannerPath = await uploadFile(banner)
+
+    const uploadExperiencesImages = Promise.all(
+      experiences?.map(async ({ image, ...restItem }) => {
+        const uploadedPath = await uploadFile(image)
+
+        return {
+          ...restItem,
+          image: uploadedPath,
+        }
+      }) ?? [],
+    )
+
+    const uploadedExperiencesImage = await uploadExperiencesImages
 
     if (id) {
       handleUpdateOffer(
         {
           id,
           ...dataWithoutFile,
-          banner: bannerPath,
+          banner: bannerPath || imagePreview,
+          experiences: uploadedExperiencesImage,
         },
         {
           onSuccess: () => {
@@ -132,11 +170,14 @@ export default function Content() {
       email,
       banner,
       active,
+      summary,
       categoryId,
       description,
+      experiences,
     } = offering
 
     setImagePreview(banner)
+
     reset({
       cep,
       name,
@@ -146,8 +187,10 @@ export default function Content() {
       state,
       email,
       active,
+      summary,
       categoryId,
       description,
+      experiences,
     })
   }
 
@@ -261,6 +304,15 @@ export default function Content() {
                     )}
                   </div>
                 </div>
+              </div>
+
+              <div className="space-y-0.5">
+                <Label.Root>Resumo</Label.Root>
+
+                <Textarea.Root
+                  {...register('summary')}
+                  className="resize-none"
+                />
               </div>
 
               <div className="col-span-full space-y-0.5">
@@ -444,6 +496,44 @@ export default function Content() {
             </div>
           </div>
 
+          <div className="rounded-md border bg-white">
+            <div className="flex items-center border-b p-6">
+              <h2 className="text-lg font-medium">Nossa experiência</h2>
+
+              <div className="ms-auto text-sm">
+                <p className="text-zinc-400">Limite - {fields.length} / 5</p>
+              </div>
+            </div>
+
+            <div className="space-y-4 p-6 pt-4">
+              <div className="flex w-full">
+                <Button.Root
+                  size="sm"
+                  onClick={handleOpenCaseModal}
+                  disabled={fields.length === 5}
+                  className="ms-auto h-8 px-2 text-sm"
+                >
+                  <Plus className="me-1 size-5" />
+                  Adicionar experiência
+                </Button.Root>
+              </div>
+
+              <div className="space-y-12">
+                {fields.map((field, index) => (
+                  <Fragment key={field.id}>
+                    <FormProvider {...methods}>
+                      <CardExperience
+                        key={index}
+                        index={index}
+                        remove={remove}
+                      />
+                    </FormProvider>
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className="col-span-full flex items-center justify-end">
             <Button.Root type="submit" className="w-36" disabled={isLoading}>
               Enviar
@@ -451,6 +541,23 @@ export default function Content() {
           </div>
         </form>
       </div>
+
+      <Dialog.Root open={caseModalIsOpened} onOpenChange={handleCloseCaseModal}>
+        <Dialog.Content className="max-w-4xl">
+          <Dialog.Header>
+            <Dialog.Title>Nova experiência</Dialog.Title>
+
+            <Dialog.Description>
+              Compartilhe seus melhores trabalhos e mostre sua experiência para
+              futuros clientes.
+            </Dialog.Description>
+          </Dialog.Header>
+
+          <FormExperience
+            append={append as unknown as UseFieldArrayAppend<ExperienceData>}
+          />
+        </Dialog.Content>
+      </Dialog.Root>
     </>
   )
 }

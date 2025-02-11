@@ -16,6 +16,14 @@ export type Offering = {
   banner: string
   profilePic: string
   categoryId: string
+  experiences: {
+    id?: string
+    title: string
+    description: string
+    image: string
+    serviceDate: string
+    location: string
+  }[]
   category: {
     name: string
     slug: string
@@ -25,7 +33,7 @@ export type Offering = {
 export type GetByIdOfferingParams = {
   id: string | undefined
 }
-export type GetbyIdOfferingResponse = Offering
+export type GetByIdOfferingResponse = Offering
 
 export type GetBySlugOfferingParams = {
   slug: string | undefined
@@ -42,7 +50,16 @@ export type GetOfferingsResponse = Offering[]
 export type PostOfferingParams = Partial<Offering>
 export type PostOfferingResponse = Offering
 
-export type PutOfferingParams = Partial<Offering>
+export type PutOfferingParams = Partial<Offering> & {
+  experiences: {
+    id?: string
+    title: string
+    image: string
+    location: string
+    serviceDate: string
+    description: string
+  }[]
+}
 export type PutOfferingResponse = Offering
 
 export type DeleteOfferingParams = { id: string }
