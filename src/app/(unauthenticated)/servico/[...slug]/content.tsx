@@ -1,12 +1,15 @@
 'use client'
 
 import Image from 'next/image'
+import { Fragment } from 'react'
+import { format } from 'date-fns'
 import { useParams } from 'next/navigation'
-import { CreditCard, Mail } from 'lucide-react'
+import { Calendar, CreditCard, Mail, MapPin } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
+import { Carousel } from '@/components/ui/carousel'
 
 import { normalizeSlug } from '@/utils/normalize-slug'
 
@@ -78,6 +81,51 @@ export default function Content() {
             className="tiptap mt-6"
             dangerouslySetInnerHTML={{ __html: data?.description ?? '' }}
           />
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-2xl font-semibold">Nossa experiência</h2>
+
+          <div className="">
+            <Carousel.Root>
+              <Carousel.Content>
+                {data?.experiences.map((item) => (
+                  <Fragment key={item.id}>
+                    <Carousel.Item className="basis-1/4 py-2">
+                      <div className="space-y-2 rounded-md border p-4">
+                        <Image
+                          width={178}
+                          height={178}
+                          src={item.image}
+                          className="max-h-48 w-full rounded-md object-cover"
+                          alt=""
+                        />
+
+                        <div className="space-y-1">
+                          <h3>{item.title}</h3>
+
+                          <p className="line-clamp-3 text-justify text-zinc-400">
+                            {item.description}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center">
+                          <p className="flex items-center gap-1">
+                            <MapPin className="size-4" /> {item.location}
+                          </p>
+
+                          <p className="flex items-center gap-1">
+                            <Calendar className="size-4" />{' '}
+                            {format(item.serviceDate, 'PPP')}
+                          </p>
+                        </div>
+                      </div>
+                    </Carousel.Item>
+                  </Fragment>
+                ))}
+              </Carousel.Content>
+            </Carousel.Root>
+          </div>
         </div>
       </div>
     </>

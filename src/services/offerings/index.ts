@@ -7,7 +7,7 @@ import type {
   PutOfferingParams,
   PutOfferingResponse,
   GetByIdOfferingParams,
-  GetbyIdOfferingResponse,
+  GetByIdOfferingResponse,
   DeleteOfferingParams,
   GetOfferingByCategoryParams,
   GetOfferingByCategoryResponse,
@@ -16,7 +16,7 @@ import type {
 
 export const offerings = {
   async getById(params: GetByIdOfferingParams) {
-    const { data } = await axios.get<GetbyIdOfferingResponse>(
+    const { data } = await axios.get<GetByIdOfferingResponse>(
       '/offering/' + params.id,
     )
 

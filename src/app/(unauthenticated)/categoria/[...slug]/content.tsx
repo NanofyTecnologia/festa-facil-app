@@ -23,7 +23,7 @@ export default function Content() {
         </div>
       </main>
 
-      <div className="">
+      <div className="w-full">
         <Input.Root className="h-9" placeholder="Pesquisar por nome..." />
       </div>
 

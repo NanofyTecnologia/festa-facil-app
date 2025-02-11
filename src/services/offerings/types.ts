@@ -33,7 +33,7 @@ export type Offering = {
 export type GetByIdOfferingParams = {
   id: string | undefined
 }
-export type GetbyIdOfferingResponse = Offering
+export type GetByIdOfferingResponse = Offering
 
 export type GetBySlugOfferingParams = {
   slug: string | undefined

@@ -1,8 +1,6 @@
-import Image from 'next/image'
-import { useCallback } from 'react'
-import { useDropzone } from 'react-dropzone'
+import { useRef } from 'react'
 import { useForm, SubmitHandler, UseFieldArrayAppend } from 'react-hook-form'
-import { FaRegImage } from 'react-icons/fa'
+import { isValid } from 'date-fns'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Input } from '@/components/ui/input'
@@ -10,8 +8,8 @@ import { Label } from '@/components/ui/label'
 import { Dialog } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-
-import { useImagePreview } from '@/hooks/use-image-preview'
+import { DatePicker } from '@/components/ui/date-picker'
+import { ImagePicker } from '@/components/image-picker'
 
 import { ExperienceData, experienceSchema } from './schema'
 
@@ -22,51 +20,29 @@ interface FormExperienceProps {
 export default function FormExperience(props: FormExperienceProps) {
   const { append } = props
 
+  const dialogCloseRef = useRef<HTMLButtonElement>(null)
+
   const { watch, handleSubmit, register, setValue } = useForm<ExperienceData>({
     resolver: zodResolver(experienceSchema),
   })
-  const { image } = watch()
-  const [imagePreview] = useImagePreview(image)
-
-  const onDrop = useCallback((acceptedFiles: FileList | File[] | null) => {
-    setValue('image', acceptedFiles)
-  }, [])
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop })
+  const { serviceDate } = watch()
 
   const onSubmit: SubmitHandler<ExperienceData> = (data) => {
     append(data)
+
+    dialogCloseRef.current?.click()
   }
+
+  const date = isValid(new Date(serviceDate))
+    ? new Date(serviceDate)
+    : undefined
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-start gap-6 md:flex-row">
-          <div className="w-full md:w-80">
-            <div
-              {...getRootProps()}
-              className="flex h-[250px] items-center justify-center rounded-md border border-dashed md:h-[302px]"
-            >
-              {!imagePreview && (
-                <div className="flex flex-col items-center space-y-1">
-                  <FaRegImage className="size-10" />
-                  <p>Arraste e solte sua imagem aqui</p>
-                  <p className="text-xs">A imagem deve ter no máximo 10MB.</p>
-                </div>
-              )}
-
-              {imagePreview && (
-                <Image
-                  width={798}
-                  height={384}
-                  src={imagePreview}
-                  className="h-full w-full rounded-md object-cover"
-                  alt=""
-                />
-              )}
-
-              <input {...getInputProps()} hidden />
-            </div>
+          <div className="h-[250px] w-full md:h-[302px] md:w-80">
+            <ImagePicker onValueChange={(value) => setValue('image', value)} />
           </div>
 
           <div className="w-full flex-1 space-y-6">
@@ -93,9 +69,13 @@ export default function FormExperience(props: FormExperienceProps) {
               <div className="space-y-0.5">
                 <Label.Root>Data do serviço</Label.Root>
 
-                <Input.Root
-                  {...register('serviceDate')}
-                  placeholder="12 de Janeiro de 2024"
+                <DatePicker.Root
+                  date={date}
+                  setDate={(value) => {
+                    if (!value) return
+
+                    setValue(`serviceDate`, value.toISOString())
+                  }}
                 />
               </div>
 
@@ -112,7 +92,7 @@ export default function FormExperience(props: FormExperienceProps) {
         </div>
 
         <Dialog.Footer className="mt-6 gap-y-4">
-          <Dialog.Close asChild>
+          <Dialog.Close asChild ref={dialogCloseRef}>
             <Button.Root variant="secondary">Cancelar</Button.Root>
           </Dialog.Close>
 

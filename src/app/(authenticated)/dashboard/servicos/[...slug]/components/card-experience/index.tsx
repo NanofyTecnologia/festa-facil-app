@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import { DatePicker } from '@/components/ui/date-picker'
 
 import { useImagePreview } from '@/hooks/use-image-preview'
 
@@ -23,7 +24,7 @@ export default function CardExperience(props: CardExperienceProps) {
   const { index, remove } = props
 
   const { mutate: handleDeleteExperience } = useDeleteExperience()
-  const { register, watch } = useFormContext<ServiceData>()
+  const { register, watch, setValue } = useFormContext<ServiceData>()
   const { experiences } = watch()
 
   const [imagePreview] = useImagePreview(
@@ -41,6 +42,7 @@ export default function CardExperience(props: CardExperienceProps) {
   }
 
   if (!experiences) return <></>
+
   const defaultImageURL = experiences[index]?.image
 
   return (
@@ -59,7 +61,9 @@ export default function CardExperience(props: CardExperienceProps) {
       <div className="flex flex-col items-start gap-6 md:flex-row">
         <div className="w-full md:w-80">
           <div className="flex h-[302px] items-center justify-center rounded-md border border-dashed">
-            <Camera className="size-8 text-zinc-400" />
+            {!(imagePreview || defaultImageURL) && (
+              <Camera className="size-8 text-zinc-400" />
+            )}
 
             <Image
               width={1280}
@@ -95,9 +99,16 @@ export default function CardExperience(props: CardExperienceProps) {
             <div className="space-y-0.5">
               <Label.Root>Data do serviço</Label.Root>
 
-              <Input.Root
-                {...register(`experiences.${index}.serviceDate`)}
-                placeholder="Exemplo: 12 de Janeiro de 2024"
+              <DatePicker.Root
+                date={new Date(experiences[index].serviceDate)}
+                setDate={(value) => {
+                  if (!value) return
+
+                  setValue(
+                    `experiences.${index}.serviceDate`,
+                    value.toISOString(),
+                  )
+                }}
               />
             </div>
 
