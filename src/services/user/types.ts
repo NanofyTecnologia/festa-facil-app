@@ -1,10 +1,13 @@
-export type User = {
+export type UserPreview = {
   id: string
   name: string
   email: string
   cpf: string
+  isActive: boolean
   role: 'ADMIN' | 'CUSTOMER' | 'SUPPLIER'
 }
 
-export type GetUserResponse = User
-export type UpdateUserData = Partial<User>
+export type GetUserResponse = UserPreview
+export type UpdateUserData = Partial<UserPreview>
+
+export type GetUsersResponse = UserPreview[]

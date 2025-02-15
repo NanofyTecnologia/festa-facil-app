@@ -20,6 +20,7 @@ model User {
   emailVerified DateTime?
   image         String?
   cpf           String?
+  isActive      Boolean   @default(true) @map("is_active")
   role          Role      @default(CUSTOMER)
   accounts      Account[]
   sessions      Session[]

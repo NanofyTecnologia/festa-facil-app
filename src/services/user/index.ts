@@ -1,14 +1,10 @@
 import axios from '@/lib/axios'
 
-import { type GetUserResponse, type UpdateUserData } from './types'
+import type { GetUsersResponse, GetUserResponse, UpdateUserData } from './types'
 
 export const user = {
   async getById(id: string) {
-    const { data: user } = await axios.get<GetUserResponse>('/user', {
-      headers: {
-        Authorization: id,
-      },
-    })
+    const { data: user } = await axios.get<GetUserResponse>('/user/' + id)
 
     return user
   },
@@ -27,5 +23,17 @@ export const user = {
     })
 
     return updatedData
+  },
+}
+
+export const userAdmin = {
+  async get({ userId }: { userId: string }) {
+    const { data } = await axios.get<GetUsersResponse>('/admin/user', {
+      headers: {
+        Authorization: userId,
+      },
+    })
+
+    return data
   },
 }

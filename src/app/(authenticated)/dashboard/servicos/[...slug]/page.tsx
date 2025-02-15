@@ -19,9 +19,5 @@ export function generateMetadata({ params }: { params: IParams }): Metadata {
 }
 
 export default function Page() {
-  return (
-    <>
-      <Content />
-    </>
-  )
+  return <Content />
 }
