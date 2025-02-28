@@ -25,6 +25,7 @@ export type GetCategoryBySlugResponse = {
     slug: string
     state: string
     banner: string
+    summary: string
     rating: number
   }[]
 }

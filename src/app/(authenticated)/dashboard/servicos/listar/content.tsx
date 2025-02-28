@@ -1,15 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { format } from 'date-fns'
-import { Edit, Plus, Trash } from 'lucide-react'
+
+import { CircleCheck, CircleX, Edit, Plus, Trash } from 'lucide-react'
+
 import { createColumnHelper } from '@tanstack/react-table'
+import { format } from 'date-fns'
 
 import { Badge } from '@/components/ui/badge'
-import { Table } from '@/components/ui/table'
-import { Dialog } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-
+import { Dialog } from '@/components/ui/dialog'
+import { Table } from '@/components/ui/table'
 import { Offering } from '@/services/offerings/types'
 
 import { useDeleteOffer } from './hooks/use-delete-offer'
@@ -89,6 +90,22 @@ export default function Content() {
             <Link href={`/servico/${row.original.id}`}>
               <Badge.Root>{getValue()}</Badge.Root>
             </Link>
+          </div>
+        </Table.Cell>
+      ),
+    }),
+    columnHelper.accessor('active', {
+      header: ({ header }) => (
+        <Table.Head header={header}>Página ativa?</Table.Head>
+      ),
+      cell: ({ cell, getValue }) => (
+        <Table.Cell cell={cell}>
+          <div className="flex justify-center">
+            {getValue() ? (
+              <CircleCheck className="size-6 text-green-500" />
+            ) : (
+              <CircleX className="size-6 text-red-500" />
+            )}
           </div>
         </Table.Cell>
       ),
