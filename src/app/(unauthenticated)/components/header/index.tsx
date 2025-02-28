@@ -2,8 +2,7 @@
 
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { signOut, useSession } from 'next-auth/react'
-import { Fragment, useState } from 'react'
+
 import {
   Menu,
   LogOut,
@@ -13,28 +12,29 @@ import {
   ChevronDown,
 } from 'lucide-react'
 
-import Link from './link'
-
-import { Sheet } from '@/components/ui/sheet'
-import { Dialog } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { Dropdown } from '@/components/ui/dropdown'
-import { Accordion } from '@/components/ui/accordion'
-
-import { useGetCategories } from '@/hooks/use-get-categories'
+import { signOut, useSession } from 'next-auth/react'
+import { Fragment, useState } from 'react'
 
 import CelebraLogo from '@/assets/images/Logo_Horizontal_Roxo_Claro.svg'
+import { Accordion } from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
+import { Dialog } from '@/components/ui/dialog'
+import { Dropdown } from '@/components/ui/dropdown'
+import { Sheet } from '@/components/ui/sheet'
+import { useGetCategories } from '@/hooks/services/use-get-categories'
+
+import Link from './link'
 import SignIn from '../sign-in'
 
 export default function Header() {
-  const { data } = useSession()
+  const { data: session } = useSession()
 
   const [showDialog, setShowDialog] = useState(false)
   const [showSideMenu, setShowSideMenu] = useState(false)
 
   const { data: categories } = useGetCategories()
 
-  const isAuthenticated = !!data?.user.id
+  const isAuthenticated = !!session?.user.id
 
   return (
     <>
@@ -52,11 +52,9 @@ export default function Header() {
         </nav>
 
         <div className="mx-auto hidden h-[68px] max-w-7xl justify-between px-4 py-4 md:flex 2xl:px-0">
-          <Image
-            src={CelebraLogo}
-            className="h-auto w-64 object-fill"
-            alt="Logo Celebra"
-          />
+          <div className="flex justify-start">
+            <Image width={128} src={CelebraLogo} alt="Logo Celebra" />
+          </div>
 
           <nav className="flex items-center gap-4 text-zinc-500">
             <Link href="/">Inicio</Link>
@@ -96,7 +94,12 @@ export default function Header() {
 
                     <Dropdown.Item
                       asChild
-                      disabled={data.user.role === 'CUSTOMER'}
+                      disabled={
+                        !(
+                          session.user.role === 'SUPPLIER' ||
+                          session.user.role === 'ADMIN'
+                        )
+                      }
                     >
                       <NextLink href="/dashboard" className="font-medium">
                         <ChartArea className="me-2 size-4" /> Dashboard

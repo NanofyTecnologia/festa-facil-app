@@ -1,15 +1,16 @@
 'use client'
 
 import { MoveRight } from 'lucide-react'
+
 import { signOut, useSession } from 'next-auth/react'
 
-import { Button } from '@/components/ui/button'
 import { Accordion } from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
 
 import Link from './link'
 
 export default function Sidebar() {
-  const { data } = useSession()
+  const { data: session } = useSession()
 
   return (
     <>
@@ -23,13 +24,6 @@ export default function Sidebar() {
             Dashboard
             <MoveRight className="size-4" />
           </Link>
-
-          {data?.user.role === 'ADMIN' && (
-            <Link href="/dashboard/categorias">
-              Categorias
-              <MoveRight className="size-4" />
-            </Link>
-          )}
 
           <Accordion.Root type="single" collapsible>
             <Accordion.Item value="category" className="border-0">
@@ -51,7 +45,7 @@ export default function Sidebar() {
                     </Link>
                   </li>
 
-                  {data?.user.role === 'ADMIN' && (
+                  {session?.user.role === 'ADMIN' && (
                     <li>
                       <Link href="/dashboard/servicos/moderar">
                         Moderar
@@ -64,42 +58,75 @@ export default function Sidebar() {
             </Accordion.Item>
           </Accordion.Root>
 
-          {data?.user.role === 'ADMIN' && (
-            <Accordion.Root type="single" collapsible>
-              <Accordion.Item value="category" className="border-0">
-                <Accordion.Trigger className="rounded p-2 text-base font-medium text-zinc-500 hover:bg-secondary hover:text-black hover:no-underline">
-                  Usuários
-                </Accordion.Trigger>
-                <Accordion.Content className="pb-0">
-                  <ul className="mt-2 space-y-1 pl-4 text-base text-zinc-500">
-                    <li>
-                      <Link href="/dashboard/usuarios/listar">
-                        Listar
-                        <MoveRight className="size-4" />
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/dashboard/usuarios/criar">
-                        Criar
-                        <MoveRight className="size-4" />
-                      </Link>
-                    </li>
-                  </ul>
-                </Accordion.Content>
-              </Accordion.Item>
-            </Accordion.Root>
-          )}
-
-          {data?.user.role === 'ADMIN' && (
-            <Link href="/dashboard/parceiros">
-              Parceiros
-              <MoveRight className="size-4" />
-            </Link>
-          )}
-
           <Link href="/conta/configuracoes">
             Minha conta <MoveRight className="size-4" />
           </Link>
+
+          {session?.user.role === 'ADMIN' && (
+            <div className="space-y-2 border-t">
+              <p className="mb-2 mt-4 text-xs font-semibold text-zinc-700">
+                Área Administrativa
+              </p>
+
+              <Accordion.Root type="single" collapsible>
+                <Accordion.Item value="category" className="border-0">
+                  <Accordion.Trigger className="rounded p-2 text-base font-medium text-zinc-500 hover:bg-secondary hover:text-black hover:no-underline">
+                    Usuários
+                  </Accordion.Trigger>
+                  <Accordion.Content className="pb-0">
+                    <ul className="mt-2 space-y-1 pl-4 text-base text-zinc-500">
+                      <li>
+                        <Link href="/dashboard/usuarios/listar">
+                          Listar
+                          <MoveRight className="size-4" />
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/dashboard/usuarios/criar">
+                          Criar
+                          <MoveRight className="size-4" />
+                        </Link>
+                      </li>
+                    </ul>
+                  </Accordion.Content>
+                </Accordion.Item>
+              </Accordion.Root>
+
+              <Accordion.Root type="single" collapsible>
+                <Accordion.Item value="category" className="border-0">
+                  <Accordion.Trigger className="rounded p-2 text-base font-medium text-zinc-500 hover:bg-secondary hover:text-black hover:no-underline">
+                    Empresas
+                  </Accordion.Trigger>
+                  <Accordion.Content className="pb-0">
+                    <ul className="mt-2 space-y-1 pl-4 text-base text-zinc-500">
+                      <li>
+                        <Link href="/dashboard/empresas/listar">
+                          Listar
+                          <MoveRight className="size-4" />
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/dashboard/empresas/criar">
+                          Criar
+                          <MoveRight className="size-4" />
+                        </Link>
+                      </li>
+                    </ul>
+                  </Accordion.Content>
+                </Accordion.Item>
+              </Accordion.Root>
+
+              <Link href="/dashboard/categorias">
+                Categorias
+                <MoveRight className="size-4" />
+              </Link>
+
+              <Link href="/dashboard/parceiros">
+                Parceiros
+                <MoveRight className="size-4" />
+              </Link>
+            </div>
+          )}
         </div>
 
         <div className="p-4">

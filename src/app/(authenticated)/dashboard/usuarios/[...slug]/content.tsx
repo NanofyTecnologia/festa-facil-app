@@ -1,31 +1,40 @@
 'use client'
 
-import { useCallback, useEffect } from 'react'
-import { useHookFormMask } from 'use-mask-input'
 import { useParams, useRouter } from 'next/navigation'
+
 import { ChevronLeft, CircleHelp } from 'lucide-react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+
 import { zodResolver } from '@hookform/resolvers/zod'
+import { AxiosError } from 'axios'
+import { useCallback, useEffect, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import { useHookFormMask } from 'use-mask-input'
 
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Switch } from '@/components/ui/switch'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
 import { Tooltip } from '@/components/ui/tooltip'
-
+import { useGetUserById } from '@/hooks/services/use-get-by-user-id'
 import { normalizeSlug } from '@/utils/normalize-slug'
 
+import { useCreateUser } from './hooks/use-create-user'
+import { useUpdateUser } from './hooks/use-update-user'
 import { IParams } from './page'
 import { CreateUserData, userSchema } from './schema'
-import { useGetUserById } from './hooks/use-get-user-by-id'
 
 export default function Content() {
-  const { back } = useRouter()
+  const { back, push } = useRouter()
   const params = useParams<IParams>()
   const { id, isEditing } = normalizeSlug(params.slug)
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const { data: user } = useGetUserById({ id })
+  const { mutate: handleCreateUser } = useCreateUser()
+  const { mutate: handleUpdateUser } = useUpdateUser()
 
   const { watch, handleSubmit, register, setValue, reset } =
     useForm<CreateUserData>({
@@ -53,7 +62,49 @@ export default function Content() {
   }, [user, reset])
 
   const onSubmit: SubmitHandler<CreateUserData> = (data) => {
-    console.log(data)
+    setIsSubmitting(true)
+
+    if (id) {
+      handleUpdateUser(
+        {
+          id,
+          ...data,
+        },
+        {
+          onSuccess: () => {
+            toast.success('Usuário editado com sucesso!')
+          },
+          onError: (error) => {
+            if (error instanceof AxiosError) {
+              return toast.error(error.response?.data.message)
+            }
+          },
+          onSettled: () => {
+            setIsSubmitting(false)
+          },
+        },
+      )
+
+      return
+    }
+
+    handleCreateUser(
+      { ...data },
+      {
+        onSuccess: () => {
+          push('/dashboard/usuarios/listar')
+          toast.success('Usuário criado com sucesso!')
+        },
+        onError: (error) => {
+          if (error instanceof AxiosError) {
+            return toast.error(error.response?.data.message)
+          }
+        },
+        onSettled: () => {
+          setIsSubmitting(false)
+        },
+      },
+    )
   }
 
   useEffect(() => {
@@ -64,10 +115,6 @@ export default function Content() {
     <>
       <div className="mx-auto mt-6 max-w-4xl">
         <div className="mb-6 flex items-center justify-start gap-2">
-          <Button.Root variant="ghost" size="icon" onClick={() => back()}>
-            <ChevronLeft className="size-5" />
-          </Button.Root>
-
           <h1 className="text-xl font-semibold">
             {isEditing ? 'Editando usuário' : 'Novo usuário'}
           </h1>
@@ -167,8 +214,8 @@ export default function Content() {
           </div>
 
           <div className="col-span-full flex items-center justify-end">
-            <Button.Root type="submit" className="w-36">
-              Cadastrar
+            <Button.Root type="submit" className="w-36" disabled={isSubmitting}>
+              {isSubmitting ? 'Carregando...' : 'Cadastrar'}
             </Button.Root>
           </div>
         </form>

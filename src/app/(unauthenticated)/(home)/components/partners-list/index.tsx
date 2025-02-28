@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import { Carousel } from '@/components/ui/carousel'
 
-import { useGetPartners } from '@/hooks/use-get-partners'
+import { useGetPartners } from '@/hooks/services/use-get-partners'
 
 export default function PartnersList() {
   const { data: partners } = useGetPartners()

@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
-import { signOut, useSession } from 'next-auth/react'
 import { CircleUser, Menu, MoveRight } from 'lucide-react'
 
-import { Sheet } from '@/components/ui/sheet'
-import { Button } from '@/components/ui/button'
+import { signOut, useSession } from 'next-auth/react'
+import { useState } from 'react'
+
 import { Accordion } from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
+import { Sheet } from '@/components/ui/sheet'
 
 import Link from '../sidebar/link'
 

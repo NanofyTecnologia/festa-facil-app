@@ -1,8 +1,8 @@
-import { Adapter } from 'next-auth/adapters'
+import { PrismaAdapter } from '@auth/prisma-adapter'
 import { Theme, type NextAuthOptions } from 'next-auth'
+import { Adapter } from 'next-auth/adapters'
 import EmailProvider from 'next-auth/providers/email'
 import { createTransport } from 'nodemailer'
-import { PrismaAdapter } from '@auth/prisma-adapter'
 
 import { prisma } from '@/config/prisma'
 
@@ -52,6 +52,7 @@ export const authOptions: NextAuthOptions = {
     jwt: async ({ user, token, trigger, session }) => {
       if (user) {
         token.id = user.id
+        console.log('Cargo:', user.role)
         token.role = user.role
       }
 

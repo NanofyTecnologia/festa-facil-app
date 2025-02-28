@@ -1,15 +1,26 @@
 import axios from '@/lib/axios'
+
 import type {
   GetCategoriesResponse,
   CreateCategoriesResponse,
   DeleteCategoryResponse,
   GetCategoriesOfferingParams,
+  GetCategoryBySlugParams,
+  GetCategoryBySlugResponse,
 } from './types'
 import { GetOfferingByCategoryResponse } from '../offerings/types'
 
 export const categories = {
   async get() {
     const { data } = await axios.get<GetCategoriesResponse>('/categories')
+
+    return data
+  },
+
+  async getBySlug(params: GetCategoryBySlugParams) {
+    const { data } = await axios.get<GetCategoryBySlugResponse>(
+      '/categories/' + params.slug,
+    )
 
     return data
   },

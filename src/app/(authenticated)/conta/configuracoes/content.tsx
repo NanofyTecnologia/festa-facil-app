@@ -1,23 +1,24 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
+
 import { ChevronLeft, MoveRight, Pencil, User } from 'lucide-react'
-import { z } from 'zod'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useHookFormMask } from 'use-mask-input'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Dialog } from '@/components/ui/dialog'
 import { Checkbox } from '@/components/ui/checkbox'
-
+import { Dialog } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { validateCPF } from '@/utils/validate-cpf'
 
 import { useGetUser } from '../hooks/use-get-user'
@@ -42,14 +43,16 @@ type UserData = z.infer<typeof userSchema>
 
 export default function Content() {
   const { back } = useRouter()
-  const { data, update } = useSession()
+  const { data: session, update } = useSession()
+
+  console.log(session?.user.id)
 
   const [checked, setChecked] = useState(false)
   const [showDialog, setShowDialog] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const { mutate: handleUpdateUser } = useUpdateUser()
-  const { data: user } = useGetUser({ id: data?.user.id })
+  const { data: user } = useGetUser({ id: session?.user.id })
 
   const { reset, register, handleSubmit } = useForm<UserData>({
     resolver: zodResolver(userSchema),
@@ -65,10 +68,8 @@ export default function Content() {
 
     handleUpdateUser(
       {
-        data: {
-          ...data,
-        },
-        userId: user.id,
+        ...data,
+        id: user.id,
       },
       {
         onSuccess: () => {
@@ -104,10 +105,8 @@ export default function Content() {
 
     handleUpdateUser(
       {
-        data: {
-          role: 'SUPPLIER',
-        },
-        userId: user.id,
+        role: 'SUPPLIER',
+        id: user.id,
       },
       {
         onSuccess: () => {
@@ -123,7 +122,7 @@ export default function Content() {
 
   useEffect(handleDefaultValues, [user, reset])
 
-  if (!data?.user) {
+  if (!session?.user) {
     return (
       <div className="rouded-md bg-secondary p-6">
         <h2 className="text-center text-2xl">Carregando...</h2>
@@ -148,9 +147,9 @@ export default function Content() {
 
       <main className="px-4 py-6 sm:m-4 sm:rounded-md md:mx-auto md:max-w-lg">
         <form className="flex items-start gap-2">
-          {data?.user.image && <Image src={data?.user.image} alt="" />}
+          {session?.user.image && <Image src={session?.user.image} alt="" />}
 
-          {!data?.user.image && (
+          {!session?.user.image && (
             <>
               <label htmlFor="picture">
                 <div className="relative flex size-16 items-center justify-center rounded-full bg-secondary p-4">
@@ -167,7 +166,7 @@ export default function Content() {
           )}
 
           <div>
-            <h2 className="font-semibold">{data?.user.name}</h2>
+            <h2 className="font-semibold">{session?.user.name}</h2>
 
             <Badge.Root variant="outline">Free</Badge.Root>
           </div>
@@ -214,14 +213,16 @@ export default function Content() {
           <div className="flex items-center justify-between p-4">
             <div className="5 space-y-0">
               <h2 className="text-sm">Conta</h2>
-              <p className="text-base font-semibold">{role[data?.user.role]}</p>
+              <p className="text-base font-semibold">
+                {role[session?.user.role]}
+              </p>
             </div>
 
-            {data.user.role !== 'SUPPLIER' && (
+            {session.user.role !== 'SUPPLIER' && (
               <Button.Root
                 size="sm"
                 onClick={() => setShowDialog(true)}
-                disabled={data.user.role === 'ADMIN'}
+                disabled={session.user.role === 'ADMIN'}
               >
                 Tornar-se fornecedor
               </Button.Root>

@@ -4,9 +4,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Star, MapPin } from 'lucide-react'
 
-import { useLocation } from '@/context/location-context'
 import { Carousel } from '@/components/ui/carousel'
-import { useGetOfferingByRating } from '@/hooks/use-get-offering-by-rating'
+
+import { useLocation } from '@/context/location-context'
+import { useGetOfferingByRating } from '@/hooks/services/use-get-offering-by-rating'
 
 export default function CompanyList() {
   const { data: offerings } = useGetOfferingByRating()

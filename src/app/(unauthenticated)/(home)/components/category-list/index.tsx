@@ -4,8 +4,7 @@ import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
 import { Carousel } from '@/components/ui/carousel'
-
-import { useGetCategories } from '@/hooks/use-get-categories'
+import { useGetCategories } from '@/hooks/services/use-get-categories'
 
 const colors = [
   { base: 'bg-app-primary', hover: 'hover:bg-app-primary/70' },
@@ -27,7 +26,7 @@ export default function CategoryList() {
               size="sm"
               className={`h-16 w-60 rounded-md ${colors[index % colors.length].base} ${colors[index % colors.length].hover}`}
             >
-              <Link className="text-wrap" href={`/categoria/${category.id}`}>
+              <Link className="text-wrap" href={`/categoria/${category.slug}`}>
                 {category.name}
               </Link>
             </Button.Root>

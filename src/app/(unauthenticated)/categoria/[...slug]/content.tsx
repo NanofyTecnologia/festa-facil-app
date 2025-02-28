@@ -1,65 +1,84 @@
 'use client'
 
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { Fragment } from 'react'
+
 import { Star } from 'lucide-react'
 
-import { Input } from '@/components/ui/input'
+import { Fragment } from 'react'
 
-import { useGetServicesByCategory } from './hooks/use-get-services-by-category'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/shadcn'
+
+import { useGetCategoryBySlug } from './hooks/use-get-category-by-slug'
 
 export default function Content() {
   const { slug } = useParams()
 
-  const { data: services } = useGetServicesByCategory({ id: slug[0] })
+  const { data: category } = useGetCategoryBySlug({ slug: slug[0] })
 
   return (
     <>
-      <main className="h-64 bg-secondary px-4 sm:my-4 sm:rounded-md md:px-0">
-        <div className="flex h-full items-end justify-center pb-6">
-          <h2 className="text-3xl font-bold">{services?.name}</h2>
-        </div>
-      </main>
+      <div className="mx-auto h-96 max-w-7xl px-4 py-6 xl:px-0">
+        <div
+          className={cn('flex h-full items-center rounded-md bg-cover')}
+          style={{ backgroundImage: `url(${category?.background})` }}
+        >
+          <div className="flex h-full w-full flex-col justify-center rounded-md bg-black/55 px-6">
+            <h1 className="text-4xl font-semibold text-white">
+              {category?.name}
+            </h1>
 
-      <div className="w-full">
-        <Input.Root className="h-9" placeholder="Pesquisar por nome..." />
+            <div className="my-4">
+              <Breadcrumb.Root>
+                <Breadcrumb.List>
+                  <Breadcrumb.Item>
+                    <Breadcrumb.Link
+                      href="/"
+                      className="text-zinc-200 hover:text-white"
+                    >
+                      Inicio
+                    </Breadcrumb.Link>
+                  </Breadcrumb.Item>
+
+                  <Breadcrumb.Separator className="text-zinc-200" />
+
+                  <Breadcrumb.Item>
+                    <Breadcrumb.Link
+                      href="/servicos"
+                      className="text-zinc-200 hover:text-white"
+                    >
+                      Todos serviços
+                    </Breadcrumb.Link>
+                  </Breadcrumb.Item>
+
+                  <Breadcrumb.Separator className="text-zinc-200" />
+
+                  <Breadcrumb.Item>
+                    <Breadcrumb.Page className="text-white">
+                      {category?.name}
+                    </Breadcrumb.Page>
+                  </Breadcrumb.Item>
+                </Breadcrumb.List>
+              </Breadcrumb.Root>
+            </div>
+          </div>
+        </div>
+
+        <div className="my-6 space-y-6">
+          <Input.Root placeholder="Pesquisar..." />
+
+          <div className="grid grid-cols-3 gap-4">
+            {category?.offering.map((offering) => (
+              <div className="" key={offering.slug}>
+                <Image src={offering.banner} alt="" width={384} height={192} />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-
-      <section className="py-6 sm:m-4 sm:rounded-md md:mx-auto md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl">
-        <div className="grid w-full grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
-          {services?.result.map((service, index) => (
-            <Fragment key={index}>
-              <Link href={`/servico/${service.id}`}>
-                <div className="rounded-md border bg-secondary p-4">
-                  {service.banner && (
-                    <Image
-                      width={256}
-                      height={256}
-                      src={service.banner}
-                      alt={service.name}
-                      className="max-h-60 w-full rounded-md object-cover"
-                    />
-                  )}
-
-                  <div className="mt-4 flex items-center justify-between">
-                    <h3 className="font-semibold">{service.name}</h3>
-
-                    <p className="flex items-center gap-1 rounded-full border bg-secondary bg-white px-1">
-                      <Star className="size-4 text-yellow-500" />
-
-                      <span className="text-sm font-semibold">
-                        {service.rating}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </Fragment>
-          ))}
-        </div>
-      </section>
     </>
   )
 }

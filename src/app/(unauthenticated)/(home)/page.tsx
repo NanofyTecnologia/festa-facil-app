@@ -1,19 +1,19 @@
 'use client'
 
 import Image from 'next/image'
+
 import { Search } from 'lucide-react'
 
-import { Select } from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
-
 import ImageBanner from '@/assets/images/3.jpg'
-import citiesData from '@/data/cities.json'
+import { Button } from '@/components/ui/button'
+import { Select } from '@/components/ui/select'
 import { useLocation } from '@/context/location-context'
+import citiesData from '@/data/cities.json'
 
 import AboutUs from './components/about-us'
 import AnnounceBanner from './components/announce-banner'
-import OfferingList from './components/offering-list'
 import CategoryList from './components/category-list'
+import OfferingList from './components/offering-list'
 import PartnersList from './components/partners-list'
 import ServicesVideosList from './components/services-videos-list'
 

@@ -1,26 +1,26 @@
 'use client'
 
-import { useState } from 'react'
-import { toast } from 'react-toastify'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { Info, Link, Plus, Trash } from 'lucide-react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createColumnHelper } from '@tanstack/react-table'
+import { useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
-import { Table } from '@/components/ui/table'
-import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Table } from '@/components/ui/table'
 import { Tooltip } from '@/components/ui/tooltip'
-
+import { useGetCategories } from '@/hooks/services/use-get-categories'
 import { Category } from '@/services/categories/types'
-import { useGetCategories } from '@/hooks/use-get-categories'
 
-import { CategoryData, categorySchema } from './schema'
 import { useCreateCategory } from './hooks/use-create-category'
 import { useDeleteCategory } from './hooks/use-delete-category'
+import { CategoryData, categorySchema } from './schema'
 
 export default function Content() {
   const { data, queryKey, refetch } = useGetCategories()
@@ -30,6 +30,7 @@ export default function Content() {
   const [showDialog, setShowDialog] = useState(false)
   const {
     watch,
+    reset,
     register,
     setValue,
     handleSubmit,
@@ -157,6 +158,7 @@ export default function Content() {
         },
         {
           onSuccess: (data) => {
+            reset()
             refetch()
             setShowDialog(false)
             resolve(data)

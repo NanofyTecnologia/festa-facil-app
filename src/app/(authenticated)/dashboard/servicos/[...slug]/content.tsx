@@ -33,7 +33,7 @@ import { address } from '@/services/address'
 import { normalizeSlug } from '@/utils/normalize-slug'
 import { useModal } from '@/hooks/use-modal'
 import { useImagePreview } from '@/hooks/use-image-preview'
-import { useGetCategories } from '@/hooks/use-get-categories'
+import { useGetCategories } from '@/hooks/services/use-get-categories'
 
 import { useCreateOffer } from '../hooks/use-create-offer'
 import { useUpdateOffer } from '../hooks/use-update-offer'

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
+
 import { getToken } from 'next-auth/jwt'
 import { withAuth } from 'next-auth/middleware'
+
 import { env } from './lib/env/index.mjs'
 
 type AllowedRoles = { [key: string]: string[] }
