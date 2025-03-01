@@ -11,6 +11,7 @@ export type Offering = {
   summary: string
   description: string
   rating: number
+  status: 'APPROVED' | 'REFUSED' | 'WAITING'
   createdAt: string
   updatedAt: string
   banner: string

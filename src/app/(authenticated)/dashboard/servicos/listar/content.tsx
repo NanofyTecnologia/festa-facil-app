@@ -33,14 +33,6 @@ export default function Content() {
         </Table.Cell>
       ),
     }),
-    columnHelper.accessor('phone', {
-      header: ({ header }) => <Table.Head header={header}>Telefone</Table.Head>,
-      cell: ({ cell, getValue }) => (
-        <Table.Cell cell={cell}>
-          <div className="text-center text-sm">{getValue()}</div>
-        </Table.Cell>
-      ),
-    }),
     columnHelper.accessor('email', {
       header: ({ header }) => <Table.Head header={header}>E-mail</Table.Head>,
       cell: ({ cell, getValue }) => (
@@ -107,6 +99,18 @@ export default function Content() {
               <CircleX className="size-6 text-red-500" />
             )}
           </div>
+        </Table.Cell>
+      ),
+    }),
+    columnHelper.accessor('status', {
+      header: ({ header }) => <Table.Head header={header}>Status</Table.Head>,
+      cell: ({ cell, getValue }) => (
+        <Table.Cell cell={cell} className="text-center text-sm">
+          {getValue() === 'WAITING'
+            ? 'Aguardando aprovação'
+            : getValue() === 'APPROVED'
+              ? 'Aprovado'
+              : 'Reprovado'}
         </Table.Cell>
       ),
     }),

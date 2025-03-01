@@ -2,8 +2,12 @@
 
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
+
+import { ChevronLeft, CircleHelp, Info, Link, Plus, Search } from 'lucide-react'
+
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Fragment, useCallback, useEffect } from 'react'
-import { useHookFormMask } from 'use-mask-input'
+import { useDropzone } from 'react-dropzone'
 import {
   FormProvider,
   SubmitHandler,
@@ -11,36 +15,31 @@ import {
   UseFieldArrayAppend,
   useForm,
 } from 'react-hook-form'
-import { ChevronLeft, CircleHelp, Info, Link, Plus, Search } from 'lucide-react'
-import { toast } from 'react-toastify'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { FaRegImage } from 'react-icons/fa'
-import { useDropzone } from 'react-dropzone'
+import { toast } from 'react-toastify'
+import { useHookFormMask } from 'use-mask-input'
 
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Select } from '@/components/ui/select'
-import { Editor } from '@/components/ui/editor'
-import { Switch } from '@/components/ui/switch'
 import { Dialog } from '@/components/ui/dialog'
-import { Tooltip } from '@/components/ui/tooltip'
+import { Editor } from '@/components/ui/editor'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
-
-import { upload } from '@/services/upload'
-import { address } from '@/services/address'
-
-import { normalizeSlug } from '@/utils/normalize-slug'
-import { useModal } from '@/hooks/use-modal'
-import { useImagePreview } from '@/hooks/use-image-preview'
+import { Tooltip } from '@/components/ui/tooltip'
 import { useGetCategories } from '@/hooks/services/use-get-categories'
-
-import { useCreateOffer } from '../hooks/use-create-offer'
-import { useUpdateOffer } from '../hooks/use-update-offer'
-import { useGetOfferById } from '../hooks/use-get-offer-by-id'
+import { useImagePreview } from '@/hooks/use-image-preview'
+import { useModal } from '@/hooks/use-modal'
+import { address } from '@/services/address'
+import { upload } from '@/services/upload'
+import { normalizeSlug } from '@/utils/normalize-slug'
 
 import { type IParams } from './page'
 import { serviceSchema, type ServiceData } from './schema'
+import { useCreateOffer } from '../hooks/use-create-offer'
+import { useGetOfferById } from '../hooks/use-get-offer-by-id'
+import { useUpdateOffer } from '../hooks/use-update-offer'
 import CardExperience from './components/card-experience'
 import FormExperience from './components/form-experience'
 import { ExperienceData } from './components/form-experience/schema'
@@ -284,7 +283,9 @@ export default function Content() {
                   <Label.Root>Página ativa?</Label.Root>
                   <div className="flex h-12 items-center gap-2">
                     <Switch.Root
-                      disabled
+                      disabled={
+                        isEditing ? offering?.status !== 'APPROVED' : true
+                      }
                       checked={active}
                       onCheckedChange={(value) => setValue('active', value)}
                     />

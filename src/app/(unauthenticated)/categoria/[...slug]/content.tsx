@@ -5,10 +5,13 @@ import { useParams } from 'next/navigation'
 
 import { Star, StarHalf } from 'lucide-react'
 
-import { Fragment } from 'react'
+import { CheckboxGroup, Checkbox as HeroCheckbox } from '@heroui/checkbox'
+import { Fragment, useState } from 'react'
 
 import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/shadcn'
 
 import { useGetCategoryBySlug } from './hooks/use-get-category-by-slug'
@@ -16,7 +19,12 @@ import { useGetCategoryBySlug } from './hooks/use-get-category-by-slug'
 export default function Content() {
   const { slug } = useParams()
 
+  const [minRating, setMinRating] = useState(4)
   const { data: category } = useGetCategoryBySlug({ slug: slug[0] })
+
+  const handleFilter = (rating: number) => {
+    setMinRating(rating)
+  }
 
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating)
@@ -103,37 +111,91 @@ export default function Content() {
         <div className="my-6 space-y-6">
           <Input.Root placeholder="Pesquisar..." />
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-            {category?.offering.map((offering) => {
-              const rating = Math.round(offering.rating * 2) / 2
+          <div className="grid grid-cols-4 gap-6">
+            <div className="col-span-1 space-y-6 rounded-md border p-4">
+              <h3 className="font-medium">Filtros</h3>
 
-              return (
-                <div
-                  key={offering.slug}
-                  className="transform cursor-pointer space-y-4 rounded-lg border bg-white p-6 transition-all duration-300 ease-in-out hover:scale-105"
-                >
-                  <Image
-                    src={offering.banner}
-                    width={384}
-                    height={192}
-                    className="h-48 w-full rounded-md object-cover"
-                    alt={`Banner de ${offering.name}`}
-                  />
+              <div className="space-y-2">
+                <p className="text-sm font-semibold">Avaliações</p>
 
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {offering.name}
-                    </h3>
+                <div className="flex items-center space-x-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`size-5 cursor-pointer ${
+                        star <= minRating
+                          ? 'fill-yellow-500 text-yellow-500'
+                          : 'text-gray-300'
+                      }`}
+                      onClick={() => handleFilter(star)}
+                    />
+                  ))}
 
-                    <p className="text-sm text-zinc-600">{offering.summary}</p>
+                  <span className="text-sm">e acima</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm font-semibold">Categorias</p>
+
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Checkbox.Root />
+                    <span className="text-sm font-normal">Aniversários</span>
                   </div>
 
-                  <div className="flex items-center space-x-2">
-                    {renderStars(rating)}
+                  <div className="flex items-center gap-2">
+                    <Checkbox.Root />
+                    <span className="text-sm font-normal">Infantil</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Checkbox.Root />
+                    <span className="text-sm font-normal">Casamentos</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Checkbox.Root />
+                    <span className="text-sm font-normal">Temática</span>
                   </div>
                 </div>
-              )
-            })}
+              </div>
+            </div>
+
+            <div className="col-span-3 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
+              {category?.offering.map((offering) => {
+                const rating = Math.round(offering.rating * 2) / 2
+
+                return (
+                  <div
+                    key={offering.slug}
+                    className="flex transform cursor-pointer flex-col space-y-4 rounded-lg border bg-white p-6 transition-all duration-300 ease-in-out hover:scale-105"
+                  >
+                    <Image
+                      src={offering.banner}
+                      width={384}
+                      height={192}
+                      className="h-48 w-full rounded-md object-cover"
+                      alt={`Banner de ${offering.name}`}
+                    />
+
+                    <div className="flex flex-1 flex-col gap-y-2">
+                      <h3 className="line-clamp-3 text-lg font-semibold text-gray-900">
+                        {offering.name}
+                      </h3>
+
+                      <p className="line-clamp-3 text-justify text-sm text-zinc-600">
+                        {offering.summary}
+                      </p>
+
+                      <div className="mt-auto flex items-center space-x-2 pt-4">
+                        {renderStars(rating)}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
