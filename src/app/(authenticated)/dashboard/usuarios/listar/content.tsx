@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-import { Pencil, Trash, UserPlus } from 'lucide-react'
+import { CircleCheck, CircleX, Pencil, Trash, UserPlus } from 'lucide-react'
 
 import { createColumnHelper } from '@tanstack/react-table'
 import { AxiosError } from 'axios'
@@ -61,6 +61,22 @@ export default function Content() {
       cell: ({ cell, getValue }) => (
         <Table.Cell cell={cell} className="px-4 py-2.5 text-sm">
           {getValue()}
+        </Table.Cell>
+      ),
+    }),
+    columnHelper.accessor('isActive', {
+      header: ({ header }) => (
+        <Table.Head header={header}>Usuário ativo?</Table.Head>
+      ),
+      cell: ({ cell, getValue }) => (
+        <Table.Cell cell={cell}>
+          <div className="flex justify-center">
+            {getValue() ? (
+              <CircleCheck className="size-6 text-green-500" />
+            ) : (
+              <CircleX className="size-6 text-red-500" />
+            )}
+          </div>
         </Table.Cell>
       ),
     }),

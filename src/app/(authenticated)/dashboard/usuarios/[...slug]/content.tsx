@@ -197,7 +197,7 @@ export default function Content() {
 
                     <Tooltip.Provider>
                       <Tooltip.Root>
-                        <Tooltip.Trigger>
+                        <Tooltip.Trigger type="button">
                           <CircleHelp className="size-4 text-zinc-400" />
                         </Tooltip.Trigger>
                         <Tooltip.Content>
