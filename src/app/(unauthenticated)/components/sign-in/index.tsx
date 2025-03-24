@@ -1,13 +1,14 @@
+import { usePathname } from 'next/navigation'
+
+import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { FcGoogle } from 'react-icons/fc'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { usePathname } from 'next/navigation'
+import { Input } from '@/components/ui/input'
 
 const signInSchema = z.object({
   email: z

@@ -1,16 +1,17 @@
 'use client'
 
-import Link from 'next/link'
 import Image from 'next/image'
-import { format } from 'date-fns'
+import Link from 'next/link'
+
 import { Check, X } from 'lucide-react'
+
 import { createColumnHelper } from '@tanstack/react-table'
+import { format } from 'date-fns'
 
 import { Badge } from '@/components/ui/badge'
-import { Table } from '@/components/ui/table'
-import { Dialog } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-
+import { Dialog } from '@/components/ui/dialog'
+import { Table } from '@/components/ui/table'
 import { Offering } from '@/services/offerings/types'
 
 import { useGetOfferingsToModerate } from './hooks/use-get-offerings-to-moderate'

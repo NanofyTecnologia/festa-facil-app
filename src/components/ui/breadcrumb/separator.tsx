@@ -1,7 +1,7 @@
+import { ChevronRightIcon } from '@radix-ui/react-icons'
 import * as React from 'react'
 
 import { cn } from '@/lib/shadcn'
-import { ChevronRightIcon } from '@radix-ui/react-icons'
 
 export const Separator = ({
   children,

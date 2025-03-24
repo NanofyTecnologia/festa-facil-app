@@ -1,4 +1,5 @@
 import axios from '@/lib/axios'
+
 import { DeleteExperienceParams } from './types'
 
 export const experiences = {

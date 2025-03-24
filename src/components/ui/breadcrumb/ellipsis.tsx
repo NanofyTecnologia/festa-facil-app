@@ -1,7 +1,7 @@
+import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import * as React from 'react'
 
 import { cn } from '@/lib/shadcn'
-import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 
 export const Ellipsis = ({
   className,

@@ -1,12 +1,12 @@
 'use client'
 
-import * as React from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
+import * as React from 'react'
 
 import { cn } from '@/lib/shadcn'
 
-import { ScrollUpButton } from './scroll-up-button'
 import { ScrollDownButton } from './scroll-down-button'
+import { ScrollUpButton } from './scroll-up-button'
 
 export const Content = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,

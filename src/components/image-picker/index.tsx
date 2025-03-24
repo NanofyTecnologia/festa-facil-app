@@ -1,12 +1,14 @@
 import Image from 'next/image'
-import { useCallback, useEffect, useState } from 'react'
-import Cropper from 'react-easy-crop'
-import { toast } from 'react-toastify'
-import { useDropzone } from 'react-dropzone'
+
 import { Check, ImageIcon, Repeat } from 'lucide-react'
 
-import getCroppedImg from '@/utils/cropped-image'
+import { useCallback, useEffect, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
+import Cropper from 'react-easy-crop'
+import { toast } from 'react-toastify'
+
 import { useImagePreview } from '@/hooks/use-image-preview'
+import getCroppedImg from '@/utils/cropped-image'
 
 import { Button } from '../ui/button'
 

@@ -1,5 +1,6 @@
-import { cn } from '@/lib/shadcn'
 import { type HTMLAttributes } from 'react'
+
+import { cn } from '@/lib/shadcn'
 
 export function Root({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (

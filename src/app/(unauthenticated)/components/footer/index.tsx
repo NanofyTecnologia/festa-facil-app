@@ -1,10 +1,11 @@
+import Image from 'next/image'
 import Link from 'next/link'
+
 import {
   IoLogoLinkedin,
   IoLogoFacebook,
   IoLogoInstagram,
 } from 'react-icons/io5'
-import Image from 'next/image'
 
 import ImageLogo from '@/assets/images/celebra_logo.png'
 

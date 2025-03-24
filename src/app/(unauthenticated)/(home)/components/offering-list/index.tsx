@@ -1,11 +1,11 @@
 'use client'
 
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+
 import { Star, MapPin } from 'lucide-react'
 
 import { Carousel } from '@/components/ui/carousel'
-
 import { useLocation } from '@/context/location-context'
 import { useGetOfferingByRating } from '@/hooks/services/use-get-offering-by-rating'
 

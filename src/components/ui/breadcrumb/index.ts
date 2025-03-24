@@ -1,9 +1,9 @@
-import { Root } from './root'
+import { Ellipsis } from './ellipsis'
 import { Item } from './item'
 import { Link } from './link'
-import { Page } from './page'
 import { List } from './list'
-import { Ellipsis } from './ellipsis'
+import { Page } from './page'
+import { Root } from './root'
 import { Separator } from './separator'
 
 export const Breadcrumb = {

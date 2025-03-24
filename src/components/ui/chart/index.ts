@@ -1,6 +1,6 @@
-import { Root } from './root'
 import { Legend } from './legend'
 import { LegendContent } from './legend-content'
+import { Root } from './root'
 import { Tooltip } from './tooltip'
 import { TooltipContent } from './tooltip-content'
 

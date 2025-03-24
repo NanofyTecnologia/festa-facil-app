@@ -1,10 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import { ArrowLeft } from 'lucide-react'
 
-import { cn } from '@/lib/shadcn'
+import * as React from 'react'
+
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/shadcn'
 
 import { useCarousel } from './context'
 

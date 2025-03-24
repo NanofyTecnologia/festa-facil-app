@@ -1,16 +1,17 @@
 'use client'
 
 import Image from 'next/image'
-import { Fragment } from 'react'
-import { format } from 'date-fns'
 import { useParams } from 'next/navigation'
+
 import { Calendar, CreditCard, Mail, MapPin } from 'lucide-react'
+
+import { format } from 'date-fns'
+import { Fragment } from 'react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Dialog } from '@/components/ui/dialog'
 import { Carousel } from '@/components/ui/carousel'
-
+import { Dialog } from '@/components/ui/dialog'
 import { normalizeSlug } from '@/utils/normalize-slug'
 
 import { useGetOfferingById } from './hooks/use-get-offering-by-id'

@@ -1,6 +1,6 @@
-import { toast } from 'react-toastify'
-import { createMutation } from 'react-query-kit'
 import { useQueryClient } from '@tanstack/react-query'
+import { createMutation } from 'react-query-kit'
+import { toast } from 'react-toastify'
 
 import { partners } from '@/services/partners'
 import { type GetPartnersResponse } from '@/services/partners/types'

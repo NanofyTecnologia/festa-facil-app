@@ -1,8 +1,9 @@
 'use client'
 
-import { type ReactNode } from 'react'
-import { usePathname } from 'next/navigation'
 import NextLink, { type LinkProps } from 'next/link'
+import { usePathname } from 'next/navigation'
+
+import { type ReactNode } from 'react'
 
 interface IProps extends LinkProps {
   children: ReactNode

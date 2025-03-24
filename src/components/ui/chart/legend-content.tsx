@@ -3,8 +3,8 @@ import * as RechartsPrimitive from 'recharts'
 
 import { cn } from '@/lib/shadcn'
 
-import { useChart } from './root'
 import { getPayloadConfigFromPayload } from './config'
+import { useChart } from './root'
 
 export const LegendContent = React.forwardRef<
   HTMLDivElement,

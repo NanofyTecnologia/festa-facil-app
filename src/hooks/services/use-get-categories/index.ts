@@ -1,6 +1,5 @@
-import { createQuery } from 'react-query-kit'
-
 import { keepPreviousData } from '@tanstack/react-query'
+import { createQuery } from 'react-query-kit'
 
 import { categories } from '@/services/categories'
 

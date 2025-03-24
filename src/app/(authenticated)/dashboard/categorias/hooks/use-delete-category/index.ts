@@ -1,6 +1,6 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { createMutation } from 'react-query-kit'
 import { toast } from 'react-toastify'
-import { useQueryClient } from '@tanstack/react-query'
 
 import { categories } from '@/services/categories'
 import { GetCategoriesResponse } from '@/services/categories/types'

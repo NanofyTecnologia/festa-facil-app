@@ -1,31 +1,32 @@
 'use client'
 
 import Image from 'next/image'
-import { useCallback, useState } from 'react'
-import { format } from 'date-fns'
-import { toast } from 'react-toastify'
-import { FaRegImage } from 'react-icons/fa'
-import { useDropzone } from 'react-dropzone'
+
 import { Info, Link, Plus, Trash } from 'lucide-react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createColumnHelper } from '@tanstack/react-table'
+import { format } from 'date-fns'
+import { useCallback, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { FaRegImage } from 'react-icons/fa'
+import { toast } from 'react-toastify'
 
-import { Table } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Dialog } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Dialog } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
+import { Table } from '@/components/ui/table'
 import { Tooltip } from '@/components/ui/tooltip'
-
-import { upload } from '@/services/upload'
-import { Partner } from '@/services/partners/types'
 import { useImagePreview } from '@/hooks/use-image-preview'
+import { Partner } from '@/services/partners/types'
+import { upload } from '@/services/upload'
 
-import { useGetPartners } from './hooks/use-get-partners'
-import { useDeletePartner } from './hooks/use-delete-partner'
 import { useCreatePartner } from './hooks/use-create-partner'
+import { useDeletePartner } from './hooks/use-delete-partner'
+import { useGetPartners } from './hooks/use-get-partners'
 import { PartnerData, partnerSchema } from './schema'
 
 export default function Content() {

@@ -1,8 +1,9 @@
 'use client'
 
-import { PropsWithChildren } from 'react'
-import { usePathname } from 'next/navigation'
 import NextLink, { type LinkProps } from 'next/link'
+import { usePathname } from 'next/navigation'
+
+import { PropsWithChildren } from 'react'
 
 export function Link({ href, ...props }: LinkProps & PropsWithChildren) {
   const pathname = usePathname()

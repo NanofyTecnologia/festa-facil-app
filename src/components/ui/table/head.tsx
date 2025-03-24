@@ -1,5 +1,5 @@
-import { type ComponentProps } from 'react'
 import { type Header } from '@tanstack/react-table'
+import { type ComponentProps } from 'react'
 
 import { cn } from '@/lib/shadcn'
 

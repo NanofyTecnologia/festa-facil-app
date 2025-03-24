@@ -1,7 +1,8 @@
-import { createQuery } from 'react-query-kit'
 import { keepPreviousData } from '@tanstack/react-query'
+import { createQuery } from 'react-query-kit'
 
 import { userAdmin } from '@/services/user'
+
 import { IProps } from './types'
 
 export function useGetUsers(props: IProps) {

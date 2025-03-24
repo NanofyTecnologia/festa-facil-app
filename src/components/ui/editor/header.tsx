@@ -1,7 +1,5 @@
 'use client'
 
-import { Fragment, PropsWithChildren, useState } from 'react'
-import { useCurrentEditor } from '@tiptap/react'
 import {
   Bold,
   List,
@@ -23,14 +21,17 @@ import {
   Image as ImageIcon,
   CircleHelp,
 } from 'lucide-react'
+
+import { useCurrentEditor } from '@tiptap/react'
+import { Fragment, PropsWithChildren, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { Input } from '../input'
 import { colors } from './colors'
-import { Select } from '../select'
 import { Button } from '../button'
-import { Popover } from '../popover'
 import { Dialog } from '../dialog'
+import { Popover } from '../popover'
+import { Select } from '../select'
 
 type SetURLData = {
   url: string

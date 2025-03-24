@@ -1,13 +1,13 @@
-import * as React from 'react'
-import { format, startOfYear, endOfYear, eachMonthOfInterval } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
+
+import { format, startOfYear, endOfYear, eachMonthOfInterval } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import * as React from 'react'
 
 import { Button } from '@/components/ui/button'
-import { Select } from '@/components/ui/select'
-import { Popover } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
-
+import { Popover } from '@/components/ui/popover'
+import { Select } from '@/components/ui/select'
 import { cn } from '@/lib/shadcn'
 
 interface DatePickerProps {

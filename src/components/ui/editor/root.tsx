@@ -1,10 +1,10 @@
 'use client'
 
 import { EditorContent, useEditor, EditorContext } from '@tiptap/react'
-
-import { Header } from './header'
-import { extensions } from './extensions'
 import { useEffect, useState } from 'react'
+
+import { extensions } from './extensions'
+import { Header } from './header'
 
 interface EditorRootProps {
   value?: string
