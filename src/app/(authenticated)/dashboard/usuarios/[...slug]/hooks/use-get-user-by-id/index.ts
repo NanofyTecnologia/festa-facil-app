@@ -13,7 +13,7 @@ export function useGetUserById({ id }: IProps) {
     enabled: !!id,
   })
 
-  const queryResponse = query({ variables: id })
+  const queryResponse = query()
 
   return {
     ...queryResponse,
