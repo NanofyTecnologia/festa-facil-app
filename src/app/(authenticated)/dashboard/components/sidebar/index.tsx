@@ -95,6 +95,31 @@ export default function Sidebar() {
               <Accordion.Root type="single" collapsible>
                 <Accordion.Item value="category" className="border-0">
                   <Accordion.Trigger className="rounded p-2 text-base font-medium text-zinc-500 hover:bg-secondary hover:text-black hover:no-underline">
+                    Serviços
+                  </Accordion.Trigger>
+                  <Accordion.Content className="pb-0">
+                    <ul className="mt-2 space-y-1 pl-4 text-base text-zinc-500">
+                      <li>
+                        <Link href="/dashboard/servicos/admin/listar">
+                          Listar
+                          <MoveRight className="size-4" />
+                        </Link>
+                      </li>
+
+                      <li>
+                        <Link href="/dashboard/servicos/moderar">
+                          Moderar
+                          <MoveRight className="size-4" />
+                        </Link>
+                      </li>
+                    </ul>
+                  </Accordion.Content>
+                </Accordion.Item>
+              </Accordion.Root>
+
+              <Accordion.Root type="single" collapsible>
+                <Accordion.Item value="category" className="border-0">
+                  <Accordion.Trigger className="rounded p-2 text-base font-medium text-zinc-500 hover:bg-secondary hover:text-black hover:no-underline">
                     Empresas
                   </Accordion.Trigger>
                   <Accordion.Content className="pb-0">

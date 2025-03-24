@@ -1,14 +1,14 @@
-import {heroui} from '@heroui/theme';
+import { heroui } from '@heroui/theme'
 import type { Config } from 'tailwindcss'
 
 const config = {
   darkMode: ['class'],
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-    "./node_modules/@heroui/theme/dist/components/(checkbox|form).js"
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+    './node_modules/@heroui/theme/dist/components/(checkbox|form).js',
   ],
   prefix: '',
   theme: {
@@ -97,7 +97,11 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'),require('tailwind-scrollbar'),heroui()],
+  plugins: [
+    require('tailwindcss-animate'),
+    require('tailwind-scrollbar'),
+    heroui(),
+  ],
 } satisfies Config
 
 export default config

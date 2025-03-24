@@ -5,26 +5,28 @@ import { useParams } from 'next/navigation'
 
 import { Star, StarHalf } from 'lucide-react'
 
-import { CheckboxGroup, Checkbox as HeroCheckbox } from '@heroui/checkbox'
-import { Fragment, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { Breadcrumb } from '@/components/ui/breadcrumb'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/shadcn'
+import { highLight } from '@/utils/high-light'
+import { normalize } from '@/utils/normalize'
 
 import { useGetCategoryBySlug } from './hooks/use-get-category-by-slug'
 
 export default function Content() {
   const { slug } = useParams()
 
-  const [minRating, setMinRating] = useState(4)
+  const [search, setSearch] = useState('')
+  const inputSearchRef = useRef<HTMLInputElement>(null)
+
   const { data: category } = useGetCategoryBySlug({ slug: slug[0] })
 
-  const handleFilter = (rating: number) => {
-    setMinRating(rating)
-  }
+  const filteredOfferings = category?.offering?.filter((offering) =>
+    normalize(offering.name).includes(normalize(search)),
+  )
 
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating)
@@ -58,6 +60,14 @@ export default function Content() {
     return stars
   }
 
+  const cleanFilters = () => {
+    setSearch('')
+
+    if (inputSearchRef.current) {
+      inputSearchRef.current.value = ''
+    }
+  }
+
   return (
     <>
       <div className="mx-auto max-w-7xl px-4 py-6 xl:px-0">
@@ -87,7 +97,7 @@ export default function Content() {
 
                     <Breadcrumb.Item>
                       <Breadcrumb.Link
-                        href="/servicos"
+                        href="/"
                         className="text-zinc-200 hover:text-white"
                       >
                         Todos serviços
@@ -109,61 +119,23 @@ export default function Content() {
         </div>
 
         <div className="my-6 space-y-6">
-          <Input.Root placeholder="Pesquisar..." />
+          <Input.Root
+            placeholder="Pesquisar..."
+            onChange={(e) => setSearch(e.target.value)}
+            ref={inputSearchRef}
+          />
 
-          <div className="grid grid-cols-4 gap-6">
-            <div className="col-span-1 space-y-6 rounded-md border p-4">
-              <h3 className="font-medium">Filtros</h3>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
+            {filteredOfferings?.length === 0 ? (
+              <div className="col-span-full flex h-32 w-full flex-col items-center justify-center gap-2 text-center">
+                <h2 className="text-lg font-semibold">Sem resultados.</h2>
 
-              <div className="space-y-2">
-                <p className="text-sm font-semibold">Avaliações</p>
-
-                <div className="flex items-center space-x-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className={`size-5 cursor-pointer ${
-                        star <= minRating
-                          ? 'fill-yellow-500 text-yellow-500'
-                          : 'text-gray-300'
-                      }`}
-                      onClick={() => handleFilter(star)}
-                    />
-                  ))}
-
-                  <span className="text-sm">e acima</span>
-                </div>
+                <Button.Root onClick={cleanFilters} variant="link" size="sm">
+                  Limpar filtros
+                </Button.Root>
               </div>
-
-              <div className="space-y-2">
-                <p className="text-sm font-semibold">Categorias</p>
-
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Checkbox.Root />
-                    <span className="text-sm font-normal">Aniversários</span>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Checkbox.Root />
-                    <span className="text-sm font-normal">Infantil</span>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Checkbox.Root />
-                    <span className="text-sm font-normal">Casamentos</span>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Checkbox.Root />
-                    <span className="text-sm font-normal">Temática</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-span-3 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
-              {category?.offering.map((offering) => {
+            ) : (
+              filteredOfferings?.map((offering) => {
                 const rating = Math.round(offering.rating * 2) / 2
 
                 return (
@@ -181,7 +153,7 @@ export default function Content() {
 
                     <div className="flex flex-1 flex-col gap-y-2">
                       <h3 className="line-clamp-3 text-lg font-semibold text-gray-900">
-                        {offering.name}
+                        {highLight(offering.name, search)}
                       </h3>
 
                       <p className="line-clamp-3 text-justify text-sm text-zinc-600">
@@ -194,8 +166,8 @@ export default function Content() {
                     </div>
                   </div>
                 )
-              })}
-            </div>
+              })
+            )}
           </div>
         </div>
       </div>

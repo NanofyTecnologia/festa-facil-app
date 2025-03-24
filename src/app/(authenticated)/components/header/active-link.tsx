@@ -1,8 +1,9 @@
 'use client'
 
-import { HTMLAttributes } from 'react'
-import { usePathname } from 'next/navigation'
 import NextLink, { type LinkProps } from 'next/link'
+import { usePathname } from 'next/navigation'
+
+import { HTMLAttributes } from 'react'
 
 import { cn } from '@/lib/shadcn'
 
