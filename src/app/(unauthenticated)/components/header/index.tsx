@@ -59,9 +59,11 @@ export default function Header() {
           <nav className="flex items-center gap-4 text-zinc-500">
             <Link href="/">Inicio</Link>
 
-            <Link href="#">Fornecedores</Link>
-
             <Link href="#sobre-nos">Sobre</Link>
+
+            <Link href="#">Categorias</Link>
+
+            <Link href="#">Seja um parceiro Celebra</Link>
 
             <Link href="#">Entre em contato</Link>
 

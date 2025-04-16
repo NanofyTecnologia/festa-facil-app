@@ -8,4 +8,10 @@ export const admin = {
 
     return data
   },
+
+  async getDashboardData() {
+    const { data } = await axios.get('/admin/dashboard')
+
+    return data
+  },
 }

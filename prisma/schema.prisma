@@ -91,3 +91,11 @@ model Authenticator {
   @@id([userId, credentialID])
   @@map("authenticators")
 }
+
+model ApplicationVisits {
+  id         Int      @id @default(autoincrement())
+  ip         String
+  pathname   String
+  screen     String
+  accessedAt DateTime @map("access_at")
+}

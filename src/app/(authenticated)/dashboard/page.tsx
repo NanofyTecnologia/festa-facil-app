@@ -1,9 +1,16 @@
 'use client'
 
+import { Eye, Group, MonitorCog, MonitorSmartphone, Users } from 'lucide-react'
+
 import { Bar, BarChart } from 'recharts'
 
+import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import { Chart } from '@/components/ui/chart'
 import { ChartConfig } from '@/components/ui/chart/root'
+import { Tooltip } from '@/components/ui/tooltip'
+
+import { useGetDashboardData } from './hooks/use-get-dashboard-data'
 
 const chartConfig = {
   desktop: {
@@ -26,17 +33,73 @@ const chartData = [
 ]
 
 export default function Page() {
+  const { data } = useGetDashboardData()
+
+  console.log(data)
+
   return (
     <>
-      <div className="mx-auto max-w-4xl">
-        <div className="rounded-md border bg-white py-4">
-          <Chart.Root config={chartConfig}>
-            <BarChart accessibilityLayer data={chartData}>
-              <Bar dataKey="desktop" fill="#000" radius={4} />
-              <Bar dataKey="mobile" fill="#666" radius={4} />
-            </BarChart>
-          </Chart.Root>
-        </div>
+      <h1 className="text-3xl font-semibold">Dashboard</h1>
+
+      <div className="mt-5 grid grid-cols-4 gap-4">
+        <Card.Root>
+          <Card.Header className="flex flex-row items-center justify-between space-y-0">
+            <span className="font-bold">Serviços ativos</span> <MonitorCog />
+          </Card.Header>
+          <Card.Content>
+            <h2 className="text-4xl font-bold">{data?.services?.total}</h2>
+          </Card.Content>
+        </Card.Root>
+
+        <Card.Root>
+          <Card.Header className="flex flex-row items-center justify-between space-y-0">
+            <span className="font-bold">Total de usuários</span> <Users />
+          </Card.Header>
+          <Card.Content>
+            <h2 className="text-4xl font-bold">{data?.users?.total}</h2>
+            <p className="text-muted-foreground">
+              Inclui{' '}
+              <span className="font-bold">{data?.users?.totalSuppliers}</span>{' '}
+              fornecedore(s)
+            </p>
+          </Card.Content>
+        </Card.Root>
+
+        <Card.Root>
+          <Card.Header className="flex flex-row items-center justify-between space-y-0">
+            <span className="font-bold">Total de visualizações</span> <Eye />
+          </Card.Header>
+          <Card.Content>
+            <h2 className="text-4xl font-bold">{data?.visits?.total}</h2>
+          </Card.Content>
+        </Card.Root>
+
+        <Card.Root>
+          <Card.Header className="flex flex-row items-center justify-between space-y-0">
+            <span className="font-bold">Página mais visitada</span>{' '}
+            <MonitorSmartphone />
+          </Card.Header>
+          <Card.Content>
+            <Tooltip.Provider>
+              <Tooltip.Root>
+                <Tooltip.Trigger>
+                  <h2 className="line-clamp-1 text-start text-2xl font-bold">
+                    {data?.visits?.moreVisited?.pathname}
+                  </h2>
+                </Tooltip.Trigger>
+                <Tooltip.Content>
+                  {data?.visits?.moreVisited?.pathname}
+                </Tooltip.Content>
+              </Tooltip.Root>
+            </Tooltip.Provider>
+            <p className="text-muted-foreground">
+              Total de acessos{' '}
+              <span className="font-bold">
+                {data?.visits?.moreVisited?._count?.pathname}
+              </span>
+            </p>
+          </Card.Content>
+        </Card.Root>
       </div>
     </>
   )
